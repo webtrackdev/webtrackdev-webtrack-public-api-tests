@@ -1,0 +1,32 @@
+### Crear ruta completa con unidad, nueva ruta, conductor, y metadata
+POST {{baseUrl}}/Route/assignUnitRoute
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "customerPrivateCode": "TACO",
+  "unit": {
+    "unitId": 2
+  },
+  "route": {
+    "routeName": "Nueva Ruta Oakland → Cayalá",
+    "abbreviation": "OAK-CAY",
+    "source": {
+      "latitude": 14.5991136,
+      "longitude": -90.5076808,
+      "locationName": "Oakland Mall"
+    },
+    "target": {
+      "latitude": 14.6117650,
+      "longitude": -90.4853234,
+      "locationName": "Paseo Cayalá"
+    },
+    "membership": {
+      "organizationId": 229,
+      "customerPrivateCode": "TACO"
+    }
+  },
+  "customerLocationId": 4134,
+  "startDate": "2025-04-11",
+  "completionType": 1
+}

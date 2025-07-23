@@ -1,0 +1,10 @@
+### Obtener catálogo de referencias
+POST {{baseUrl}}/Location/GetCatalog
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "organizationId": 229,
+  "customerId": 3,
+  "locationClassId": 34
+}

@@ -1,0 +1,18 @@
+### Actualizar cliente
+POST {{baseUrl}}/Customer/Save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "customerId": 125,
+  "customerName": "Coffee Shop (Updated)",
+  "privateCode": "COFFEESHOP",
+  "businessName": "My Coffee Shop",
+  "taxId": "123456789",
+  "customerAddress": "123 Coffee St, Guatemala City",
+  "contactName1": "Coffee Show Owner",
+  "phone1": "1234-5678",
+  "membership": {
+    "organizationId": 1
+  }
+}

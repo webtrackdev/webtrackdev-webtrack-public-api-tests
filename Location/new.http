@@ -1,0 +1,18 @@
+### Guardar referencia
+POST {{baseUrl}}/Location/save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "locationId": null,
+  "locationName": "Bodega Central",
+  "locationAddress": "Zona 1, Ciudad de Guatemala",
+  "privateCode": "BG-CEN",
+  "latitude": 14.6349,
+  "longitude": -90.5069,
+  "radius": 75,
+  "locationClassId": 0,
+  "membership": {
+    "organizationId": 1
+  }
+}

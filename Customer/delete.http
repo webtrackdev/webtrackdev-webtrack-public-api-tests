@@ -1,0 +1,8 @@
+### Eliminar cliente
+DELETE {{baseUrl}}/Customer/Delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "customerId": "126"
+}

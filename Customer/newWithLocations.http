@@ -1,0 +1,22 @@
+### Guardar cliente (nuevo) con dos referencias
+POST {{baseUrl}}/Customer/Save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "customerName": "CEMACO",
+  "privateCode": "CEMACO-TEST",
+  "membership": {
+    "organizationId": 229
+  },
+  "locations": [
+    {
+      "locationName": "CEMACO Store",
+      "locationAddress": "Cayala",
+      "privateCode": "CEMACO-CAYALA",
+      "latitude": 14.609515262126404,
+      "longitude": -90.48360764992307,
+      "locationClassId": 34
+    }
+  ]
+}

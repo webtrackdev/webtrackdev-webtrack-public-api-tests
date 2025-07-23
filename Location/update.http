@@ -1,0 +1,25 @@
+### Actualizar referencia
+POST {{baseUrl}}/Location/save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "LocationId": 4138,
+  "LocationName": "Bodega Central (Actualizada)",
+  "LocationAddress": "Zona 2, Ciudad de Guatemala",
+  "PrivateCode": "BG-NEW",
+  "Latitude": 14.6450,
+  "Longitude": -90.5050,
+  "Radius": 100,
+  "LocationClassId": 30,
+  "Membership": {
+    "CustomerId": 2,
+    "OrganizationId": 1,
+    "DivisionId": null,
+    "SubdivisionId": null,
+    "CustomerPrivateCode": null,
+    "OrganizationPrivateCode": null,
+    "DivisionPrivateCode": null,
+    "SubdivisionPrivateCode": null
+  }
+}

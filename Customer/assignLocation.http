@@ -1,0 +1,13 @@
+### Asignar una referencia a un cliente
+POST {{baseUrl}}/Customer/AssignLocation
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "customer": {
+    "customerId": 2
+  },
+  "location": {
+    "locationId": 4212
+  }
+}

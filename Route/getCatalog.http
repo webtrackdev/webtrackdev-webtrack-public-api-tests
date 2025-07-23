@@ -1,0 +1,10 @@
+### Obtener catálogo de rutas
+POST {{baseUrl}}/Route/GetCatalog
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "organizationId": 1,
+  "divisionId": 1,
+  "sourceLocationClassId": 0
+}

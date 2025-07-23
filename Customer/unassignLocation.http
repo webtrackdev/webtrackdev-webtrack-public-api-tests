@@ -1,0 +1,9 @@
+### Desasignar una referencia a un cliente
+POST {{baseUrl}}/Customer/UnassignLocation
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "customerId": 127,
+  "locationId": 4157
+}

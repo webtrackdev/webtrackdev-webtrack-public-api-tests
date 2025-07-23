@@ -1,0 +1,22 @@
+### Crear ruta con lat/lon
+POST {{baseUrl}}/Route/Save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "routeName": "Oakland Place - Cayalá",
+  "source": {
+    "latitude": 14.599113647760799,
+    "longitude": -90.50768088404959,
+    "locationName": "Oakland Place"
+  },
+  "target": {
+    "latitude": 14.611765084819758,
+    "longitude": -90.4853234890081,
+    "locationName": "Cayalá"
+  },
+  "membership": {
+    "organizationId": 1,
+    "customerPrivateCode": "TACO"
+  }
+}

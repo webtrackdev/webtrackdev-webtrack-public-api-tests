@@ -1,0 +1,9 @@
+### Login - Obtener token
+POST {{baseUrl}}/account/login
+Content-Type: application/json
+
+{
+  "apiKey": "your-api-key",
+  "username": "your-username",
+  "password": "your-password"
+}

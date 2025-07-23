@@ -1,0 +1,10 @@
+### Obtener catálogo de clientes
+POST {{baseUrl}}/Customer/GetCatalog
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "organizationId": 1,
+  "customerPrivateCode": "TACO",
+  "includeLocations": true
+}

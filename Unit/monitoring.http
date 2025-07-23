@@ -1,0 +1,10 @@
+### Obtener unidades a monitorear
+POST {{baseUrl}}/Unit/Monitoring
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "organizationId": 1,
+  "divisionId": 3,
+  "unitName": "CX"
+}

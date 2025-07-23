@@ -1,0 +1,18 @@
+### Crear ruta con lat/lon
+POST {{baseUrl}}/Route/Save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "routeName": "Puerto Santo Tomás - CEMACO (IMP)",
+  "source": {
+    "locationId": 4199
+  },
+  "target": {
+    "locationId": 4201
+  },
+  "membership": {
+    "organizationId": 229,
+    "customerPrivateCode": "CEMACO-TEST"
+  }
+}

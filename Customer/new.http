@@ -1,0 +1,12 @@
+### Actualizar cliente
+POST {{baseUrl}}/Customer/Save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "customerName": "CEMACO",
+  "privateCode": "CENACO-TEST",
+  "membership": {
+    "organizationId": 229
+  }
+}
