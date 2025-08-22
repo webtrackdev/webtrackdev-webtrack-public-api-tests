@@ -4,8 +4,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "organizationId": 1,
-  "sourceCustomerPrivateCode": "WALMART",
-  "targetPrivateCode": "CAYMALLGT",
-  "targetCustomerPrivateCode": "SEAGT"
+  "sourceCustomerPrivateCode": "GTC",
+  "targetPrivateCode": "627511-1",
+  "targetCustomerPrivateCode": "627511"
 }
