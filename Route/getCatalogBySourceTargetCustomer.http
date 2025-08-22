@@ -1,0 +1,11 @@
+### Obtener catálogo de rutas, con base en private codes del cliente y la referencia
+POST {{baseUrl}}/Route/GetCatalog
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "organizationId": 1,
+  "sourceCustomerPrivateCode": "WALMART",
+  "targetPrivateCode": "CAYMALLGT",
+  "targetCustomerPrivateCode": "SEAGT"
+}
