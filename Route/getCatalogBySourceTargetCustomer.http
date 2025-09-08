@@ -5,6 +5,6 @@ Content-Type: application/json
 
 {
   "sourceCustomerPrivateCode": "GTC",
-  "targetPrivateCode": "627511-1",
-  "targetCustomerPrivateCode": "627511"
+  "targetCustomerPrivateCode": "627511",
+  "targetPrivateCode": "627511-1"
 }
