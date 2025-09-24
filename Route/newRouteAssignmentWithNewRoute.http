@@ -20,13 +20,8 @@ Content-Type: application/json
       "latitude": 14.6117650,
       "longitude": -90.4853234,
       "locationName": "Paseo Cayalá"
-    },
-    "membership": {
-      "organizationId": 229,
-      "customerPrivateCode": "TACO"
     }
   },
-  "customerLocationId": 4134,
   "startDate": "2025-04-11",
   "completionType": 1
 }
