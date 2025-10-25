@@ -1,0 +1,10 @@
+### Obtener catálogo de referencias
+POST {{baseUrl}}/Account/pushNotificationRegister
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "deviceIdentifier": "484D7F30-55D7-4382-9BB0-C89C68B7FAA6-21",
+  "deviceToken": "duJPjV8VI0j8s9CkKrcKjn:APA91bF5s7eTnjNfzd9w23TkTbrabOURNzmdwcVdyKs9Hzfc0OQ4j_kQPXfSjQAaEGWu4IEZpDVq1LY3zJNQX69aWG4uqTHuGeQp_EQHpzXu5AVL22KGVZ0",
+  "operatingSystemId": 2
+}
