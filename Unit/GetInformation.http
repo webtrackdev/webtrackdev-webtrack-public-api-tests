@@ -1,0 +1,45 @@
+### Variables
+@apiUrl = {{baseUrl}}/Unit
+
+### 1. Get Unit Information by UnitId
+POST {{apiUrl}}/getInformation
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "unitId": 27
+}
+
+### 2. Get Unit Information by PrivateCode
+POST {{apiUrl}}/getInformation
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "privateCode": "UNIT-ABC-123"
+}
+
+### 3. Invalid Request - Missing both parameters
+POST {{apiUrl}}/getInformation
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+}
+
+### 4. Invalid Request - Unit not found
+POST {{apiUrl}}/getInformation
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "unitId": 99999999
+}
+
+### 5. Unauthorized - Missing token
+POST {{apiUrl}}/getInformation
+Content-Type: application/json
+
+{
+  "unitId": 12345
+}
