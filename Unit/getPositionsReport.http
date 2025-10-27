@@ -1,0 +1,64 @@
+### Test 1: Get Positions Report - Valid Request (1 day)
+POST {{baseUrl}}/Unit/GetPositionsReport
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitId": 1,
+  "startDate": "2025-10-27T00:00:00",
+  "endDate": "2025-10-27T23:59:59"
+}
+
+### Test 2: Get Positions Report - Valid Request (7 days)
+POST {{baseUrl}}/Unit/GetPositionsReport
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitId": 1,
+  "startDate": "2025-10-20T00:00:00",
+  "endDate": "2025-10-27T23:59:59"
+}
+
+### Test 3: Get Positions Report - Invalid Date Range (EndDate < StartDate)
+POST {{baseUrl}}/Unit/GetPositionsReport
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitId": 1,
+  "startDate": "2025-10-27T00:00:00",
+  "endDate": "2025-10-20T23:59:59"
+}
+
+### Test 4: Get Positions Report - Date Range Exceeds 15 Days
+POST {{baseUrl}}/Unit/GetPositionsReport
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitId": 1,
+  "startDate": "2025-10-01T00:00:00",
+  "endDate": "2025-10-27T23:59:59"
+}
+
+### Test 5: Get Positions Report - Missing UnitId
+POST {{baseUrl}}/Unit/GetPositionsReport
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "startDate": "2025-10-27T00:00:00",
+  "endDate": "2025-10-27T23:59:59"
+}
+
+### Test 6: Get Positions Report - Non-existent Unit
+POST {{baseUrl}}/Unit/GetPositionsReport
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitId": 999999,
+  "startDate": "2025-10-27T00:00:00",
+  "endDate": "2025-10-27T23:59:59"
+}
