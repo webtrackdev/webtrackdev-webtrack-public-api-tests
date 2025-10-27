@@ -1,45 +1,44 @@
-### Variables
-@apiUrl = {{baseUrl}}/Unit
-
-### 1. Get Unit Information by UnitId
-POST {{apiUrl}}/getInformation
-Content-Type: application/json
+### Obtener información de unidad por UnitId
+POST {{baseUrl}}/Unit/getInformation
 Authorization: Bearer {{token}}
+Content-Type: application/json
 
 {
   "unitId": 27
 }
 
-### 2. Get Unit Information by PrivateCode
-POST {{apiUrl}}/getInformation
-Content-Type: application/json
+### Obtener información de unidad por PrivateCode
+POST {{baseUrl}}/Unit/getInformation
 Authorization: Bearer {{token}}
+Content-Type: application/json
 
 {
-  "privateCode": "UNIT-ABC-123"
+  "privateCode": "JFlete"
 }
 
-### 3. Invalid Request - Missing both parameters
-POST {{apiUrl}}/getInformation
-Content-Type: application/json
+### Obtener información de unidad con ambos parámetros (UnitId tiene prioridad)
+POST {{baseUrl}}/Unit/getInformation
 Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitId": 1,
+  "privateCode": "SIMUEA"
+}
+
+### Test caso de error - sin parámetros (debe retornar 400)
+POST {{baseUrl}}/Unit/getInformation
+Authorization: Bearer {{token}}
+Content-Type: application/json
 
 {
 }
 
-### 4. Invalid Request - Unit not found
-POST {{apiUrl}}/getInformation
-Content-Type: application/json
+### Test caso de error - unidad no encontrada
+POST {{baseUrl}}/Unit/getInformation
 Authorization: Bearer {{token}}
-
-{
-  "unitId": 99999999
-}
-
-### 5. Unauthorized - Missing token
-POST {{apiUrl}}/getInformation
 Content-Type: application/json
 
 {
-  "unitId": 12345
+  "unitId": 999999
 }
