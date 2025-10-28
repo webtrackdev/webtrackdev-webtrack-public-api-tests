@@ -1,0 +1,51 @@
+### Test 1: Execute Action - Using UnitId
+POST {{baseUrl}}/Unit/executeAction
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitId":1,
+  "deviceActionId": 1,
+  "parameters": null
+}
+
+### Test 2: Execute Action - Using PrivateCode
+POST {{baseUrl}}/Unit/executeAction
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "privateCode": "UNIT-001",
+  "deviceActionId": 1,
+  "parameters": null
+}
+
+### Test 3: Execute Action - With JSON parameters
+POST {{baseUrl}}/Unit/executeAction
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitId": 5001,
+  "deviceActionId": 2,
+  "parameters": "{\"port\": 1, \"state\": 1}"
+}
+
+### Test 4: Execute Action - Different action type
+POST {{baseUrl}}/Unit/executeAction
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitId": 5001,
+  "deviceActionId": 3
+}
+
+### Test 5: Execute Action - Invalid (no unit identifier)
+POST {{baseUrl}}/Unit/executeAction
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "deviceActionId": 1
+}
