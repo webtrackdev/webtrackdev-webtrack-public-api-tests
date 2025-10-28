@@ -1,0 +1,47 @@
+### Test 1: Get System Notifications - Default (first 20)
+POST {{baseUrl}}/Account/GetSystemNotifications
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "limit": 20,
+  "offset": 0
+}
+
+### Test 2: Get System Notifications - With Search
+POST {{baseUrl}}/Account/GetSystemNotifications
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "limit": 20,
+  "offset": 0,
+  "search": "sistema"
+}
+
+### Test 3: Get System Notifications - Pagination (next 20)
+POST {{baseUrl}}/Account/GetSystemNotifications
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "limit": 20,
+  "offset": 20
+}
+
+### Test 4: Get System Notifications - Custom Limit
+POST {{baseUrl}}/Account/GetSystemNotifications
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "limit": 5,
+  "offset": 0
+}
+
+### Test 5: Get System Notifications - Empty Body (defaults)
+POST {{baseUrl}}/Account/GetSystemNotifications
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{}
