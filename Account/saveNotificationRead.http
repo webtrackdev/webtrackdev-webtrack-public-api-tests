@@ -1,0 +1,48 @@
+### Test 1: Save Notification Read - Mark single notification as read
+POST {{baseUrl}}/Account/SaveNotificationRead
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "notificationTypeId": 1,
+  "notificationIds": "180"
+}
+
+### Test 2: Save Notification Read - Mark multiple notifications as read
+POST {{baseUrl}}/Account/SaveNotificationRead
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "notificationTypeId": 1,
+  "notificationIds": "1,2,3,4,5"
+}
+
+### Test 3: Save Notification Read - Without notification IDs (returns empty)
+POST {{baseUrl}}/Account/SaveNotificationRead
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "notificationTypeId": 1,
+  "notificationIds": ""
+}
+
+### Test 4: Save Notification Read - User notifications type
+POST {{baseUrl}}/Account/SaveNotificationRead
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "notificationTypeId": 2,
+  "notificationIds": "10,11,12"
+}
+
+### Test 5: Save Notification Read - Default notification type (defaults to 1)
+POST {{baseUrl}}/Account/SaveNotificationRead
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "notificationIds": "180"
+}
