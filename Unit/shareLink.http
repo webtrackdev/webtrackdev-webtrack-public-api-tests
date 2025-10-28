@@ -1,0 +1,53 @@
+### Test 1: Share link with valid UnitId
+POST {{baseUrl}}/Unit/shareLink
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitId": 1,
+  "emails": "usuario@dominiousuario.net",
+  "ttl": 3600
+}
+
+### Test 2: Share link with single email
+POST {{baseUrl}}/Unit/shareLink
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitId": 1,
+  "emails": "user@example.com",
+  "ttl": 7200
+}
+
+### Test 3: Share link with long TTL (24 hours)
+POST {{baseUrl}}/Unit/shareLink
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitId": 1,
+  "emails": "support@example.com",
+  "ttl": 86400
+}
+
+### Test 4: Invalid request - missing UnitId
+POST {{baseUrl}}/Unit/shareLink
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "emails": "test@example.com",
+  "ttl": 3600
+}
+
+### Test 5: Invalid request - empty emails
+POST {{baseUrl}}/Unit/shareLink
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitId": 1,
+  "emails": "",
+  "ttl": 3600
+}
