@@ -4,7 +4,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "unitId": 27
+  "unitId": 2207
 }
 
 ### Obtener información de unidad por PrivateCode
