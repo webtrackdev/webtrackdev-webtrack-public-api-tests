@@ -1,0 +1,141 @@
+### Test 1: Get Temperature Sensor Report - Valid Request (7 days)
+POST {{baseUrl}}/Unit/getTemperatureSensorReport
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitId": 2207,
+  "sensorId": 25,
+  "measureId": 1,
+  "startDate": "2024-08-06T10:19:00",
+  "endDate": "2025-10-30T23:59:59"
+}
+
+### Test 2: Get Temperature Sensor Report - Valid Request (1 day)
+POST {{baseUrl}}/Unit/getTemperatureSensorReport
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitId": 2207,
+  "sensorId": 1,
+  "measureId": 1,
+  "startDate": "2025-10-30T00:00:00",
+  "endDate": "2025-10-30T23:59:59"
+}
+
+### Test 3: Get Temperature Sensor Report - Valid Request (31 days - maximum allowed)
+POST {{baseUrl}}/Unit/getTemperatureSensorReport
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitId": 2207,
+  "sensorId": 1,
+  "measureId": 1,
+  "startDate": "2025-10-01T00:00:00",
+  "endDate": "2025-10-31T23:59:59"
+}
+
+### Test 4: Get Temperature Sensor Report - Invalid Date Range (EndDate < StartDate)
+POST {{baseUrl}}/Unit/getTemperatureSensorReport
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitId": 2207,
+  "sensorId": 1,
+  "measureId": 1,
+  "startDate": "2025-10-30T00:00:00",
+  "endDate": "2025-10-20T23:59:59"
+}
+
+### Test 5: Get Temperature Sensor Report - Date Range Exceeds 31 Days
+POST {{baseUrl}}/Unit/getTemperatureSensorReport
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitId": 2207,
+  "sensorId": 1,
+  "measureId": 1,
+  "startDate": "2025-09-01T00:00:00",
+  "endDate": "2025-10-30T23:59:59"
+}
+
+### Test 6: Get Temperature Sensor Report - Invalid UnitId (0)
+POST {{baseUrl}}/Unit/getTemperatureSensorReport
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitId": 0,
+  "sensorId": 1,
+  "measureId": 1,
+  "startDate": "2025-10-20T00:00:00",
+  "endDate": "2025-10-27T23:59:59"
+}
+
+### Test 7: Get Temperature Sensor Report - Invalid SensorId (0)
+POST {{baseUrl}}/Unit/getTemperatureSensorReport
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitId": 2207,
+  "sensorId": 0,
+  "measureId": 1,
+  "startDate": "2025-10-20T00:00:00",
+  "endDate": "2025-10-27T23:59:59"
+}
+
+### Test 8: Get Temperature Sensor Report - Invalid MeasureId (0)
+POST {{baseUrl}}/Unit/getTemperatureSensorReport
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitId": 2207,
+  "sensorId": 1,
+  "measureId": 0,
+  "startDate": "2025-10-20T00:00:00",
+  "endDate": "2025-10-27T23:59:59"
+}
+
+### Test 9: Get Temperature Sensor Report - Missing UnitId
+POST {{baseUrl}}/Unit/getTemperatureSensorReport
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "sensorId": 1,
+  "measureId": 1,
+  "startDate": "2025-10-20T00:00:00",
+  "endDate": "2025-10-27T23:59:59"
+}
+
+### Test 10: Get Temperature Sensor Report - Non-existent Unit
+POST {{baseUrl}}/Unit/getTemperatureSensorReport
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitId": 999999,
+  "sensorId": 1,
+  "measureId": 1,
+  "startDate": "2025-10-20T00:00:00",
+  "endDate": "2025-10-27T23:59:59"
+}
+
+### Test 11: Get Temperature Sensor Report - Non-existent Sensor
+POST {{baseUrl}}/Unit/getTemperatureSensorReport
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitId": 2207,
+  "sensorId": 999999,
+  "measureId": 1,
+  "startDate": "2025-10-20T00:00:00",
+  "endDate": "2025-10-27T23:59:59"
+}
