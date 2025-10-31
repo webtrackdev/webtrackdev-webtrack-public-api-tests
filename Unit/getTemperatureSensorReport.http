@@ -4,11 +4,11 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "unitId": 2207,
-  "sensorId": 25,
+  "unitId": 2415,
+  "sensorId": 210,
   "measureId": 1,
-  "startDate": "2024-08-06T10:19:00",
-  "endDate": "2025-10-30T23:59:59"
+  "startDate": "2024-10-29T10:19:00",
+  "endDate": "2025-10-31T23:59:59"
 }
 
 ### Test 2: Get Temperature Sensor Report - Valid Request (1 day)
