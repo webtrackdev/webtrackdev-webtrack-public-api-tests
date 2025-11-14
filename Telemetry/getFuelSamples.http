@@ -4,10 +4,10 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "unitId": 2415,
-  "sensorId": 1,
+  "unitId": 2157,
+  "sensorId": 127,
   "measureId": 1,
-  "startDate": "2025-10-29T00:00:00",
+  "startDate": "2025-01-29T00:00:00",
   "endDate": "2025-11-05T23:59:59"
 }
 
@@ -15,6 +15,14 @@ Content-Type: application/json
 POST {{baseUrl}}/Telemetry/getFuelSamples
 Authorization: Bearer {{token}}
 Content-Type: application/json
+
+{
+  "unitId": 2157,
+  "sensorId": 127,
+  "measureId": 1,
+  "startDate": "2025-11-05T00:00:00",
+  "endDate": "2025-11-05T23:59:59"
+}
 
 {
   "unitId": 2415,
