@@ -1,0 +1,3 @@
+### Obtener lista de mano de obra
+GET {{baseUrl}}/Maintenance/workmanshipList
+Authorization: Bearer {{token}}
