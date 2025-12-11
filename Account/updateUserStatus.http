@@ -3,7 +3,7 @@
 ### =====================================================
 
 ### Test 1: Activate a suspended user (2 -> 1)
-POST {{baseUrl}}/account/update-user-status
+POST {{baseUrl}}/account/updateUserStatus
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -13,7 +13,7 @@ Content-Type: application/json
 }
 
 ### Test 2: Suspend an active user (1 -> 2)
-POST {{baseUrl}}/account/update-user-status
+POST {{baseUrl}}/account/updateUserStatus
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -23,7 +23,7 @@ Content-Type: application/json
 }
 
 ### Test 3: Deactivate an active user (1 -> 0)
-POST {{baseUrl}}/account/update-user-status
+POST {{baseUrl}}/account/updateUserStatus
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -33,7 +33,7 @@ Content-Type: application/json
 }
 
 ### Test 4: Activate a deactivated user (0 -> 1)
-POST {{baseUrl}}/account/update-user-status
+POST {{baseUrl}}/account/updateUserStatus
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -43,7 +43,7 @@ Content-Type: application/json
 }
 
 ### Test 5: Deactivate a suspended user (2 -> 0)
-POST {{baseUrl}}/account/update-user-status
+POST {{baseUrl}}/account/updateUserStatus
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -57,7 +57,7 @@ Content-Type: application/json
 ### =====================================================
 
 ### Test 6: Error - User already active (should return 400)
-POST {{baseUrl}}/account/update-user-status
+POST {{baseUrl}}/account/updateUserStatus
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -67,7 +67,7 @@ Content-Type: application/json
 }
 
 ### Test 7: Error - Invalid status value (should return 400)
-POST {{baseUrl}}/account/update-user-status
+POST {{baseUrl}}/account/updateUserStatus
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -77,7 +77,7 @@ Content-Type: application/json
 }
 
 ### Test 8: Error - Non-existent user (should return 400)
-POST {{baseUrl}}/account/update-user-status
+POST {{baseUrl}}/account/updateUserStatus
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -87,7 +87,7 @@ Content-Type: application/json
 }
 
 ### Test 9: Error - Missing authentication (should return 401)
-POST {{baseUrl}}/account/update-user-status
+POST {{baseUrl}}/account/updateUserStatus
 Content-Type: application/json
 
 {
@@ -96,6 +96,6 @@ Content-Type: application/json
 }
 
 ### Test 10: Error - Missing payload (should return 400)
-POST {{baseUrl}}/account/update-user-status
+POST {{baseUrl}}/account/updateUserStatus
 Authorization: Bearer {{token}}
 Content-Type: application/json
