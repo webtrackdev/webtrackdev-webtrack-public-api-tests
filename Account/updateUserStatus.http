@@ -1,0 +1,101 @@
+### =====================================================
+### Update User Status - Test Cases
+### =====================================================
+
+### Test 1: Activate a suspended user (2 -> 1)
+POST {{baseUrl}}/account/update-user-status
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "userId": 12345,
+  "newStatus": 1
+}
+
+### Test 2: Suspend an active user (1 -> 2)
+POST {{baseUrl}}/account/update-user-status
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "userId": 12345,
+  "newStatus": 2
+}
+
+### Test 3: Deactivate an active user (1 -> 0)
+POST {{baseUrl}}/account/update-user-status
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "userId": 12345,
+  "newStatus": 0
+}
+
+### Test 4: Activate a deactivated user (0 -> 1)
+POST {{baseUrl}}/account/update-user-status
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "userId": 12345,
+  "newStatus": 1
+}
+
+### Test 5: Deactivate a suspended user (2 -> 0)
+POST {{baseUrl}}/account/update-user-status
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "userId": 12345,
+  "newStatus": 0
+}
+
+### =====================================================
+### Error Cases
+### =====================================================
+
+### Test 6: Error - User already active (should return 400)
+POST {{baseUrl}}/account/update-user-status
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "userId": 12345,
+  "newStatus": 1
+}
+
+### Test 7: Error - Invalid status value (should return 400)
+POST {{baseUrl}}/account/update-user-status
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "userId": 12345,
+  "newStatus": 5
+}
+
+### Test 8: Error - Non-existent user (should return 400)
+POST {{baseUrl}}/account/update-user-status
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "userId": 999999999,
+  "newStatus": 1
+}
+
+### Test 9: Error - Missing authentication (should return 401)
+POST {{baseUrl}}/account/update-user-status
+Content-Type: application/json
+
+{
+  "userId": 12345,
+  "newStatus": 1
+}
+
+### Test 10: Error - Missing payload (should return 400)
+POST {{baseUrl}}/account/update-user-status
+Authorization: Bearer {{token}}
+Content-Type: application/json
