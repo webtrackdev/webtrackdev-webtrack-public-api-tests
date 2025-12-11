@@ -1,0 +1,149 @@
+### =====================================================
+### Update System Notification - Test Cases
+### =====================================================
+
+### Test 1: Create new system notification (Sistema - entityTypeId=1)
+POST {{baseUrl}}/account/updateSystemNotification
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "systemNotificationId": null,
+  "messageType": 1,
+  "messageTitle": "Notificación de prueba",
+  "message": "Este es el contenido de la notificación de prueba",
+  "startDate": "2025-12-11T00:00:00",
+  "endDate": "2025-12-31T23:59:59",
+  "entityTypeId": 1,
+  "showToast": 1,
+  "toastTime": 5000
+}
+
+### Test 2: Create notification for specific operator (entityTypeId=2)
+POST {{baseUrl}}/account/updateSystemNotification
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "systemNotificationId": null,
+  "messageType": 1,
+  "messageTitle": "Notificación para operador",
+  "message": "Mensaje para un operador específico",
+  "startDate": "2025-12-11T00:00:00",
+  "endDate": "2025-12-31T23:59:59",
+  "entityTypeId": 2,
+  "operatorId": 1,
+  "showToast": 1,
+  "toastTime": 3000
+}
+
+### Test 3: Create notification for specific organization (entityTypeId=3)
+POST {{baseUrl}}/account/updateSystemNotification
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "systemNotificationId": null,
+  "messageType": 1,
+  "messageTitle": "Notificación para organización",
+  "message": "Mensaje para una organización específica",
+  "startDate": "2025-12-11T00:00:00",
+  "endDate": "2025-12-31T23:59:59",
+  "entityTypeId": 3,
+  "organizationId": 1,
+  "showToast": 0
+}
+
+### Test 4: Create notification for specific role (entityTypeId=4)
+POST {{baseUrl}}/account/updateSystemNotification
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "systemNotificationId": null,
+  "messageType": 1,
+  "messageTitle": "Notificación para rol",
+  "message": "Mensaje para un rol/perfil específico",
+  "startDate": "2025-12-11T00:00:00",
+  "endDate": "2025-12-31T23:59:59",
+  "entityTypeId": 4,
+  "roleId": 1,
+  "showToast": 1,
+  "toastTime": 5000
+}
+
+### Test 5: Create notification for specific user (entityTypeId=5)
+POST {{baseUrl}}/account/updateSystemNotification
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "systemNotificationId": null,
+  "messageType": 1,
+  "messageTitle": "Notificación para usuario",
+  "message": "Mensaje para un usuario específico",
+  "startDate": "2025-12-11T00:00:00",
+  "endDate": "2025-12-31T23:59:59",
+  "entityTypeId": 5,
+  "userName": "admin",
+  "showToast": 1,
+  "toastTime": 5000
+}
+
+### Test 6: Update existing notification (provide systemNotificationId)
+POST {{baseUrl}}/account/updateSystemNotification
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "systemNotificationId": 1,
+  "messageType": 1,
+  "messageTitle": "Notificación actualizada",
+  "message": "Este mensaje ha sido actualizado",
+  "startDate": "2025-12-11T00:00:00",
+  "endDate": "2025-12-31T23:59:59",
+  "entityTypeId": 1,
+  "showToast": 1,
+  "toastTime": 5000
+}
+
+### =====================================================
+### Error Cases
+### =====================================================
+
+### Test 7: Error - Missing authentication (should return 401)
+POST {{baseUrl}}/account/updateSystemNotification
+Content-Type: application/json
+
+{
+  "messageType": 1,
+  "message": "Test message",
+  "startDate": "2025-12-11T00:00:00",
+  "endDate": "2025-12-31T23:59:59",
+  "entityTypeId": 1
+}
+
+### Test 8: Error - Invalid entityTypeId (should return 400)
+POST {{baseUrl}}/account/updateSystemNotification
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "messageType": 1,
+  "message": "Test message",
+  "startDate": "2025-12-11T00:00:00",
+  "endDate": "2025-12-31T23:59:59",
+  "entityTypeId": 99
+}
+
+### Test 9: Error - Missing required field (message)
+POST {{baseUrl}}/account/updateSystemNotification
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "messageType": 1,
+  "startDate": "2025-12-11T00:00:00",
+  "endDate": "2025-12-31T23:59:59",
+  "entityTypeId": 1
+}
