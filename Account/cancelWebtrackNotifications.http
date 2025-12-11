@@ -1,0 +1,65 @@
+### =====================================================
+### Cancel Webtrack Notifications - Test Cases
+### =====================================================
+
+### Test 1: Cancel Webtrack notifications for a valid organization
+POST {{baseUrl}}/account/cancelWebtrackNotifications
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "organizationId": 123
+}
+
+### Test 2: Cancel Webtrack notifications for organization with no notifications (should return 0)
+POST {{baseUrl}}/account/cancelWebtrackNotifications
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "organizationId": 999999
+}
+
+### =====================================================
+### Error Cases
+### =====================================================
+
+### Test 3: Error - Missing organizationId (should return 400)
+POST {{baseUrl}}/account/cancelWebtrackNotifications
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+}
+
+### Test 4: Error - Invalid organizationId (zero) (should return 400)
+POST {{baseUrl}}/account/cancelWebtrackNotifications
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "organizationId": 0
+}
+
+### Test 5: Error - Invalid organizationId (negative) (should return 400)
+POST {{baseUrl}}/account/cancelWebtrackNotifications
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "organizationId": -1
+}
+
+### Test 6: Error - Missing authentication (should return 401)
+POST {{baseUrl}}/account/cancelWebtrackNotifications
+Content-Type: application/json
+
+{
+  "organizationId": 123
+}
+
+### Test 7: Error - Missing payload (should return 400)
+POST {{baseUrl}}/account/cancelWebtrackNotifications
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
