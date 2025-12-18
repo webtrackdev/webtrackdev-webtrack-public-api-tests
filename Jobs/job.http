@@ -1,0 +1,203 @@
+### ===========================================
+### Job Controller Tests
+### ===========================================
+
+### 1. Get Summary
+POST {{baseUrl}}/Job/getSummary
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{}
+
+### 2. Save Job (Create)
+POST {{baseUrl}}/Job/save
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "jobTitle": "Test Job",
+    "jobTypeId": 1,
+    "jobPriority": 1,
+    "organizationId": 1,
+    "jobDescription": "Test job description",
+    "jobAddress": "Test Address"
+}
+
+### 3. Get Job Information
+POST {{baseUrl}}/Job/getInformation
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "jobId": 1
+}
+
+### 4. Get Assignments (Work Plans)
+POST {{baseUrl}}/Job/getAssignments
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{}
+
+### 5. Get Work Plan Jobs
+POST {{baseUrl}}/Job/getWorkPlanJobs
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "workPlanExecutionId": 1
+}
+
+### 6. Get Active Jobs
+POST {{baseUrl}}/Job/getActiveJobs
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "startDate": "2025-01-01",
+    "endDate": "2025-12-31"
+}
+
+### 7. Get Pending Jobs
+POST {{baseUrl}}/Job/getPendingJobs
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "startDate": "2025-01-01",
+    "endDate": "2025-12-31"
+}
+
+### 8. Get Finalized Jobs
+POST {{baseUrl}}/Job/getFinalizedJobs
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "startDate": "2025-01-01",
+    "endDate": "2025-12-31"
+}
+
+### 9. Get Scheduled Jobs
+POST {{baseUrl}}/Job/getScheduledJobs
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "startDate": "2025-01-01",
+    "endDate": "2025-12-31"
+}
+
+### 10. Change On Job Location (by coordinates)
+POST {{baseUrl}}/Job/changeOnJobLocation
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "jobId": 1,
+    "latitude": 14.634915,
+    "longitude": -90.506882
+}
+
+### 11. Change Job Location (by locationId)
+POST {{baseUrl}}/Job/changeJobLocation
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "jobId": 1,
+    "locationId": 100,
+    "locationAddress": "New Address"
+}
+
+### 12. Change Job Status
+POST {{baseUrl}}/Job/changeStatus
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "jobId": 1,
+    "newJobStatus": 2,
+    "statusChangeDate": "2025-12-18T10:00:00",
+    "comment": "Status changed via API",
+    "latitude": 14.634915,
+    "longitude": -90.506882,
+    "totalExecutionTime": 3600
+}
+
+### 13. Request Extra Time
+POST {{baseUrl}}/Job/requestExtraTime
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "jobId": 1,
+    "extraTime": 30,
+    "comment": "Need more time to complete",
+    "latitude": 14.634915,
+    "longitude": -90.506882
+}
+
+### 14. Get Job Comments
+POST {{baseUrl}}/Job/getComments
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "jobId": 1
+}
+
+### 15. Get Job Files
+POST {{baseUrl}}/Job/getFiles
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "jobId": 1
+}
+
+### 16. Add Job Comment
+POST {{baseUrl}}/Job/addComment
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "jobId": 1,
+    "comment": "This is a test comment from the API"
+}
+
+### 17. Delete Job Comment
+POST {{baseUrl}}/Job/deleteComment
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "jobCommentId": 1
+}
+
+### 18. Get Form List
+POST {{baseUrl}}/Job/getFormList
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{}
+
+### 19. Get Available Forms for Job
+POST {{baseUrl}}/Job/getAvailableForms
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "jobId": 1
+}
+
+### 20. Send Check In/Out Queue
+POST {{baseUrl}}/Job/sendCheckInOutQueue
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "unitIdentifier": "TEST-UNIT-001",
+    "appVersion": "1.0.0",
+    "queue": "[{\"working\":1,\"location\":{\"utcTime\":\"2025-12-18T10:00:00Z\",\"latitude\":14.634915,\"longitude\":-90.506882,\"speed\":0,\"heading\":0,\"odometer\":1000}}]"
+}

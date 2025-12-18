@@ -1,0 +1,108 @@
+### ===========================================
+### Jobs - Change Status
+### ===========================================
+
+### 1. Start Job (Activo)
+POST {{baseUrl}}/Jobs/changeStatus
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "jobId": 12345,
+    "newJobStatus": 1,
+    "comment": "Iniciando job",
+    "latitude": 14.634915,
+    "longitude": -90.506882
+}
+
+### 2. Pause Job (Pausado)
+POST {{baseUrl}}/Jobs/changeStatus
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "jobId": 12345,
+    "newJobStatus": 2,
+    "comment": "Pausando job por almuerzo",
+    "latitude": 14.634915,
+    "longitude": -90.506882
+}
+
+### 3. Complete Job (Finalizado)
+POST {{baseUrl}}/Jobs/changeStatus
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "jobId": 12345,
+    "newJobStatus": 3,
+    "statusChangeDate": "2025-12-18T17:30:00",
+    "comment": "Job completado exitosamente",
+    "latitude": 14.634915,
+    "longitude": -90.506882,
+    "totalExecutionTime": 7200
+}
+
+### 4. Mark as Incomplete (Incompleto)
+POST {{baseUrl}}/Jobs/changeStatus
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "jobId": 12345,
+    "newJobStatus": 4,
+    "comment": "No se pudo completar por falta de materiales",
+    "latitude": 14.634915,
+    "longitude": -90.506882
+}
+
+### 5. Reschedule Job (Programado)
+POST {{baseUrl}}/Jobs/changeStatus
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "jobId": 12345,
+    "newJobStatus": 6,
+    "comment": "Reprogramado para mañana",
+    "latitude": 14.634915,
+    "longitude": -90.506882
+}
+
+### 6. Cancel Job (Cancelado)
+POST {{baseUrl}}/Jobs/changeStatus
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "jobId": 12345,
+    "newJobStatus": 7,
+    "comment": "Cancelado por solicitud del cliente",
+    "latitude": 14.634915,
+    "longitude": -90.506882
+}
+
+### ===========================================
+### Job Status Reference:
+### 0 - Eliminado
+### 1 - Activo (Usuario lo inició)
+### 2 - Pausado
+### 3 - Finalizado
+### 4 - Incompleto
+### 5 - Reprogramado
+### 6 - Programado (Pendiente de inicio)
+### 7 - Cancelado
+### 8 - Pendiente
+### ===========================================
+
+### ===========================================
+### Parameters:
+### - jobId: ID del job (requerido)
+### - newJobStatus: Nuevo estado (requerido)
+### - statusChangeDate: Fecha/hora del cambio (opcional, default: UTC now)
+### - comment: Comentario del cambio (opcional)
+### - latitude: Latitud de ubicación (opcional)
+### - longitude: Longitud de ubicación (opcional)
+### - totalExecutionTime: Tiempo total en segundos (opcional, para finalización)
+### ===========================================
+

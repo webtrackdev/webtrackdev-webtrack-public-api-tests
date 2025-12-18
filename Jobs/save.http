@@ -1,0 +1,84 @@
+### ===========================================
+### Jobs - Save (Create/Update Job)
+### ===========================================
+
+### 1. Create New Job (minimal)
+POST {{baseUrl}}/Jobs/save
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "jobTitle": "Nuevo Job de Prueba",
+    "jobStatus": 6,
+    "jobTypeId": 1,
+    "jobPriority": 1,
+    "jobDescription": "Descripción del job de prueba",
+    "jobAddress": "Dirección de prueba"
+}
+
+### 2. Create New Job (complete)
+POST {{baseUrl}}/Jobs/save
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "jobTitle": "Job Completo de Prueba",
+    "jobStatus": 6,
+    "jobTypeId": 1,
+    "jobPriority": 2,
+    "jobDescription": "Descripción completa del job",
+    "jobAddress": "Av. Principal 123, Zona 10",
+    "privateCode": "JOB-001",
+    "startDate": "2025-12-18T08:00:00",
+    "dueDate": "2025-12-18T17:00:00",
+    "minTime": 30,
+    "maxTime": 120,
+    "notificationEmails": "usuario@email.com",
+    "userNames": "operador1^operador2",
+    "formIds": "1^2^3"
+}
+
+### 3. Update Existing Job
+POST {{baseUrl}}/Jobs/save
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "jobId": 12345,
+    "jobTitle": "Job Actualizado",
+    "jobStatus": 6,
+    "jobTypeId": 1,
+    "jobPriority": 3,
+    "jobDescription": "Descripción actualizada del job",
+    "jobAddress": "Nueva dirección actualizada",
+    "startDate": "2025-12-19T09:00:00",
+    "dueDate": "2025-12-19T18:00:00"
+}
+
+### ===========================================
+### Job Status Reference:
+### 0 - Eliminado
+### 1 - Activo
+### 2 - Pausado
+### 3 - Finalizado
+### 4 - Incompleto
+### 5 - Reprogramado
+### 6 - Programado
+### 7 - Cancelado
+### 8 - Pendiente
+### ===========================================
+
+### ===========================================
+### Job Priority Reference:
+### 1 - Baja
+### 2 - Media
+### 3 - Alta
+### ===========================================
+
+### ===========================================
+### IMPORTANTE - Separadores:
+### userNames y formIds usan ^ como separador
+### Ejemplo: "user1^user2^user3"
+### Ejemplo: "101^102^103"
+### ===========================================
+
