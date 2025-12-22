@@ -34,8 +34,8 @@ Authorization: Bearer {{token}}
     "minTime": 30,
     "maxTime": 120,
     "notificationEmails": "usuario@email.com",
-    "userNames": "operador1^operador2",
-    "formIds": "1^2^3"
+    "userNames": ["operador1", "operador2"],
+    "formIds": ["1", "2", "3"]
 }
 
 ### 3. Update Existing Job
@@ -76,9 +76,10 @@ Authorization: Bearer {{token}}
 ### ===========================================
 
 ### ===========================================
-### IMPORTANTE - Separadores:
-### userNames y formIds usan ^ como separador
-### Ejemplo: "user1^user2^user3"
-### Ejemplo: "101^102^103"
+### IMPORTANTE - Formato de Arrays:
+### userNames y formIds se envían como arrays JSON
+### Ejemplo: ["user1", "user2", "user3"]
+### Ejemplo: ["101", "102", "103"]
+### La API los convierte internamente a formato separado por ^
 ### ===========================================
 
