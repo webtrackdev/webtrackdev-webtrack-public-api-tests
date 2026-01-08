@@ -1,0 +1,87 @@
+### Authenticate con AuthenticationCode - Obtener JWT token
+# Este endpoint permite autenticar usando el authenticationCode (de la API v2)
+# en lugar de password, y retorna un JWT token compatible con la API v3
+
+### Test 1: Autenticacion exitosa con credenciales validas
+POST {{baseUrl}}/account/authenticate
+Content-Type: application/json
+
+{
+  "username": "{{username}}",
+  "authenticationCode": "{{authenticationCode}}",
+  "apiKey": "{{apiKey}}"
+}
+
+### Test 2: Autenticacion fallida - AuthenticationCode invalido
+POST {{baseUrl}}/account/authenticate
+Content-Type: application/json
+
+{
+  "username": "{{username}}",
+  "authenticationCode": "invalid-auth-code-12345",
+  "apiKey": "{{apiKey}}"
+}
+
+### Test 3: Autenticacion fallida - Username invalido
+POST {{baseUrl}}/account/authenticate
+Content-Type: application/json
+
+{
+  "username": "usuario-inexistente@ejemplo.com",
+  "authenticationCode": "{{authenticationCode}}",
+  "apiKey": "{{apiKey}}"
+}
+
+### Test 4: Autenticacion fallida - ApiKey invalido
+POST {{baseUrl}}/account/authenticate
+Content-Type: application/json
+
+{
+  "username": "{{username}}",
+  "authenticationCode": "{{authenticationCode}}",
+  "apiKey": "00000000-0000-0000-0000-000000000000"
+}
+
+### Test 5: Autenticacion fallida - Campos faltantes (sin username)
+POST {{baseUrl}}/account/authenticate
+Content-Type: application/json
+
+{
+  "authenticationCode": "{{authenticationCode}}",
+  "apiKey": "{{apiKey}}"
+}
+
+### Test 6: Autenticacion fallida - Campos faltantes (sin authenticationCode)
+POST {{baseUrl}}/account/authenticate
+Content-Type: application/json
+
+{
+  "username": "{{username}}",
+  "apiKey": "{{apiKey}}"
+}
+
+### Test 7: Autenticacion fallida - Campos faltantes (sin apiKey)
+POST {{baseUrl}}/account/authenticate
+Content-Type: application/json
+
+{
+  "username": "{{username}}",
+  "authenticationCode": "{{authenticationCode}}"
+}
+
+### Test 8: Autenticacion fallida - Body vacio
+POST {{baseUrl}}/account/authenticate
+Content-Type: application/json
+
+{}
+
+### Test 9: Verificar que el token generado funciona en endpoint protegido
+# Primero ejecutar Test 1 y copiar el token de la respuesta
+# Luego usar ese token aqui para verificar que funciona
+GET {{baseUrl}}/customer/getcatalog
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "apiKey": "{{apiKey}}"
+}

@@ -42,16 +42,18 @@ Create the configuration file for environment variables:
           "token": "paste-your-token-here",
           "apiKey": "your-api-key",
           "username": "your-username",
-          "password": "your-password"
+          "password": "your-password",
+          "authenticationCode": "your-authentication-code"
       }
   }
 }
 ```
 
-**Important**: 
+**Important**:
 - Replace `"paste-your-token-here"` with your valid authentication token
 - Replace `"your-username"` with your username
 - Replace `"your-password"` with your password
+- Replace `"your-authentication-code"` with your authentication code (from API v2)
 - Change `"your-api-url"` with your API URL including the /api/v3 path
 
 ## 🚀 Usage
@@ -86,7 +88,8 @@ Before executing any request, make sure to configure your credentials in `.vscod
 ```
 webtrack-public-api-tests/
 ├── Account/
-│   └── login.http              # Authentication
+│   ├── login.http              # Authentication with password
+│   └── authenticate.http       # Authentication with AuthenticationCode
 ├── Customer/
 │   ├── assignLocation.http     # Assign location to customer
 │   ├── delete.http            # Delete customer
@@ -115,9 +118,10 @@ webtrack-public-api-tests/
 
 - `{{baseUrl}}`: API base URL
 - `{{token}}`: Bearer authentication token
-- `{{apiKey}}`: API key 
+- `{{apiKey}}`: API key
 - `{{username}}`: Username for authentication
 - `{{password}}`: User password
+- `{{authenticationCode}}`: Authentication code for v2-style authentication
 
 ## 📝 Tips
 
