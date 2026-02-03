@@ -1,0 +1,206 @@
+### WT-2711: Permitir rutas con origen/destino opcionales
+### Se prueban las 3 formas de identificar locations: privateCode, locationId, coordenadas
+### En los 4 escenarios: ambos, solo source, solo target, ninguno
+
+###############################################
+### TESTS CON PRIVATE CODE
+###############################################
+
+### Test 1: Ambos Source y Target con privateCode
+POST {{baseUrl}}/Route/Save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "routeName": "WT-2711 PrivateCode - Ambos",
+  "source": {
+    "privateCode": "1234"
+  },
+  "target": {
+    "privateCode": "CEMACO-CAYALA"
+  },
+  "membership": {
+    "organizationId": 229,
+    "customerPrivateCode": "CEMACO-TEST"
+  }
+}
+
+### Test 2: Solo Source con privateCode
+POST {{baseUrl}}/Route/Save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "routeName": "WT-2711 PrivateCode - Solo Source",
+  "source": {
+    "privateCode": "1234"
+  },
+  "membership": {
+    "organizationId": 229,
+    "customerPrivateCode": "CEMACO-TEST"
+  }
+}
+
+### Test 3: Solo Target con privateCode
+POST {{baseUrl}}/Route/Save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "routeName": "WT-2711 PrivateCode - Solo Target",
+  "target": {
+    "privateCode": "CEMACO-CAYALA"
+  },
+  "membership": {
+    "organizationId": 229,
+    "customerPrivateCode": "CEMACO-TEST"
+  }
+}
+
+### Test 4: Sin Source ni Target
+POST {{baseUrl}}/Route/Save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "routeName": "WT-2711 PrivateCode - Sin Source ni Target",
+  "membership": {
+    "organizationId": 229,
+    "customerPrivateCode": "CEMACO-TEST"
+  }
+}
+
+###############################################
+### TESTS CON LOCATION ID
+###############################################
+
+### Test 5: Ambos Source y Target con locationId
+POST {{baseUrl}}/Route/Save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "routeName": "WT-2711 LocationId - Ambos",
+  "source": {
+    "locationId": 468
+  },
+  "target": {
+    "locationId": 4270
+  },
+  "membership": {
+    "organizationId": 229,
+    "customerPrivateCode": "CEMACO-TEST"
+  }
+}
+
+### Test 6: Solo Source con locationId
+POST {{baseUrl}}/Route/Save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "routeName": "WT-2711 LocationId - Solo Source",
+  "source": {
+    "locationId": 468
+  },
+  "membership": {
+    "organizationId": 229,
+    "customerPrivateCode": "CEMACO-TEST"
+  }
+}
+
+### Test 7: Solo Target con locationId
+POST {{baseUrl}}/Route/Save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "routeName": "WT-2711 LocationId - Solo Target",
+  "target": {
+    "locationId": 4270
+  },
+  "membership": {
+    "organizationId": 229,
+    "customerPrivateCode": "CEMACO-TEST"
+  }
+}
+
+### Test 8: Sin Source ni Target (mismo que Test 4, incluido por completitud)
+POST {{baseUrl}}/Route/Save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "routeName": "WT-2711 LocationId - Sin Source ni Target",
+  "membership": {
+    "organizationId": 229,
+    "customerPrivateCode": "CEMACO-TEST"
+  }
+}
+
+###############################################
+### TESTS CON COORDENADAS (CREAR LOCATIONS)
+###############################################
+
+### Test 9: Ambos Source y Target con coordenadas
+POST {{baseUrl}}/Route/Save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "routeName": "WT-2711 Coordenadas - Ambos",
+  "source": {
+    "latitude": 14.599113647760799,
+    "longitude": -90.50768088404959,
+    "locationName": "WT2711-Coord-Source",
+    "privateCode": "WT2711-COORD-SRC-1"
+  },
+  "target": {
+    "latitude": 14.611765084819758,
+    "longitude": -90.4853234890081,
+    "locationName": "WT2711-Coord-Target",
+    "privateCode": "WT2711-COORD-TGT-1"
+  },
+  "membership": {
+    "organizationId": 229,
+    "customerPrivateCode": "CEMACO-TEST"
+  }
+}
+
+### Test 10: Solo Source con coordenadas
+POST {{baseUrl}}/Route/Save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "routeName": "WT-2711 Coordenadas - Solo Source",
+  "source": {
+    "latitude": 14.590000,
+    "longitude": -90.510000,
+    "locationName": "WT2711-Coord-SoloSource",
+    "privateCode": "WT2711-COORD-SRC-2"
+  },
+  "membership": {
+    "organizationId": 229,
+    "customerPrivateCode": "CEMACO-TEST"
+  }
+}
+
+### Test 11: Solo Target con coordenadas
+POST {{baseUrl}}/Route/Save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "routeName": "WT-2711 Coordenadas - Solo Target",
+  "target": {
+    "latitude": 14.620000,
+    "longitude": -90.490000,
+    "locationName": "WT2711-Coord-SoloTarget",
+    "privateCode": "WT2711-COORD-TGT-3"
+  },
+  "membership": {
+    "organizationId": 229,
+    "customerPrivateCode": "CEMACO-TEST"
+  }
+}
