@@ -1,8 +1,0 @@
-### Obtener detalle de una ejecucion de ruta
-POST {{baseUrl}}/Route/getExecution
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "routeAssignmentId": 1
-}

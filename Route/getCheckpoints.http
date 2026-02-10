@@ -1,8 +1,0 @@
-### Obtener checkpoints de una ruta
-POST {{baseUrl}}/Route/getCheckpoints
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "routeId": 1
-}

@@ -1,5 +1,5 @@
 ### Obtener ejecuciones de ruta activas
-POST {{baseUrl}}/Route/getExecutions
+POST {{baseUrl}}/Route/monitoring
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -10,7 +10,7 @@ Content-Type: application/json
 }
 
 ### Obtener ejecuciones filtradas por organizacion
-POST {{baseUrl}}/Route/getExecutions
+POST {{baseUrl}}/Route/monitoring
 Authorization: Bearer {{token}}
 Content-Type: application/json
 

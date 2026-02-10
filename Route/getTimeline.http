@@ -1,8 +1,0 @@
-### Obtener timeline de una asignacion de ruta
-POST {{baseUrl}}/Route/getTimeline
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "routeAssignmentId": 1
-}
