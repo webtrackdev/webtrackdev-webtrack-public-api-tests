@@ -1,0 +1,22 @@
+### Obtener ejecuciones de ruta activas
+POST {{baseUrl}}/Route/getExecutions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "startDate": "2025-01-01",
+  "endDate": "2026-02-09",
+  "getAllActive": true
+}
+
+### Obtener ejecuciones filtradas por organizacion
+POST {{baseUrl}}/Route/getExecutions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "organizationId": 229,
+  "startDate": "2025-01-01",
+  "endDate": "2026-02-09",
+  "getAllActive": false
+}

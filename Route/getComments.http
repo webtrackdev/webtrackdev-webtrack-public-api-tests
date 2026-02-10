@@ -1,0 +1,8 @@
+### Obtener comentarios de una asignacion de ruta
+POST {{baseUrl}}/Route/getComments
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "routeAssignmentId": 1
+}

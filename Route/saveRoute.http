@@ -1,0 +1,402 @@
+### WT-2711: Permitir rutas con origen/destino opcionales
+### Se prueban las 3 formas de identificar locations: privateCode, locationId, coordenadas
+### En los 4 escenarios: ambos, solo source, solo target, ninguno
+
+###############################################
+### TESTS CON PRIVATE CODE
+###############################################
+
+### Test 1: Ambos Source y Target con privateCode
+POST {{baseUrl}}/Route/Save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "routeName": "WT-2711 PrivateCode - Ambos",
+  "source": {
+    "privateCode": "1234"
+  },
+  "target": {
+    "privateCode": "CEMACO-CAYALA"
+  },
+  "membership": {
+    "organizationId": 229,
+    "customerPrivateCode": "CEMACO-TEST"
+  }
+}
+
+### Test 2: Solo Source con privateCode
+POST {{baseUrl}}/Route/Save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "routeName": "WT-2711 PrivateCode - Solo Source",
+  "source": {
+    "privateCode": "1234"
+  },
+  "membership": {
+    "organizationId": 229,
+    "customerPrivateCode": "CEMACO-TEST"
+  }
+}
+
+### Test 3: Solo Target con privateCode
+POST {{baseUrl}}/Route/Save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "routeName": "WT-2711 PrivateCode - Solo Target",
+  "target": {
+    "privateCode": "CEMACO-CAYALA"
+  },
+  "membership": {
+    "organizationId": 229,
+    "customerPrivateCode": "CEMACO-TEST"
+  }
+}
+
+### Test 4: Sin Source ni Target
+POST {{baseUrl}}/Route/Save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "routeName": "WT-2711 PrivateCode - Sin Source ni Target",
+  "membership": {
+    "organizationId": 229,
+    "customerPrivateCode": "CEMACO-TEST"
+  }
+}
+
+###############################################
+### TESTS CON LOCATION ID
+###############################################
+
+### Test 5: Ambos Source y Target con locationId
+POST {{baseUrl}}/Route/Save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "routeName": "WT-2711 LocationId - Ambos",
+  "source": {
+    "locationId": 468
+  },
+  "target": {
+    "locationId": 4270
+  },
+  "membership": {
+    "organizationId": 229,
+    "customerPrivateCode": "CEMACO-TEST"
+  }
+}
+
+### Test 6: Solo Source con locationId
+POST {{baseUrl}}/Route/Save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "routeName": "WT-2711 LocationId - Solo Source",
+  "source": {
+    "locationId": 468
+  },
+  "membership": {
+    "organizationId": 229,
+    "customerPrivateCode": "CEMACO-TEST"
+  }
+}
+
+### Test 7: Solo Target con locationId
+POST {{baseUrl}}/Route/Save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "routeName": "WT-2711 LocationId - Solo Target",
+  "target": {
+    "locationId": 4270
+  },
+  "membership": {
+    "organizationId": 229,
+    "customerPrivateCode": "CEMACO-TEST"
+  }
+}
+
+### Test 8: Sin Source ni Target (mismo que Test 4, incluido por completitud)
+POST {{baseUrl}}/Route/Save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "routeName": "WT-2711 LocationId - Sin Source ni Target",
+  "membership": {
+    "organizationId": 229,
+    "customerPrivateCode": "CEMACO-TEST"
+  }
+}
+
+###############################################
+### TESTS CON COORDENADAS (CREAR LOCATIONS)
+###############################################
+
+### Test 9: Ambos Source y Target con coordenadas
+POST {{baseUrl}}/Route/Save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "routeName": "WT-2711 Coordenadas - Ambos",
+  "source": {
+    "latitude": 14.599113647760799,
+    "longitude": -90.50768088404959,
+    "locationName": "WT2711-Coord-Source",
+    "privateCode": "WT2711-COORD-SRC-1"
+  },
+  "target": {
+    "latitude": 14.611765084819758,
+    "longitude": -90.4853234890081,
+    "locationName": "WT2711-Coord-Target",
+    "privateCode": "WT2711-COORD-TGT-1"
+  },
+  "membership": {
+    "organizationId": 229,
+    "customerPrivateCode": "CEMACO-TEST"
+  }
+}
+
+### Test 10: Solo Source con coordenadas
+POST {{baseUrl}}/Route/Save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "routeName": "WT-2711 Coordenadas - Solo Source",
+  "source": {
+    "latitude": 14.590000,
+    "longitude": -90.510000,
+    "locationName": "WT2711-Coord-SoloSource",
+    "privateCode": "WT2711-COORD-SRC-2"
+  },
+  "membership": {
+    "organizationId": 229,
+    "customerPrivateCode": "CEMACO-TEST"
+  }
+}
+
+### Test 11: Solo Target con coordenadas
+POST {{baseUrl}}/Route/Save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "routeName": "WT-2711 Coordenadas - Solo Target",
+  "target": {
+    "latitude": 14.620000,
+    "longitude": -90.490000,
+    "locationName": "WT2711-Coord-SoloTarget",
+    "privateCode": "WT2711-COORD-TGT-3"
+  },
+  "membership": {
+    "organizationId": 229,
+    "customerPrivateCode": "CEMACO-TEST"
+  }
+}
+
+###############################################
+### TESTS CON COORDENADAS INVÁLIDAS (-999)
+### No se crea location, sí se crea checkpoint
+### con el nombre del payload
+###############################################
+
+### Test 12: Caso real del cliente - Ambos Source y Target con coords -999
+### Esperado: ruta OK, checkpoints con nombre, sourceLocationId=null, targetLocationId=null
+POST {{baseUrl}}/Route/Save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "routeName": "WT-2711 Invalid Coords - Ambos -999",
+  "source": {
+    "locationName": "BORGONOVO POHL-BENEFICIO SAN CARLOS",
+    "latitude": -999.0,
+    "longitude": -999.0,
+    "privateCode": "952312-1",
+    "locationAddress": "RECIBIDERO SN CHICO CALL A LA CUMRE 2KM ADELANTE DESVIO HACIA COMASAGUA LA LIBERTAD",
+    "radius": 150,
+    "locationClassId": 0
+  },
+  "target": {
+    "locationName": "DESTINO INVALIDO TEST",
+    "latitude": -999.0,
+    "longitude": -999.0,
+    "privateCode": "952312-2",
+    "locationAddress": "DIRECCION DESTINO TEST",
+    "radius": 100,
+    "locationClassId": 0
+  },
+  "membership": {
+    "organizationId": 229,
+    "customerPrivateCode": "CEMACO-TEST"
+  }
+}
+
+### Test 13: Solo Source con coords -999, sin Target
+### Esperado: ruta OK, checkpoint source con nombre, sourceLocationId=null
+POST {{baseUrl}}/Route/Save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "routeName": "WT-2711 Invalid Coords - Solo Source -999",
+  "source": {
+    "locationName": "ORIGEN SIN COORDENADAS VALIDAS",
+    "latitude": -999.0,
+    "longitude": -999.0,
+    "privateCode": "INV-SRC-001",
+    "locationAddress": "DIRECCION ORIGEN TEST",
+    "radius": 150
+  },
+  "membership": {
+    "organizationId": 229,
+    "customerPrivateCode": "CEMACO-TEST"
+  }
+}
+
+### Test 14: Solo Target con coords -999, sin Source
+### Esperado: ruta OK, checkpoint target con nombre, targetLocationId=null
+POST {{baseUrl}}/Route/Save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "routeName": "WT-2711 Invalid Coords - Solo Target -999",
+  "target": {
+    "locationName": "DESTINO SIN COORDENADAS VALIDAS",
+    "latitude": -999.0,
+    "longitude": -999.0,
+    "privateCode": "INV-TGT-001",
+    "locationAddress": "DIRECCION DESTINO TEST",
+    "radius": 100
+  },
+  "membership": {
+    "organizationId": 229,
+    "customerPrivateCode": "CEMACO-TEST"
+  }
+}
+
+### Test 15: Source con coords válidas + Target con coords -999
+### Esperado: source crea location normal, target solo checkpoint con nombre
+POST {{baseUrl}}/Route/Save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "routeName": "WT-2711 Mixto - Source OK, Target -999",
+  "source": {
+    "locationName": "WT2711-Mixto-Source-Valido",
+    "latitude": 14.599113647760799,
+    "longitude": -90.50768088404959,
+    "privateCode": "WT2711-MIX-SRC-1"
+  },
+  "target": {
+    "locationName": "DESTINO COORDS INVALIDAS",
+    "latitude": -999.0,
+    "longitude": -999.0,
+    "privateCode": "WT2711-MIX-TGT-1",
+    "radius": 150
+  },
+  "membership": {
+    "organizationId": 229,
+    "customerPrivateCode": "CEMACO-TEST"
+  }
+}
+
+### Test 16: Source con coords -999 + Target con coords válidas
+### Esperado: source solo checkpoint con nombre, target crea location normal
+POST {{baseUrl}}/Route/Save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "routeName": "WT-2711 Mixto - Source -999, Target OK",
+  "source": {
+    "locationName": "ORIGEN COORDS INVALIDAS",
+    "latitude": -999.0,
+    "longitude": -999.0,
+    "privateCode": "WT2711-MIX-SRC-2",
+    "radius": 150
+  },
+  "target": {
+    "locationName": "WT2711-Mixto-Target-Valido",
+    "latitude": 14.611765084819758,
+    "longitude": -90.4853234890081,
+    "privateCode": "WT2711-MIX-TGT-2"
+  },
+  "membership": {
+    "organizationId": 229,
+    "customerPrivateCode": "CEMACO-TEST"
+  }
+}
+
+### Test 17: Latitude fuera de rango (>90), longitude válida
+### Esperado: ruta OK, checkpoint con nombre, sin location
+POST {{baseUrl}}/Route/Save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "routeName": "WT-2711 Invalid Coords - Lat > 90",
+  "source": {
+    "locationName": "ORIGEN LAT FUERA DE RANGO",
+    "latitude": 999.0,
+    "longitude": -90.5,
+    "privateCode": "INV-LAT-001"
+  },
+  "membership": {
+    "organizationId": 229,
+    "customerPrivateCode": "CEMACO-TEST"
+  }
+}
+
+### Test 18: Latitude válida, longitude fuera de rango
+### Esperado: ruta OK, checkpoint con nombre, sin location
+POST {{baseUrl}}/Route/Save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "routeName": "WT-2711 Invalid Coords - Lon fuera de rango",
+  "target": {
+    "locationName": "DESTINO LON FUERA DE RANGO",
+    "latitude": 14.5,
+    "longitude": -999.0,
+    "privateCode": "INV-LON-001"
+  },
+  "membership": {
+    "organizationId": 229,
+    "customerPrivateCode": "CEMACO-TEST"
+  }
+}
+
+### Test 19: Coords 0,0 (Null Island - técnicamente válido, dentro de rango)
+### Esperado: SÍ intenta crear location (0,0 es un punto geográfico real)
+POST {{baseUrl}}/Route/Save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "routeName": "WT-2711 Edge Case - Coords 0,0",
+  "source": {
+    "locationName": "NULL ISLAND TEST",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "privateCode": "WT2711-NULL-ISLAND"
+  },
+  "membership": {
+    "organizationId": 229,
+    "customerPrivateCode": "CEMACO-TEST"
+  }
+}
