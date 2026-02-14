@@ -1,0 +1,109 @@
+### Bulk Data - Crear plan de trabajo
+POST {{baseUrl}}/v3/UnitWorkplan/bulkData
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "unitId": 123,
+    "workplanName": "Ruta de prueba",
+    "startDate": "2025-01-15T08:00:00",
+    "endDate": "2025-01-15T18:00:00",
+    "locations": [
+        {
+            "locationId": 1,
+            "locationName": "Punto A",
+            "latitude": 14.6349,
+            "longitude": -90.5069,
+            "radius": 100,
+            "minTime": 10,
+            "maxTime": 30
+        },
+        {
+            "locationId": 2,
+            "locationName": "Punto B",
+            "latitude": 14.6450,
+            "longitude": -90.5100,
+            "radius": 100,
+            "minTime": 15,
+            "maxTime": 45
+        }
+    ]
+}
+
+### Add Location
+POST {{baseUrl}}/v3/UnitWorkplan/addLocation
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "workPlanExecutionId": 123,
+    "locationId": 3,
+    "locationName": "Punto C",
+    "latitude": 14.6500,
+    "longitude": -90.5200,
+    "radius": 100,
+    "minTime": 10,
+    "maxTime": 20
+}
+
+### Edit Location
+POST {{baseUrl}}/v3/UnitWorkplan/editLocation
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "workPlanExecutionId": 123,
+    "locationId": 1,
+    "locationName": "Punto A - Actualizado",
+    "minTime": 15,
+    "maxTime": 45
+}
+
+### Delete Location
+POST {{baseUrl}}/v3/UnitWorkplan/deleteLocation
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "workPlanExecutionId": 123,
+    "locationId": 2
+}
+
+### Cancel Execution
+POST {{baseUrl}}/v3/UnitWorkplan/cancelExecution
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "workPlanExecutionId": 123
+}
+
+### Change Unit
+POST {{baseUrl}}/v3/UnitWorkplan/changeUnit
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "workPlanExecutionId": 123,
+    "unitId": 456
+}
+
+### Monitoring
+POST {{baseUrl}}/v3/UnitWorkplan/monitoring
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "startDate": "2025-01-01",
+    "endDate": "2025-01-31",
+    "organizationId": 1
+}
+
+### Get Execution Information
+POST {{baseUrl}}/v3/UnitWorkplan/getExecutionInformation
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "workplanExecutionId": 123
+}
