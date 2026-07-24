@@ -1,0 +1,97 @@
+### Quick Create - Usuario individual con invitación (invite)
+POST {{baseUrl}}/account/quickCreate
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "email": "johndoe@example.com",
+  "completeName": "John Doe",
+  "passwordMode": "invite",
+  "operatorId": 307,
+  "organizationId": 229,
+  "divisionId": 192,
+  "subdivisionId": 336,
+  "accessLevelId": 20,
+  "roleId": 1001,
+  "utcZoneId": 178
+}
+
+### Quick Create - Usuario individual con contraseña automática (auto)
+POST {{baseUrl}}/account/quickCreate
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "email": "johndoe2@example.com",
+  "completeName": "John Doe II",
+  "passwordMode": "auto",
+  "requirePasswordChange": true,
+  "operatorId": 307,
+  "organizationId": 229,
+  "divisionId": 192,
+  "subdivisionId": 336,
+  "accessLevelId": 20,
+  "roleId": 1001,
+  "utcZoneId": 178
+}
+
+### Quick Create - Usuario individual con contraseña manual (manual)
+POST {{baseUrl}}/account/quickCreate
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "email": "johndoe3@example.com",
+  "completeName": "John Doe III",
+  "passwordMode": "manual",
+  "password": "SecurePassword123",
+  "requirePasswordChange": true,
+  "operatorId": 307,
+  "organizationId": 229,
+  "divisionId": 192,
+  "subdivisionId": 336,
+  "accessLevelId": 20,
+  "roleId": 1001,
+  "utcZoneId": 178
+}
+
+### Quick Create Bulk - Múltiples usuarios con contraseña automática (auto)
+POST {{baseUrl}}/account/quickCreateBulk
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "users": [
+    { "email": "janedoe@example.com", "completeName": "Jane Doe" },
+    { "email": "jimdoe@example.com", "completeName": "Jim Doe" }
+  ],
+  "passwordMode": "auto",
+  "requirePasswordChange": true,
+  "operatorId": 307,
+  "organizationId": 229,
+  "divisionId": 192,
+  "subdivisionId": 336,
+  "accessLevelId": 20,
+  "roleId": 1001,
+  "utcZoneId": 178
+}
+
+### Quick Create Bulk - Múltiples usuarios con invitación (invite)
+POST {{baseUrl}}/account/quickCreateBulk
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "users": [
+    { "email": "janedoe2@example.com", "completeName": "Jane Doe II" },
+    { "email": "jimdoe2@example.com", "completeName": "Jim Doe II" }
+  ],
+  "passwordMode": "invite",
+  "operatorId": 307,
+  "organizationId": 229,
+  "divisionId": 192,
+  "subdivisionId": 336,
+  "accessLevelId": 20,
+  "roleId": 1001,
+  "utcZoneId": 178
+}
