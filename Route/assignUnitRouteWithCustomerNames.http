@@ -1,0 +1,72 @@
+### WD-1688: CustomerName en los tres niveles (body, source, target).
+### Crea los clientes que no existan, asocia cada sucursal a su cliente y
+### geocodifica en background las sucursales creadas solo con dirección.
+POST {{baseUrl}}/Route/assignUnitRoute
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "customerName": "Cliente Asignación WD1688",
+  "unit": {
+    "unitId": 2
+  },
+  "route": {
+    "routeName": "Ruta WD-1688 nombres de cliente",
+    "privateCode": "RT-WD1688-01",
+    "source": {
+      "privateCode": "LOC-WD1688-SRC",
+      "locationName": "Bodega Origen WD1688",
+      "locationAddress": "12 calle 1-25 zona 10, Ciudad de Guatemala",
+      "customerName": "Cliente Origen WD1688"
+    },
+    "target": {
+      "privateCode": "LOC-WD1688-TGT",
+      "locationName": "Sucursal Destino WD1688",
+      "locationAddress": "Km 17.5 carretera a El Salvador, Guatemala",
+      "customerName": "Cliente Destino WD1688"
+    }
+  },
+  "startDate": "2026-08-10",
+  "completionType": 1
+}
+
+### WD-1688: herencia — sin cliente en el body, la asignación hereda el de la ruta.
+### La ruta RT-WD1688-01 ya debe existir (creada por el request anterior).
+POST {{baseUrl}}/Route/assignUnitRoute
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unit": {
+    "unitId": 2
+  },
+  "route": {
+    "privateCode": "RT-WD1688-01"
+  },
+  "startDate": "2026-08-11",
+  "completionType": 1
+}
+
+### WD-1688: sucursal del body (customerLocation) creada solo con dirección para
+### el cliente del body; el geocoder le pone coordenadas en background.
+POST {{baseUrl}}/Route/assignUnitRoute
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "customerName": "Cliente Asignación WD1688",
+  "customerLocationPrivateCode": "LOC-WD1688-CL",
+  "unit": {
+    "unitId": 2
+  },
+  "route": {
+    "privateCode": "RT-WD1688-01"
+  },
+  "customerLocation": {
+    "privateCode": "LOC-WD1688-CL",
+    "locationName": "Sucursal Cliente WD1688",
+    "locationAddress": "5a avenida 5-55 zona 14, Ciudad de Guatemala"
+  },
+  "startDate": "2026-08-12",
+  "completionType": 1
+}
