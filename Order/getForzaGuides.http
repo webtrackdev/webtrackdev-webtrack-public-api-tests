@@ -1,0 +1,22 @@
+### WD-1912 — Order/getForzaGuides: guías de Forza de una orden
+
+### Por número de orden
+POST {{baseUrl}}/order/getForzaGuides
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{ "order": { "orderNumber": "S01476" } }
+
+### Por id de orden
+POST {{baseUrl}}/order/getForzaGuides
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{ "order": { "orderId": 2 } }
+
+### Orden inexistente → 404 ORDER_NOT_FOUND
+POST {{baseUrl}}/order/getForzaGuides
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{ "order": { "orderId": 999999 } }

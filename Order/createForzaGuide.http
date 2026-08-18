@@ -1,0 +1,155 @@
+### WD-1912 — Order/createForzaGuide
+# Resuelve la orden (existe en Reactive / está en Odoo / se crea), asegura cliente y
+# sucursal (coordenadas sin geocoder) y emite la guía de Forza ligada a la orden.
+# Requiere que la organización del usuario tenga integración Forza habilitada
+# (y Odoo habilitada para la ruta de fetch dirigido).
+
+### 1) Orden de Odoo por número de venta (se importa si aún no está en Reactive)
+POST {{baseUrl}}/order/createForzaGuide
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "order": { "orderNumber": "S01476" },
+  "guide": {
+    "serviceType": "STD",
+    "recipient": { "phone": "23456789", "email": "recepcion@prueba.test" },
+    "shipping": { "department": "Guatemala", "municipality": "Guatemala" },
+    "packages": { "count": 1, "totalWeightKg": 2.5, "declaredValue": 150.00, "description": "Medicamentos", "fragile": true }
+  }
+}
+
+### 2) Misma orden otra vez → guía reutilizada (guide.reused = true)
+POST {{baseUrl}}/order/createForzaGuide
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "order": { "orderNumber": "S01476" },
+  "guide": { "serviceType": "STD", "recipient": { "phone": "23456789" }, "shipping": { "townshipCode": "0101" } }
+}
+
+### 3) Forzar guía adicional
+POST {{baseUrl}}/order/createForzaGuide
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "order": { "orderNumber": "S01476" },
+  "guide": { "serviceType": "STD", "recipient": { "phone": "23456789" }, "shipping": { "townshipCode": "0101" }, "allowAdditionalGuide": true }
+}
+
+### 4) Venta con varios despachos: elegir uno con dispatchNumber
+POST {{baseUrl}}/order/createForzaGuide
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "order": { "orderNumber": "S01474", "dispatchNumber": "LSFE/OUT/01151" },
+  "guide": { "serviceType": "STD", "recipient": { "phone": "23456789" }, "shipping": { "townshipCode": "0101" } }
+}
+
+### 5) Orden de Reactive por id (cualquier origen: Manual, Import, ...)
+POST {{baseUrl}}/order/createForzaGuide
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "order": { "orderId": 2 },
+  "guide": { "serviceType": "STD", "recipient": { "phone": "23456789" }, "shipping": { "townshipCode": "0101" } }
+}
+
+### 6) Cliente sin Odoo: crear orden + cliente + sucursal con coordenadas (sin geocoder)
+POST {{baseUrl}}/order/createForzaGuide
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "order": { "orderNumber": "CRM-1001", "externalId": "crm-1001", "expectedDate": "2026-08-22T10:00:00Z", "description": "Pedido CRM sin Odoo", "capacity": 3 },
+  "customer": { "privateCode": "CRM-C-778", "customerName": "Farmacia X", "taxId": "1234567-8", "phone": "22334455", "email": "compras@farmaciax.test" },
+  "location": { "privateCode": "CRM-L-1502", "locationName": "Farmacia X - Zona 10", "locationClassId": 34, "locationAddress": "12 calle 1-25 zona 10", "latitude": 14.5991, "longitude": -90.5133, "phone": "22334455", "contactName": "María López" },
+  "guide": {
+    "serviceType": "STD",
+    "shipping": { "department": "Guatemala", "municipality": "Guatemala", "address1": "12 calle 1-25 zona 10" },
+    "packages": { "count": 2, "totalWeightKg": 4, "declaredValue": 300.00, "description": "Medicamentos", "fragile": true }
+  }
+}
+
+### 7) Actualizar coordenadas de la sucursal de una orden existente (pisar con overwriteCoordinates)
+POST {{baseUrl}}/order/createForzaGuide
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "order": { "orderNumber": "CRM-1001" },
+  "location": { "privateCode": "CRM-L-1502", "latitude": 14.7, "longitude": -90.4, "overwriteCoordinates": true },
+  "guide": { "serviceType": "STD", "shipping": { "townshipCode": "0101" } }
+}
+
+### 8) COD (contra entrega)
+POST {{baseUrl}}/order/createForzaGuide
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "order": { "orderNumber": "S01475" },
+  "guide": {
+    "serviceType": "COD",
+    "recipient": { "phone": "23456789" },
+    "shipping": { "townshipCode": "0101" },
+    "packages": { "count": 1, "totalWeightKg": 1, "declaredValue": 250.00, "description": "Pedido COD" },
+    "cod": { "amount": 250.00, "bankId": "1", "bankAccountName": "Farmacia X, S.A.", "bankAccountId": "0123456789", "bankAccountType": "MONETARIA" },
+    "allowAdditionalGuide": true
+  }
+}
+
+### 9) EXPRESS (entrega en centro express de Forza)
+POST {{baseUrl}}/order/createForzaGuide
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "order": { "orderNumber": "S01475" },
+  "guide": {
+    "serviceType": "EXPRESS",
+    "recipient": { "phone": "23456789" },
+    "shipping": { "townshipCode": "0101" },
+    "expressCenterCode": "226952",
+    "allowAdditionalGuide": true
+  }
+}
+
+### 10) Errores: sin municipio → 400 VALIDATION_FAILURE
+POST {{baseUrl}}/order/createForzaGuide
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{ "order": { "orderNumber": "S01476" }, "guide": { "serviceType": "STD" } }
+
+### 11) Errores: municipio inexistente → 400 TOWNSHIP_NOT_RESOLVED
+POST {{baseUrl}}/order/createForzaGuide
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{ "order": { "orderNumber": "S01473" }, "guide": { "serviceType": "STD", "recipient": { "phone": "23456789" }, "shipping": { "department": "Guatemala", "municipality": "Municipio Inexistente" } } }
+
+### 12) Errores: venta en borrador en Odoo → 409 ORDER_WITHOUT_DISPATCH
+POST {{baseUrl}}/order/createForzaGuide
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{ "order": { "orderNumber": "S01310" }, "guide": { "serviceType": "STD", "shipping": { "townshipCode": "0101" } } }
+
+### 13) Errores: venta con dos despachos sin dispatchNumber → 409 ORDER_AMBIGUOUS
+POST {{baseUrl}}/order/createForzaGuide
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{ "order": { "orderNumber": "S01474" }, "guide": { "serviceType": "STD", "shipping": { "townshipCode": "0101" } } }
+
+### 14) Errores: orden inexistente → 404 ORDER_NOT_FOUND
+POST {{baseUrl}}/order/createForzaGuide
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{ "order": { "orderNumber": "S99999" }, "guide": { "serviceType": "STD", "shipping": { "townshipCode": "0101" } } }

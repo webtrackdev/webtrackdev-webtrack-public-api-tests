@@ -1,0 +1,1412 @@
+{
+  "info": {
+    "_postman_id": "33e70828-c9c4-4de9-9f8a-196e2b5dab5e",
+    "name": "Webtrack Public API v3 — Order / Forza Guide (WD-1912)",
+    "description": "Generar guía de Forza Delivery ligada a una orden desde el API (WD-1912).\n\n1. Ejecuta **0. Auth → Login** (guarda {{token}}).\n2. Ajusta las variables de la colección/entorno: números de orden de Odoo de prueba (odooOrderNumber, odooSaleId, odooMultiOrderNumber, odooMultiDispatch, odooCancelledDispatch, odooDraftOrderNumber) y un orderId de Reactive (reactiveOrderId).\n3. Corre las carpetas 1→4.\n\nErrores: `AppErrorDetail` con `code` estable (VALIDATION_FAILURE, FORZA_INTEGRATION_MISSING, FORZA_INTEGRATION_DISABLED, ORDER_NOT_FOUND, ORDER_WITHOUT_DISPATCH, ORDER_AMBIGUOUS, ORDER_CANCELLED, REFERENCE_KEY_REQUIRED, TOWNSHIP_NOT_RESOLVED, FORZA_REJECTED, PROVIDER_UNAVAILABLE).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://localhost:7118/v3"
+    },
+    {
+      "key": "apiKey",
+      "value": "developers"
+    },
+    {
+      "key": "username",
+      "value": "josue@webtrackgps.net"
+    },
+    {
+      "key": "password",
+      "value": ""
+    },
+    {
+      "key": "token",
+      "value": ""
+    },
+    {
+      "key": "odooOrderNumber",
+      "value": "S01476"
+    },
+    {
+      "key": "odooSaleId",
+      "value": "1981"
+    },
+    {
+      "key": "odooMultiOrderNumber",
+      "value": "S01474"
+    },
+    {
+      "key": "odooMultiDispatch",
+      "value": "LSFE/OUT/01151"
+    },
+    {
+      "key": "odooCancelledDispatch",
+      "value": "LSFE/OUT/01149"
+    },
+    {
+      "key": "odooDraftOrderNumber",
+      "value": "S01310"
+    },
+    {
+      "key": "reactiveOrderId",
+      "value": "2"
+    },
+    {
+      "key": "orderId",
+      "value": ""
+    },
+    {
+      "key": "guideId",
+      "value": ""
+    },
+    {
+      "key": "trackingNumber",
+      "value": ""
+    },
+    {
+      "key": "locLat",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "0. Auth",
+      "item": [
+        {
+          "name": "Login (guarda {{token}})",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/account/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "account",
+                "login"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"apiKey\": \"{{apiKey}}\",\n  \"username\": \"{{username}}\",\n  \"password\": \"{{password}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+                  "const j = pm.response.json(); const token = (j.data && j.data.token) || j.token;",
+                  "pm.test('token presente', () => pm.expect(token).to.be.a('string'));",
+                  "pm.collectionVariables.set('token', token);"
+                ]
+              }
+            }
+          ],
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "1. Catálogo Forza",
+      "item": [
+        {
+          "name": "getForzaTownships — departamento Guatemala",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/order/getForzaTownships",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "order",
+                "getForzaTownships"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"department\": \"Guatemala\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+                  "pm.test('trae municipios', () => pm.expect(pm.response.json().data.departments[0].townships.length).to.be.above(0));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "getForzaTownships — todo el país",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/order/getForzaTownships",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "order",
+                "getForzaTownships"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+                  ""
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "2. createForzaGuide — flujo feliz",
+      "item": [
+        {
+          "name": "A. Orden Odoo por orderNumber (importa si no existe) + guía STD",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/order/createForzaGuide",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "order",
+                "createForzaGuide"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"order\": {\n    \"orderNumber\": \"{{odooOrderNumber}}\"\n  },\n  \"guide\": {\n    \"serviceType\": \"STD\",\n    \"recipient\": {\n      \"phone\": \"23456789\",\n      \"email\": \"recepcion@prueba.test\"\n    },\n    \"shipping\": {\n      \"department\": \"Guatemala\",\n      \"municipality\": \"Guatemala\"\n    },\n    \"packages\": {\n      \"count\": 1,\n      \"totalWeightKg\": 2.5,\n      \"declaredValue\": 150.0,\n      \"description\": \"Medicamentos\",\n      \"fragile\": true\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Si la orden no está en Reactive y la organización tiene Odoo habilitado, se busca la venta en Odoo, se importa (cliente/sucursal con las llaves odoo:<partner_id>) y se emite la guía."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+                  "pm.test('guía FD', () => pm.expect(pm.response.json().data.guide.trackingNumber).to.match(/^FD/));",
+                  "const j = pm.response.json();",
+                  "if (j.data && j.data.order) { pm.collectionVariables.set('orderId', j.data.order.orderId); }",
+                  "if (j.data && j.data.guide) { pm.collectionVariables.set('guideId', j.data.guide.guideId); pm.collectionVariables.set('trackingNumber', j.data.guide.trackingNumber); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "B. Misma orden otra vez → guía reutilizada (idempotencia)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/order/createForzaGuide",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "order",
+                "createForzaGuide"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"order\": {\n    \"orderNumber\": \"{{odooOrderNumber}}\"\n  },\n  \"guide\": {\n    \"serviceType\": \"STD\",\n    \"recipient\": {\n      \"phone\": \"23456789\",\n      \"email\": \"recepcion@prueba.test\"\n    },\n    \"shipping\": {\n      \"townshipCode\": \"0101\"\n    },\n    \"packages\": {\n      \"count\": 1,\n      \"totalWeightKg\": 2.5,\n      \"declaredValue\": 150.0,\n      \"description\": \"Medicamentos\",\n      \"fragile\": true\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+                  "pm.test('reused', () => pm.expect(pm.response.json().data.guide.reused).to.eql(true));",
+                  "pm.test('created:false', () => pm.expect(pm.response.json().data.order.created).to.eql(false));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "C. allowAdditionalGuide → guía nueva",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/order/createForzaGuide",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "order",
+                "createForzaGuide"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"order\": {\n    \"orderNumber\": \"{{odooOrderNumber}}\"\n  },\n  \"guide\": {\n    \"serviceType\": \"STD\",\n    \"recipient\": {\n      \"phone\": \"23456789\",\n      \"email\": \"recepcion@prueba.test\"\n    },\n    \"shipping\": {\n      \"townshipCode\": \"0101\"\n    },\n    \"packages\": {\n      \"count\": 1,\n      \"totalWeightKg\": 2.5,\n      \"declaredValue\": 150.0,\n      \"description\": \"Medicamentos\",\n      \"fragile\": true\n    },\n    \"allowAdditionalGuide\": true\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+                  "pm.test('reused:false', () => pm.expect(pm.response.json().data.guide.reused).to.eql(false));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "D. Misma orden por externalId (sale.order.id)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/order/createForzaGuide",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "order",
+                "createForzaGuide"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"order\": {\n    \"externalId\": \"{{odooSaleId}}\"\n  },\n  \"guide\": {\n    \"serviceType\": \"STD\",\n    \"recipient\": {\n      \"phone\": \"23456789\",\n      \"email\": \"recepcion@prueba.test\"\n    },\n    \"shipping\": {\n      \"townshipCode\": \"0101\"\n    },\n    \"packages\": {\n      \"count\": 1,\n      \"totalWeightKg\": 2.5,\n      \"declaredValue\": 150.0,\n      \"description\": \"Medicamentos\",\n      \"fragile\": true\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+                  ""
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "E. Venta con varios despachos: elegir con dispatchNumber",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/order/createForzaGuide",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "order",
+                "createForzaGuide"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"order\": {\n    \"orderNumber\": \"{{odooMultiOrderNumber}}\",\n    \"dispatchNumber\": \"{{odooMultiDispatch}}\"\n  },\n  \"guide\": {\n    \"serviceType\": \"STD\",\n    \"recipient\": {\n      \"phone\": \"23456789\",\n      \"email\": \"recepcion@prueba.test\"\n    },\n    \"shipping\": {\n      \"townshipCode\": \"0101\"\n    },\n    \"packages\": {\n      \"count\": 1,\n      \"totalWeightKg\": 2.5,\n      \"declaredValue\": 150.0,\n      \"description\": \"Medicamentos\",\n      \"fragile\": true\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+                  ""
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "F. Orden de Reactive por orderId (Manual/Import/…)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/order/createForzaGuide",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "order",
+                "createForzaGuide"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"order\": {\n    \"orderId\": \"{{reactiveOrderId}}\"\n  },\n  \"guide\": {\n    \"serviceType\": \"STD\",\n    \"recipient\": {\n      \"phone\": \"23456789\",\n      \"email\": \"recepcion@prueba.test\"\n    },\n    \"shipping\": {\n      \"townshipCode\": \"0101\"\n    },\n    \"packages\": {\n      \"count\": 1,\n      \"totalWeightKg\": 2.5,\n      \"declaredValue\": 150.0,\n      \"description\": \"Medicamentos\",\n      \"fragile\": true\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+                  ""
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "G. Cliente sin Odoo: crear orden + cliente + sucursal con coordenadas",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/order/createForzaGuide",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "order",
+                "createForzaGuide"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"order\": {\n    \"orderNumber\": \"CRM-1001\",\n    \"externalId\": \"crm-1001\",\n    \"expectedDate\": \"2026-08-22T10:00:00Z\",\n    \"description\": \"Pedido CRM sin Odoo\",\n    \"capacity\": 3\n  },\n  \"customer\": {\n    \"privateCode\": \"CRM-C-778\",\n    \"customerName\": \"Farmacia X\",\n    \"taxId\": \"1234567-8\",\n    \"phone\": \"22334455\",\n    \"email\": \"compras@farmaciax.test\"\n  },\n  \"location\": {\n    \"privateCode\": \"CRM-L-1502\",\n    \"locationName\": \"Farmacia X - Zona 10\",\n    \"locationClassId\": 34,\n    \"locationAddress\": \"12 calle 1-25 zona 10\",\n    \"latitude\": 14.5991,\n    \"longitude\": -90.5133,\n    \"phone\": \"22334455\",\n    \"contactName\": \"María López\"\n  },\n  \"guide\": {\n    \"serviceType\": \"STD\",\n    \"shipping\": {\n      \"department\": \"Guatemala\",\n      \"municipality\": \"Guatemala\",\n      \"address1\": \"12 calle 1-25 zona 10\"\n    },\n    \"packages\": {\n      \"count\": 2,\n      \"totalWeightKg\": 4,\n      \"declaredValue\": 300.0,\n      \"description\": \"Medicamentos\",\n      \"fragile\": true\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Sin Odoo: la orden se crea con Source='Api'. Las llaves privateCode hacen la llamada idempotente (segunda vez: created:false, guía reutilizada)."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+                  "const d = pm.response.json().data;",
+                  "pm.test('source Api', () => pm.expect(d.order.source).to.eql('Api'));",
+                  "pm.test('coordinatesSource', () => pm.expect(['crm','source']).to.include(d.location.coordinatesSource));",
+                  "pm.collectionVariables.set('locLat', d.location.latitude);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "H. Coordenadas: no se pisan sin flag",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/order/createForzaGuide",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "order",
+                "createForzaGuide"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"order\": {\n    \"orderNumber\": \"CRM-1001\"\n  },\n  \"location\": {\n    \"privateCode\": \"CRM-L-1502\",\n    \"latitude\": 14.7,\n    \"longitude\": -90.4\n  },\n  \"guide\": {\n    \"serviceType\": \"STD\",\n    \"recipient\": {\n      \"phone\": \"23456789\",\n      \"email\": \"recepcion@prueba.test\"\n    },\n    \"shipping\": {\n      \"townshipCode\": \"0101\"\n    },\n    \"packages\": {\n      \"count\": 1,\n      \"totalWeightKg\": 2.5,\n      \"declaredValue\": 150.0,\n      \"description\": \"Medicamentos\",\n      \"fragile\": true\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+                  "pm.test('lat intacta (igual a la de G)', () => pm.expect(pm.response.json().data.location.latitude).to.eql(Number(pm.collectionVariables.get('locLat'))));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "I. Coordenadas: overwriteCoordinates:true",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/order/createForzaGuide",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "order",
+                "createForzaGuide"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"order\": {\n    \"orderNumber\": \"CRM-1001\"\n  },\n  \"location\": {\n    \"privateCode\": \"CRM-L-1502\",\n    \"latitude\": 14.7,\n    \"longitude\": -90.4,\n    \"overwriteCoordinates\": true\n  },\n  \"guide\": {\n    \"serviceType\": \"STD\",\n    \"recipient\": {\n      \"phone\": \"23456789\",\n      \"email\": \"recepcion@prueba.test\"\n    },\n    \"shipping\": {\n      \"townshipCode\": \"0101\"\n    },\n    \"packages\": {\n      \"count\": 1,\n      \"totalWeightKg\": 2.5,\n      \"declaredValue\": 150.0,\n      \"description\": \"Medicamentos\",\n      \"fragile\": true\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+                  "pm.test('lat actualizada', () => pm.expect(pm.response.json().data.location.latitude).to.eql(14.7));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "J. COD (contra entrega)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/order/createForzaGuide",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "order",
+                "createForzaGuide"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"order\": {\n    \"orderNumber\": \"{{odooOrderNumber}}\"\n  },\n  \"guide\": {\n    \"serviceType\": \"COD\",\n    \"recipient\": {\n      \"phone\": \"23456789\"\n    },\n    \"shipping\": {\n      \"townshipCode\": \"0101\"\n    },\n    \"packages\": {\n      \"count\": 1,\n      \"totalWeightKg\": 1,\n      \"declaredValue\": 250.0,\n      \"description\": \"Pedido COD\"\n    },\n    \"cod\": {\n      \"amount\": 250.0,\n      \"bankId\": \"1\",\n      \"bankAccountName\": \"Farmacia X, S.A.\",\n      \"bankAccountId\": \"0123456789\",\n      \"bankAccountType\": \"MONETARIA\"\n    },\n    \"allowAdditionalGuide\": true\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Los bancos válidos salen del catálogo de Forza (Api/Forza/banks en Reactive)."
+          },
+          "response": []
+        },
+        {
+          "name": "K. EXPRESS (centro express)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/order/createForzaGuide",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "order",
+                "createForzaGuide"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"order\": {\n    \"orderNumber\": \"{{odooOrderNumber}}\"\n  },\n  \"guide\": {\n    \"serviceType\": \"EXPRESS\",\n    \"recipient\": {\n      \"phone\": \"23456789\"\n    },\n    \"shipping\": {\n      \"townshipCode\": \"0101\"\n    },\n    \"expressCenterCode\": \"226952\",\n    \"allowAdditionalGuide\": true\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "El código del centro express sale del catálogo de Forza (Api/Forza/expresscenters en Reactive)."
+          },
+          "response": []
+        },
+        {
+          "name": "L. 3 paquetes (reparto de peso/valor)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/order/createForzaGuide",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "order",
+                "createForzaGuide"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"order\": {\n    \"orderNumber\": \"{{odooOrderNumber}}\"\n  },\n  \"guide\": {\n    \"serviceType\": \"STD\",\n    \"recipient\": {\n      \"phone\": \"23456789\",\n      \"email\": \"recepcion@prueba.test\"\n    },\n    \"shipping\": {\n      \"townshipCode\": \"0101\"\n    },\n    \"packages\": {\n      \"count\": 3,\n      \"totalWeightKg\": 2.5,\n      \"declaredValue\": 150.0,\n      \"description\": \"3 cajas\",\n      \"fragile\": false\n    },\n    \"allowAdditionalGuide\": true\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+                  ""
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "3. createForzaGuide — errores",
+      "item": [
+        {
+          "name": "sin municipio → 400 VALIDATION_FAILURE",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/order/createForzaGuide",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "order",
+                "createForzaGuide"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"order\": {\n    \"orderNumber\": \"{{odooOrderNumber}}\"\n  },\n  \"guide\": {\n    \"serviceType\": \"STD\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 400', () => pm.response.to.have.status(400));",
+                  "pm.test('code VALIDATION_FAILURE', () => pm.expect(pm.response.json().code).to.eql('VALIDATION_FAILURE'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "COD sin banco → 400 VALIDATION_FAILURE",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/order/createForzaGuide",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "order",
+                "createForzaGuide"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"order\": {\n    \"orderNumber\": \"{{odooOrderNumber}}\"\n  },\n  \"guide\": {\n    \"serviceType\": \"COD\",\n    \"shipping\": {\n      \"townshipCode\": \"0101\"\n    },\n    \"cod\": {\n      \"amount\": 100\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 400', () => pm.response.to.have.status(400));",
+                  "pm.test('code VALIDATION_FAILURE', () => pm.expect(pm.response.json().code).to.eql('VALIDATION_FAILURE'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "EXPRESS sin centro → 400 VALIDATION_FAILURE",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/order/createForzaGuide",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "order",
+                "createForzaGuide"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"order\": {\n    \"orderNumber\": \"{{odooOrderNumber}}\"\n  },\n  \"guide\": {\n    \"serviceType\": \"EXPRESS\",\n    \"shipping\": {\n      \"townshipCode\": \"0101\"\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 400', () => pm.response.to.have.status(400));",
+                  "pm.test('code VALIDATION_FAILURE', () => pm.expect(pm.response.json().code).to.eql('VALIDATION_FAILURE'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "sin identificador de orden → 400",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/order/createForzaGuide",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "order",
+                "createForzaGuide"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"order\": {},\n  \"guide\": {\n    \"serviceType\": \"STD\",\n    \"recipient\": {\n      \"phone\": \"23456789\",\n      \"email\": \"recepcion@prueba.test\"\n    },\n    \"shipping\": {\n      \"townshipCode\": \"0101\"\n    },\n    \"packages\": {\n      \"count\": 1,\n      \"totalWeightKg\": 2.5,\n      \"declaredValue\": 150.0,\n      \"description\": \"Medicamentos\",\n      \"fragile\": true\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 400', () => pm.response.to.have.status(400));",
+                  ""
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "municipio inexistente → 400 TOWNSHIP_NOT_RESOLVED",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/order/createForzaGuide",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "order",
+                "createForzaGuide"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"order\": {\n    \"orderNumber\": \"{{odooOrderNumber}}\",\n    \"dispatchNumber\": \"__none__\"\n  },\n  \"guide\": {\n    \"serviceType\": \"STD\",\n    \"recipient\": {\n      \"phone\": \"23456789\"\n    },\n    \"shipping\": {\n      \"department\": \"Guatemala\",\n      \"municipality\": \"Municipio Inexistente\"\n    },\n    \"allowAdditionalGuide\": true\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Nota: usa una orden sin guía activa o allowAdditionalGuide para que llegue a resolver el municipio (la idempotencia responde antes)."
+          },
+          "response": []
+        },
+        {
+          "name": "location nueva sin id/privateCode → 400 REFERENCE_KEY_REQUIRED",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/order/createForzaGuide",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "order",
+                "createForzaGuide"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"order\": {\n    \"orderNumber\": \"CRM-2002\",\n    \"expectedDate\": \"2026-08-22T10:00:00Z\"\n  },\n  \"location\": {\n    \"locationName\": \"Sin llave\",\n    \"latitude\": 14.6,\n    \"longitude\": -90.5\n  },\n  \"guide\": {\n    \"serviceType\": \"STD\",\n    \"recipient\": {\n      \"phone\": \"23456789\",\n      \"email\": \"recepcion@prueba.test\"\n    },\n    \"shipping\": {\n      \"townshipCode\": \"0101\"\n    },\n    \"packages\": {\n      \"count\": 1,\n      \"totalWeightKg\": 2.5,\n      \"declaredValue\": 150.0,\n      \"description\": \"Medicamentos\",\n      \"fragile\": true\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 400', () => pm.response.to.have.status(400));",
+                  "pm.test('code REFERENCE_KEY_REQUIRED', () => pm.expect(pm.response.json().code).to.eql('REFERENCE_KEY_REQUIRED'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "venta en borrador en Odoo → 409 ORDER_WITHOUT_DISPATCH",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/order/createForzaGuide",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "order",
+                "createForzaGuide"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"order\": {\n    \"orderNumber\": \"{{odooDraftOrderNumber}}\"\n  },\n  \"guide\": {\n    \"serviceType\": \"STD\",\n    \"recipient\": {\n      \"phone\": \"23456789\",\n      \"email\": \"recepcion@prueba.test\"\n    },\n    \"shipping\": {\n      \"townshipCode\": \"0101\"\n    },\n    \"packages\": {\n      \"count\": 1,\n      \"totalWeightKg\": 2.5,\n      \"declaredValue\": 150.0,\n      \"description\": \"Medicamentos\",\n      \"fragile\": true\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 409', () => pm.response.to.have.status(409));",
+                  "pm.test('code ORDER_WITHOUT_DISPATCH', () => pm.expect(pm.response.json().code).to.eql('ORDER_WITHOUT_DISPATCH'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "venta con varios despachos sin dispatchNumber → 409 ORDER_AMBIGUOUS",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/order/createForzaGuide",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "order",
+                "createForzaGuide"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"order\": {\n    \"orderNumber\": \"{{odooMultiOrderNumber}}\"\n  },\n  \"guide\": {\n    \"serviceType\": \"STD\",\n    \"recipient\": {\n      \"phone\": \"23456789\",\n      \"email\": \"recepcion@prueba.test\"\n    },\n    \"shipping\": {\n      \"townshipCode\": \"0101\"\n    },\n    \"packages\": {\n      \"count\": 1,\n      \"totalWeightKg\": 2.5,\n      \"declaredValue\": 150.0,\n      \"description\": \"Medicamentos\",\n      \"fragile\": true\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Aplica cuando la venta aún no está en Reactive: Odoo devuelve 2 despachos y el API pide dispatchNumber. Si uno de los despachos ya fue importado, la referencia por orderNumber resuelve a esa orden (200)."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('409 ORDER_AMBIGUOUS (o 200 si uno de sus despachos ya está importado en Reactive)', () => { const c = pm.response.code; pm.expect([409,200]).to.include(c); if (c === 409) pm.expect(pm.response.json().code).to.eql('ORDER_AMBIGUOUS'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "despacho cancelado en Odoo → 409 ORDER_CANCELLED",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/order/createForzaGuide",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "order",
+                "createForzaGuide"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"order\": {\n    \"orderNumber\": \"{{odooMultiOrderNumber}}\",\n    \"dispatchNumber\": \"{{odooCancelledDispatch}}\"\n  },\n  \"guide\": {\n    \"serviceType\": \"STD\",\n    \"recipient\": {\n      \"phone\": \"23456789\",\n      \"email\": \"recepcion@prueba.test\"\n    },\n    \"shipping\": {\n      \"townshipCode\": \"0101\"\n    },\n    \"packages\": {\n      \"count\": 1,\n      \"totalWeightKg\": 2.5,\n      \"declaredValue\": 150.0,\n      \"description\": \"Medicamentos\",\n      \"fragile\": true\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 409', () => pm.response.to.have.status(409));",
+                  "pm.test('code ORDER_CANCELLED', () => pm.expect(pm.response.json().code).to.eql('ORDER_CANCELLED'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "orden inexistente (Reactive y Odoo) → 404 ORDER_NOT_FOUND",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/order/createForzaGuide",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "order",
+                "createForzaGuide"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"order\": {\n    \"orderNumber\": \"S99999\"\n  },\n  \"guide\": {\n    \"serviceType\": \"STD\",\n    \"recipient\": {\n      \"phone\": \"23456789\",\n      \"email\": \"recepcion@prueba.test\"\n    },\n    \"shipping\": {\n      \"townshipCode\": \"0101\"\n    },\n    \"packages\": {\n      \"count\": 1,\n      \"totalWeightKg\": 2.5,\n      \"declaredValue\": 150.0,\n      \"description\": \"Medicamentos\",\n      \"fragile\": true\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 404', () => pm.response.to.have.status(404));",
+                  "pm.test('code ORDER_NOT_FOUND', () => pm.expect(pm.response.json().code).to.eql('ORDER_NOT_FOUND'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "orderId inexistente → 404 ORDER_NOT_FOUND",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/order/createForzaGuide",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "order",
+                "createForzaGuide"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"order\": {\n    \"orderId\": 999999\n  },\n  \"guide\": {\n    \"serviceType\": \"STD\",\n    \"recipient\": {\n      \"phone\": \"23456789\",\n      \"email\": \"recepcion@prueba.test\"\n    },\n    \"shipping\": {\n      \"townshipCode\": \"0101\"\n    },\n    \"packages\": {\n      \"count\": 1,\n      \"totalWeightKg\": 2.5,\n      \"declaredValue\": 150.0,\n      \"description\": \"Medicamentos\",\n      \"fragile\": true\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 404', () => pm.response.to.have.status(404));",
+                  "pm.test('code ORDER_NOT_FOUND', () => pm.expect(pm.response.json().code).to.eql('ORDER_NOT_FOUND'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Forza rechaza / no responde (townshipCode inválido) → 502",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/order/createForzaGuide",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "order",
+                "createForzaGuide"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"order\": {\n    \"orderNumber\": \"{{odooOrderNumber}}\"\n  },\n  \"guide\": {\n    \"serviceType\": \"STD\",\n    \"recipient\": {\n      \"phone\": \"23456789\",\n      \"email\": \"recepcion@prueba.test\"\n    },\n    \"shipping\": {\n      \"townshipCode\": \"9999\"\n    },\n    \"packages\": {\n      \"count\": 1,\n      \"totalWeightKg\": 2.5,\n      \"declaredValue\": 150.0,\n      \"description\": \"Medicamentos\",\n      \"fragile\": true\n    },\n    \"allowAdditionalGuide\": true\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 502', () => pm.response.to.have.status(502));",
+                  "pm.test('code FORZA_REJECTED|PROVIDER_UNAVAILABLE', () => pm.expect(['FORZA_REJECTED','PROVIDER_UNAVAILABLE']).to.include(pm.response.json().code));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "4. getForzaGuides",
+      "item": [
+        {
+          "name": "por orderNumber",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/order/getForzaGuides",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "order",
+                "getForzaGuides"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"order\": {\n    \"orderNumber\": \"{{odooOrderNumber}}\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+                  "pm.test('guías', () => pm.expect(pm.response.json().data.guides).to.be.an('array'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "por orderId (variable {{orderId}})",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/order/getForzaGuides",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "order",
+                "getForzaGuides"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"order\": {\n    \"orderId\": \"{{orderId}}\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+                  ""
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "orden inexistente → 404",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/order/getForzaGuides",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "order",
+                "getForzaGuides"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"order\": {\n    \"orderId\": 999999\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 404', () => pm.response.to.have.status(404));",
+                  "pm.test('code ORDER_NOT_FOUND', () => pm.expect(pm.response.json().code).to.eql('ORDER_NOT_FOUND'));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

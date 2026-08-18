@@ -1,0 +1,22 @@
+### WD-1912 — Order/getForzaTownships: catálogo departamento/municipio de Forza
+
+### Un departamento (por nombre)
+POST {{baseUrl}}/order/getForzaTownships
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{ "department": "Guatemala" }
+
+### Un departamento (por código)
+POST {{baseUrl}}/order/getForzaTownships
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{ "department": "03" }
+
+### Todo el país (22 llamadas a Forza la primera vez; luego caché 24 h)
+POST {{baseUrl}}/order/getForzaTownships
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{}
