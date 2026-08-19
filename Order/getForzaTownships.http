@@ -1,22 +1,32 @@
 ### WD-1912 — Order/getForzaTownships: catálogo departamento/municipio de Forza
+# Lee directo de Forza (Foundation.ForzaService), sin caché. Sin `department` devuelve
+# solo la lista de departamentos; con `department` (HeaderCode o nombre) ese
+# departamento con sus municipios (HeaderCodeTownship = guide.shipping.townshipCode).
 
-### Un departamento (por nombre)
+### Solo departamentos
+POST {{baseUrl}}/order/getForzaTownships
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{}
+
+### Un departamento (por nombre, sin importar acentos)
 POST {{baseUrl}}/order/getForzaTownships
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 { "department": "Guatemala" }
 
-### Un departamento (por código)
+### Un departamento (por HeaderCode)
 POST {{baseUrl}}/order/getForzaTownships
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 { "department": "03" }
 
-### Todo el país (22 llamadas a Forza la primera vez; luego caché 24 h)
+### Departamento inexistente → 400 VALIDATION_FAILURE (con la lista de departamentos en details)
 POST {{baseUrl}}/order/getForzaTownships
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
-{}
+{ "department": "Narnia" }
