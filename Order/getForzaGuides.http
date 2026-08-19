@@ -1,4 +1,6 @@
 ### WD-1912 — Order/getForzaGuides: guías de Forza de una orden
+# Devuelve data.dispatches[]: una venta con varios despachos trae una entrada por
+# despacho (cancelados incluidos), cada una con sus guías (activas primero).
 
 ### Por número de orden
 POST {{baseUrl}}/order/getForzaGuides

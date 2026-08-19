@@ -2,7 +2,7 @@
   "info": {
     "_postman_id": "33e70828-c9c4-4de9-9f8a-196e2b5dab5e",
     "name": "Webtrack Public API v3 — Order / Forza Guide (WD-1912)",
-    "description": "WD-1912 — v3/Order: createForzaGuide (orden existente en Reactive o importada con el sync de Odoo de Foundation; sin creación de órdenes/clientes/sucursales desde el API), getForzaGuides y getForzaTownships (catálogo directo de Forza; townshipCode obligatorio en la guía). Entornos: local (Dev_WD1912) y Desarrollo.",
+    "description": "WD-1912 — v3/Order: createForzaGuide (orden existente en Reactive o importada con el sync de Odoo de Foundation; una guía por despacho/picking: con varios despachos envía dispatchNumber o deja que el API elija el único pendiente), getForzaGuides (todos los despachos con sus guías) y getForzaTownships. Errores con el AppError estándar del Public API (number + message): 400 = 1011 ValidationFailure, 500 = 1004 ErrorDb. Entornos: local (Dev_WD1912) y Desarrollo.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "auth": {
@@ -273,7 +273,7 @@
                   "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
                   "pm.test('guía FD', () => pm.expect(pm.response.json().data.guide.trackingNumber).to.match(/^FD/));",
                   "const j = pm.response.json();",
-                  "if (j.data && j.data.order) { pm.collectionVariables.set('orderId', j.data.order.orderId); }",
+                  "if (j.data && j.data.order) { pm.collectionVariables.set('orderId', j.data.dispatches[0].order.orderId); }",
                   "if (j.data && j.data.guide) { pm.collectionVariables.set('guideId', j.data.guide.guideId); pm.collectionVariables.set('trackingNumber', j.data.guide.trackingNumber); }"
                 ]
               }
@@ -654,7 +654,7 @@
                 "type": "text/javascript",
                 "exec": [
                   "pm.test('HTTP 400', () => pm.response.to.have.status(400));",
-                  "pm.test('code VALIDATION_FAILURE', () => pm.expect(pm.response.json().code).to.eql('VALIDATION_FAILURE'));"
+                  "pm.test('number 1011', () => pm.expect(pm.response.json().number).to.eql(1011));"
                 ]
               }
             }
@@ -698,7 +698,7 @@
                 "type": "text/javascript",
                 "exec": [
                   "pm.test('HTTP 400', () => pm.response.to.have.status(400));",
-                  "pm.test('code VALIDATION_FAILURE', () => pm.expect(pm.response.json().code).to.eql('VALIDATION_FAILURE'));"
+                  "pm.test('number 1011', () => pm.expect(pm.response.json().number).to.eql(1011));"
                 ]
               }
             }
@@ -742,7 +742,7 @@
                 "type": "text/javascript",
                 "exec": [
                   "pm.test('HTTP 400', () => pm.response.to.have.status(400));",
-                  "pm.test('code VALIDATION_FAILURE', () => pm.expect(pm.response.json().code).to.eql('VALIDATION_FAILURE'));"
+                  "pm.test('number 1011', () => pm.expect(pm.response.json().number).to.eql(1011));"
                 ]
               }
             }
@@ -786,14 +786,14 @@
                 "type": "text/javascript",
                 "exec": [
                   "pm.test('HTTP 400', () => pm.response.to.have.status(400));",
-                  ""
+                  "pm.test('number 1011', () => pm.expect(pm.response.json().number).to.eql(1011));"
                 ]
               }
             }
           ]
         },
         {
-          "name": "venta en borrador en Odoo (sin despacho) → 404 ORDER_NOT_FOUND",
+          "name": "venta en borrador en Odoo (sin despacho) → 400",
           "request": {
             "method": "POST",
             "header": [
@@ -829,16 +829,16 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test('HTTP 404', () => pm.response.to.have.status(404));",
-                  "pm.test('code ORDER_NOT_FOUND', () => pm.expect(pm.response.json().code).to.eql('ORDER_NOT_FOUND'));",
-                  "pm.test('odooConsulted', () => pm.expect(pm.response.json().details.odooConsulted).to.eql(true));"
+                  "pm.test('HTTP 400', () => pm.response.to.have.status(400));",
+                  "pm.test('number 1011', () => pm.expect(pm.response.json().number).to.eql(1011));",
+                  "pm.test('not found', () => pm.expect(pm.response.json().message.toLowerCase()).to.include('not found'));"
                 ]
               }
             }
           ]
         },
         {
-          "name": "venta con varios despachos sin dispatchNumber → 409 ORDER_AMBIGUOUS",
+          "name": "venta con dos despachos (uno cancelado): auto-selecciona el activo",
           "request": {
             "method": "POST",
             "header": [
@@ -875,14 +875,15 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test('409 ORDER_AMBIGUOUS (o 200 si uno de sus despachos ya está importado en Reactive)', () => { const c = pm.response.code; pm.expect([409,200]).to.include(c); if (c === 409) pm.expect(pm.response.json().code).to.eql('ORDER_AMBIGUOUS'); });"
+                  "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+                  "pm.test('warning multi-dispatch', () => pm.expect(pm.response.json().data.warnings).to.include('ORDER_HAS_MULTIPLE_DISPATCHES'));"
                 ]
               }
             }
           ]
         },
         {
-          "name": "despacho cancelado en Odoo → 409 ORDER_CANCELLED",
+          "name": "despacho cancelado en Odoo → 400",
           "request": {
             "method": "POST",
             "header": [
@@ -918,15 +919,15 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test('HTTP 409', () => pm.response.to.have.status(409));",
-                  "pm.test('code ORDER_CANCELLED', () => pm.expect(pm.response.json().code).to.eql('ORDER_CANCELLED'));"
+                  "pm.test('HTTP 400', () => pm.response.to.have.status(400));",
+                  "pm.test('number 1011 + cancelled', () => { const j = pm.response.json(); pm.expect(j.number).to.eql(1011); pm.expect(j.message.toLowerCase()).to.include('cancelled'); });"
                 ]
               }
             }
           ]
         },
         {
-          "name": "orden inexistente (Reactive y Odoo) → 404 ORDER_NOT_FOUND",
+          "name": "orden inexistente (Reactive y Odoo) → 400",
           "request": {
             "method": "POST",
             "header": [
@@ -962,15 +963,15 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test('HTTP 404', () => pm.response.to.have.status(404));",
-                  "pm.test('code ORDER_NOT_FOUND', () => pm.expect(pm.response.json().code).to.eql('ORDER_NOT_FOUND'));"
+                  "pm.test('HTTP 400', () => pm.response.to.have.status(400));",
+                  "pm.test('number 1011 + not found', () => { const j = pm.response.json(); pm.expect(j.number).to.eql(1011); pm.expect(j.message.toLowerCase()).to.include('not found'); });"
                 ]
               }
             }
           ]
         },
         {
-          "name": "orderId inexistente → 404 ORDER_NOT_FOUND",
+          "name": "orderId inexistente → 400",
           "request": {
             "method": "POST",
             "header": [
@@ -1006,15 +1007,15 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test('HTTP 404', () => pm.response.to.have.status(404));",
-                  "pm.test('code ORDER_NOT_FOUND', () => pm.expect(pm.response.json().code).to.eql('ORDER_NOT_FOUND'));"
+                  "pm.test('HTTP 400', () => pm.response.to.have.status(400));",
+                  "pm.test('number 1011 + not found', () => { const j = pm.response.json(); pm.expect(j.number).to.eql(1011); pm.expect(j.message.toLowerCase()).to.include('not found'); });"
                 ]
               }
             }
           ]
         },
         {
-          "name": "Forza rechaza / no responde (townshipCode inválido) → 502",
+          "name": "Forza rechaza (townshipCode inválido) → 400/500 según el caso",
           "request": {
             "method": "POST",
             "header": [
@@ -1050,8 +1051,8 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test('HTTP 502', () => pm.response.to.have.status(502));",
-                  "pm.test('code FORZA_REJECTED|PROVIDER_UNAVAILABLE', () => pm.expect(['FORZA_REJECTED','PROVIDER_UNAVAILABLE']).to.include(pm.response.json().code));"
+                  "pm.test('HTTP 400 o 500', () => pm.expect([400,500]).to.include(pm.response.code));",
+                  "pm.test('AppError', () => { const j = pm.response.json(); pm.expect([1011,1004]).to.include(j.number); });"
                 ]
               }
             }
@@ -1100,7 +1101,7 @@
                 "type": "text/javascript",
                 "exec": [
                   "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
-                  "pm.test('guías', () => pm.expect(pm.response.json().data.guides).to.be.an('array'));"
+                  "pm.test('guías', () => pm.expect(pm.response.json().data.dispatches[0].guides).to.be.an('array'));"
                 ]
               }
             }
@@ -1187,8 +1188,8 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test('HTTP 404', () => pm.response.to.have.status(404));",
-                  "pm.test('code ORDER_NOT_FOUND', () => pm.expect(pm.response.json().code).to.eql('ORDER_NOT_FOUND'));"
+                  "pm.test('HTTP 400', () => pm.response.to.have.status(400));",
+                  "pm.test('number 1011 + not found', () => { const j = pm.response.json(); pm.expect(j.number).to.eql(1011); pm.expect(j.message.toLowerCase()).to.include('not found'); });"
                 ]
               }
             }

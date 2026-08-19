@@ -3,8 +3,11 @@
 # existe y la organización tiene Odoo habilitado, corre el MISMO sync de Odoo de
 # Reactive (Foundation.IntegrationSyncService) y vuelve a buscar. No crea órdenes,
 # clientes ni sucursales: para eso están el sync, v3/Customer y v3/Location.
-# Luego emite la guía de Forza ligada a la orden (idempotente por orden).
-# Requiere integración Forza habilitada en la organización.
+# Una guía por despacho (picking): con varios despachos envía dispatchNumber o
+# externalDispatchId junto con la venta; si solo va la venta, el API descarta
+# cancelados y con guía activa, y elige solo si queda exactamente uno
+# (warning ORDER_HAS_MULTIPLE_DISPATCHES). Idempotente por despacho.
+# Errores con el AppError estándar (number + message): 400 = 1011, 500 = 1004.
 # El municipio va como HeaderCodeTownship de Forza (guide.shipping.townshipCode,
 # ver getForzaTownships).
 
@@ -103,30 +106,37 @@ Authorization: Bearer {{token}}
 
 { "order": { "orderNumber": "S01476" }, "guide": { "serviceType": "STD", "recipient": { "phone": "23456789" }, "shipping": { "address1": "x" } } }
 
-### 9) Errores: venta en borrador en Odoo (sin despacho, el sync no la trae) → 404 ORDER_NOT_FOUND
+### 9) Errores: venta en borrador en Odoo (sin despacho, el sync no la trae) → 400
 POST {{baseUrl}}/order/createForzaGuide
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 { "order": { "orderNumber": "S01310" }, "guide": { "serviceType": "STD", "recipient": { "phone": "23456789" }, "shipping": { "townshipCode": "0101" } } }
 
-### 10) Errores: venta con dos despachos sin dispatchNumber → 409 ORDER_AMBIGUOUS
+### 10) Venta con dos despachos (uno cancelado): auto-selecciona el activo (warning ORDER_HAS_MULTIPLE_DISPATCHES)
 POST {{baseUrl}}/order/createForzaGuide
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 { "order": { "orderNumber": "S01474" }, "guide": { "serviceType": "STD", "recipient": { "phone": "23456789" }, "shipping": { "townshipCode": "0101" } } }
 
-### 11) Errores: despacho cancelado en Odoo → 409 ORDER_CANCELLED
+### 11) Errores: despacho cancelado en Odoo → 400
 POST {{baseUrl}}/order/createForzaGuide
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 { "order": { "orderNumber": "S01474", "dispatchNumber": "LSFE/OUT/01149" }, "guide": { "serviceType": "STD", "recipient": { "phone": "23456789" }, "shipping": { "townshipCode": "0101" } } }
 
-### 12) Errores: orden inexistente (Reactive y Odoo) → 404 ORDER_NOT_FOUND
+### 12) Errores: orden inexistente (Reactive y Odoo) → 400
 POST {{baseUrl}}/order/createForzaGuide
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 { "order": { "orderNumber": "S09999" }, "guide": { "serviceType": "STD", "recipient": { "phone": "23456789" }, "shipping": { "townshipCode": "0101" } } }
+
+### 13) Errores: el despacho no pertenece a la venta referida → 400
+POST {{baseUrl}}/order/createForzaGuide
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{ "order": { "orderNumber": "S01476", "dispatchNumber": "LSFE/OUT/01151" }, "guide": { "serviceType": "STD", "recipient": { "phone": "23456789" }, "shipping": { "townshipCode": "0101" } } }
