@@ -59,7 +59,7 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  "order": { "orderId": 2 },
+  "order": { "orderId": 1 },
   "guide": { "serviceType": "STD", "recipient": { "phone": "23456789" }, "shipping": { "townshipCode": "0101" } }
 }
 
