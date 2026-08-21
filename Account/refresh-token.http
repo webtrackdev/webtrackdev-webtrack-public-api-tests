@@ -1,0 +1,15 @@
+### =====================================================
+### Refresh Token - POST /account/refresh-token
+### Regenera el JWT de la sesión actual (sin body)
+### =====================================================
+
+### Test 1: Refrescar token con sesión válida (happy path) — 200
+POST {{baseUrl}}/account/refresh-token
+Authorization: Bearer {{token}}
+
+### Test 2: Sin token — 401
+POST {{baseUrl}}/account/refresh-token
+
+### Test 3: Token inválido/expirado — 401
+POST {{baseUrl}}/account/refresh-token
+Authorization: Bearer TOKEN_INVALIDO

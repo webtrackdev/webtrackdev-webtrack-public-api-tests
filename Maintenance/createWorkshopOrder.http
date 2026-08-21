@@ -1,0 +1,77 @@
+### Crear orden de taller — 200
+### Reemplazar los publicId por GUIDs reales de la cuenta (unidad, vehículo,
+### taller y proveedor de repuestos de sparePartProviders).
+POST {{baseUrl}}/Maintenance/createWorkshopOrder
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitPublicId": "00000000-0000-0000-0000-000000000001",
+  "vehiclePublicId": "00000000-0000-0000-0000-000000000002",
+  "workshopPublicId": "00000000-0000-0000-0000-000000000003",
+  "orderDate": "2026-08-20T09:00:00",
+  "invoiceId": "FAC-2026-0001",
+  "currencyId": 1,
+  "odometer": 55000,
+  "orderId": "OT-2026-0001",
+  "sparePartProviderPublicId": "00000000-0000-0000-0000-000000000004",
+  "filePublicIds": null,
+  "workshopEntryDate": "2026-08-20T08:00:00",
+  "workshopExitDate": "2026-08-20T17:00:00",
+  "maintenanceTypeId": 1
+}
+
+### Solo campos requeridos (sin opcionales) — 200
+POST {{baseUrl}}/Maintenance/createWorkshopOrder
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitPublicId": "00000000-0000-0000-0000-000000000001",
+  "vehiclePublicId": "00000000-0000-0000-0000-000000000002",
+  "workshopPublicId": "00000000-0000-0000-0000-000000000003",
+  "orderDate": "2026-08-20T09:00:00",
+  "currencyId": 1,
+  "odometer": 55000
+}
+
+### Sin token → 401
+POST {{baseUrl}}/Maintenance/createWorkshopOrder
+Content-Type: application/json
+
+{
+  "unitPublicId": "00000000-0000-0000-0000-000000000001",
+  "vehiclePublicId": "00000000-0000-0000-0000-000000000002",
+  "workshopPublicId": "00000000-0000-0000-0000-000000000003",
+  "orderDate": "2026-08-20T09:00:00",
+  "currencyId": 1,
+  "odometer": 55000
+}
+
+### Validación: unitPublicId con GUID inválido → 400
+POST {{baseUrl}}/Maintenance/createWorkshopOrder
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitPublicId": "no-es-un-guid",
+  "vehiclePublicId": "00000000-0000-0000-0000-000000000002",
+  "workshopPublicId": "00000000-0000-0000-0000-000000000003",
+  "orderDate": "2026-08-20T09:00:00",
+  "currencyId": 1,
+  "odometer": 55000
+}
+
+### Unidad/taller inexistente (RAISERROR del SP) → 400
+POST {{baseUrl}}/Maintenance/createWorkshopOrder
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitPublicId": "99999999-9999-9999-9999-999999999999",
+  "vehiclePublicId": "99999999-9999-9999-9999-999999999999",
+  "workshopPublicId": "99999999-9999-9999-9999-999999999999",
+  "orderDate": "2026-08-20T09:00:00",
+  "currencyId": 1,
+  "odometer": 55000
+}

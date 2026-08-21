@@ -1,0 +1,87 @@
+### =====================================================
+### Conversation/saveConversationResultJson - Test Cases
+### =====================================================
+# Endpoint ANÓNIMO ([AllowAnonymous]), variante JSON de saveConversationResult
+# (sin grabación). Guarda el resultado de una llamada o conversación del bot:
+# crea/reutiliza la conversación por número de teléfono y notifica por SignalR.
+# Sin token usa el usuario de sistema -1; con Bearer opcional se escopa al
+# tenant del token. flowType solo acepta 'call' o 'conversation'.
+
+### Test 1: Llamada completada con metadatos (flowType=call) — 200
+POST {{baseUrl}}/conversation/saveConversationResultJson
+Content-Type: application/json
+
+{
+  "phoneNumber": "50255551234",
+  "callerPhoneNumber": "50255550000",
+  "callerName": "Juan Pérez",
+  "flowType": "call",
+  "callStatus": "completed",
+  "callDuration": 300,
+  "callStartTime": "2026-01-15T14:30:00",
+  "callEndTime": "2026-01-15T14:35:00",
+  "transcriptText": "Cliente confirma la entrega para mañana por la mañana.",
+  "comment": "Llamada de confirmación de entrega."
+}
+
+### Test 2: Llamada agendada (scheduledAt, sin duración todavía) — 200
+POST {{baseUrl}}/conversation/saveConversationResultJson
+Content-Type: application/json
+
+{
+  "phoneNumber": "50255551234",
+  "flowType": "call",
+  "callStatus": "scheduled",
+  "scheduledAt": "2026-01-16T09:00:00"
+}
+
+### Test 3: Conversación de chat (el transcript se guarda como mensaje) — 200
+POST {{baseUrl}}/conversation/saveConversationResultJson
+Content-Type: application/json
+
+{
+  "phoneNumber": "50255551234",
+  "flowType": "conversation",
+  "transcriptText": "Bot: ¿Recibió su pedido? Cliente: Sí, todo en orden.",
+  "comment": "Encuesta de satisfacción completada."
+}
+
+### Test 4: Teléfono con prefijo '+' (el API lo normaliza quitándolo) — 200
+POST {{baseUrl}}/conversation/saveConversationResultJson
+Content-Type: application/json
+
+{
+  "phoneNumber": "+50255551234",
+  "callerPhoneNumber": "+50255550000",
+  "flowType": "conversation",
+  "transcriptText": "Conversación con número en formato internacional."
+}
+
+### Test 5: Variante autenticada (Bearer opcional, escopa al tenant del token) — 200
+POST {{baseUrl}}/conversation/saveConversationResultJson
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "phoneNumber": "50255551234",
+  "flowType": "conversation",
+  "transcriptText": "Conversación registrada con el usuario del token."
+}
+
+### Test 6: Sin phoneNumber (campo requerido) → 400
+POST {{baseUrl}}/conversation/saveConversationResultJson
+Content-Type: application/json
+
+{
+  "flowType": "call",
+  "callStatus": "completed"
+}
+
+### Test 7: flowType inválido (solo 'call' o 'conversation') → 400
+POST {{baseUrl}}/conversation/saveConversationResultJson
+Content-Type: application/json
+
+{
+  "phoneNumber": "50255551234",
+  "flowType": "videocall"
+}

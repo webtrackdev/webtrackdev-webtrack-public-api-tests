@@ -1,0 +1,58 @@
+### Eliminar ruta por RouteId — resultado esperado (200)
+POST {{baseUrl}}/Route/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "routeId": 1,
+  "removalReason": "Ruta creada por error durante pruebas"
+}
+
+### Eliminar ruta por PrivateCode — resultado esperado (200)
+POST {{baseUrl}}/Route/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "privateCode": "RUTA-001",
+  "removalReason": "Ruta descontinuada"
+}
+
+### Sin token → 401
+POST {{baseUrl}}/Route/delete
+Content-Type: application/json
+
+{
+  "routeId": 1,
+  "removalReason": "Ruta creada por error durante pruebas"
+}
+
+### Sin RouteId ni PrivateCode → 400 (se requiere al menos uno)
+POST {{baseUrl}}/Route/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "removalReason": "Sin identificador"
+}
+
+### RouteId y PrivateCode a la vez → 400 (solo uno de los dos)
+POST {{baseUrl}}/Route/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "routeId": 1,
+  "privateCode": "RUTA-001",
+  "removalReason": "Ambos identificadores enviados"
+}
+
+### RouteId inexistente → 400 (RAISERROR del SP)
+POST {{baseUrl}}/Route/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "routeId": 999999999,
+  "removalReason": "Ruta que no existe"
+}

@@ -1,0 +1,120 @@
+### =====================================================
+### Quick Create Bulk - POST /account/quickCreateBulk
+### Crea hasta 20 usuarios con perfil compartido; en lote
+### solo passwordMode auto o invite (no manual). Los errores
+### por usuario regresan en data.errors dentro del 200.
+### =====================================================
+
+### Test 1: Múltiples usuarios con contraseña automática (auto) — 200
+POST {{baseUrl}}/account/quickCreateBulk
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "users": [
+    { "email": "janedoe.bulk@example.com", "completeName": "Jane Doe" },
+    { "email": "jimdoe.bulk@example.com", "completeName": "Jim Doe" }
+  ],
+  "passwordMode": "auto",
+  "requirePasswordChange": true,
+  "operatorId": 307,
+  "organizationId": 229,
+  "divisionId": 192,
+  "subdivisionId": 336,
+  "accessLevelId": 20,
+  "roleId": 1001,
+  "utcZoneId": 178
+}
+
+### Test 2: Múltiples usuarios con invitación (invite) — 200
+POST {{baseUrl}}/account/quickCreateBulk
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "users": [
+    { "email": "invitado1.bulk@example.com", "completeName": "Invitado Uno" },
+    { "email": "invitado2.bulk@example.com", "completeName": "Invitado Dos" }
+  ],
+  "passwordMode": "invite",
+  "operatorId": 307,
+  "organizationId": 229,
+  "divisionId": 192,
+  "subdivisionId": 336,
+  "accessLevelId": 20,
+  "roleId": 1001,
+  "utcZoneId": 178
+}
+
+### Test 3: PasswordMode manual no permitido en lote — 400
+POST {{baseUrl}}/account/quickCreateBulk
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "users": [
+    { "email": "manual.bulk@example.com", "completeName": "Manual Bulk" }
+  ],
+  "passwordMode": "manual",
+  "operatorId": 307,
+  "organizationId": 229,
+  "divisionId": 192,
+  "subdivisionId": 336,
+  "accessLevelId": 20,
+  "roleId": 1001,
+  "utcZoneId": 178
+}
+
+### Test 4: Lista de usuarios vacía — 400
+POST {{baseUrl}}/account/quickCreateBulk
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "users": [],
+  "passwordMode": "auto",
+  "operatorId": 307,
+  "organizationId": 229,
+  "divisionId": 192,
+  "subdivisionId": 336,
+  "accessLevelId": 20,
+  "roleId": 1001,
+  "utcZoneId": 178
+}
+
+### Test 5: AccessLevelId inválido — 400
+POST {{baseUrl}}/account/quickCreateBulk
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "users": [
+    { "email": "nivelinvalido.bulk@example.com", "completeName": "Nivel Inválido" }
+  ],
+  "passwordMode": "auto",
+  "operatorId": 307,
+  "organizationId": 229,
+  "divisionId": 192,
+  "subdivisionId": 336,
+  "accessLevelId": 99,
+  "roleId": 1001,
+  "utcZoneId": 178
+}
+
+### Test 6: Sin token — 401
+POST {{baseUrl}}/account/quickCreateBulk
+Content-Type: application/json
+
+{
+  "users": [
+    { "email": "sintoken.bulk@example.com", "completeName": "Sin Token" }
+  ],
+  "passwordMode": "auto",
+  "operatorId": 307,
+  "organizationId": 229,
+  "divisionId": 192,
+  "subdivisionId": 336,
+  "accessLevelId": 20,
+  "roleId": 1001,
+  "utcZoneId": 178
+}

@@ -1,0 +1,34 @@
+### Obtener información de puntos de una ejecución — 200
+POST {{baseUrl}}/UnitWorkplan/getExecutionInformation
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "workplanExecutionId": 1
+}
+
+### Sin token → 401
+POST {{baseUrl}}/UnitWorkplan/getExecutionInformation
+Content-Type: application/json
+
+{
+  "workplanExecutionId": 1
+}
+
+### Body inválido (workplanExecutionId no numérico) → 400
+POST {{baseUrl}}/UnitWorkplan/getExecutionInformation
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "workplanExecutionId": "no-es-numero"
+}
+
+### Ejecución inexistente → 200 con lista vacía
+POST {{baseUrl}}/UnitWorkplan/getExecutionInformation
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "workplanExecutionId": 999999999
+}

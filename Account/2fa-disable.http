@@ -1,0 +1,30 @@
+### =====================================================
+### 2FA Disable - POST /account/2fa/disable
+### Desactiva TODOS los métodos 2FA del usuario;
+### requiere confirmar la contraseña
+### =====================================================
+
+### Test 1: Desactivar 2FA con contraseña correcta (happy path) — 200
+POST {{baseUrl}}/account/2fa/disable
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "password": "{{password}}"
+}
+
+### Test 2: Sin token — 401
+POST {{baseUrl}}/account/2fa/disable
+Content-Type: application/json
+
+{
+  "password": "{{password}}"
+}
+
+### Test 3: Campo requerido faltante (sin password) — 400
+POST {{baseUrl}}/account/2fa/disable
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+}

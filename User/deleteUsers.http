@@ -22,3 +22,13 @@ Content-Type: application/json
 {
   "users": []
 }
+
+### Test 3: Sin token de autorización → 401
+POST {{baseUrl}}/user/deleteUsers
+Content-Type: application/json
+
+{
+  "users": [
+    "user1@example.com"
+  ]
+}

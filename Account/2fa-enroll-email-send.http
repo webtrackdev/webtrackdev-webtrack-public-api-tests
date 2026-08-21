@@ -1,0 +1,39 @@
+### =====================================================
+### 2FA Enroll Email Send - POST /account/2fa/enroll/email/send
+### Envía el código de verificación por email para enrolar 2FA;
+### requiere confirmar la contraseña del usuario
+### =====================================================
+
+### Test 1: Enviar código de enrolamiento por email (happy path) — 200
+POST {{baseUrl}}/account/2fa/enroll/email/send
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "password": "{{password}}"
+}
+
+### Test 2: Contraseña incorrecta — 401
+POST {{baseUrl}}/account/2fa/enroll/email/send
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "password": "PASSWORD_INCORRECTA"
+}
+
+### Test 3: Sin token — 401
+POST {{baseUrl}}/account/2fa/enroll/email/send
+Content-Type: application/json
+
+{
+  "password": "{{password}}"
+}
+
+### Test 4: Campo requerido faltante (sin password) — 400
+POST {{baseUrl}}/account/2fa/enroll/email/send
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+}

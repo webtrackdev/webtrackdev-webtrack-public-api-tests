@@ -27,3 +27,36 @@ Content-Type: application/json
   ],
   "newStatus": 1
 }
+
+### Test 3: Sin token de autorización → 401
+POST {{baseUrl}}/user/updateUsersStatus
+Content-Type: application/json
+
+{
+  "userIds": [
+    2687
+  ],
+  "newStatus": 2
+}
+
+### Test 4: Error - newStatus inválido (permitidos: 0, 1, 2) → 400
+POST {{baseUrl}}/user/updateUsersStatus
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "userIds": [
+    2687
+  ],
+  "newStatus": 5
+}
+
+### Test 5: Error - lista de userIds vacía → 400
+POST {{baseUrl}}/user/updateUsersStatus
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "userIds": [],
+  "newStatus": 2
+}

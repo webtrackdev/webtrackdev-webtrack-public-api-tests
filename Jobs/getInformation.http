@@ -1,0 +1,41 @@
+### Obtener información completa de un job (job, órdenes y estados de orden) — resultado esperado (200)
+POST {{baseUrl}}/Jobs/getInformation
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "jobId": 1
+}
+
+### Sin token → 401
+POST {{baseUrl}}/Jobs/getInformation
+Content-Type: application/json
+
+{
+  "jobId": 1
+}
+
+### Validación: sin jobId → 400
+POST {{baseUrl}}/Jobs/getInformation
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{}
+
+### Validación: jobId menor o igual a 0 → 400
+POST {{baseUrl}}/Jobs/getInformation
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "jobId": 0
+}
+
+### Job inexistente: devuelve listas vacías — resultado esperado (200)
+POST {{baseUrl}}/Jobs/getInformation
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "jobId": 999999999
+}

@@ -1,0 +1,16 @@
+### =====================================================
+### Social Unlink - POST /account/social/{provider}
+### Desvincula la cuenta externa del proveedor indicado
+### (google / facebook / apple). Responde 204 sin body.
+### =====================================================
+
+### Test 1: Desvincular cuenta de Google (happy path) — 204
+POST {{baseUrl}}/account/social/google
+Authorization: Bearer {{token}}
+
+### Test 2: Desvincular cuenta de Facebook — 204
+POST {{baseUrl}}/account/social/facebook
+Authorization: Bearer {{token}}
+
+### Test 3: Sin token — 401
+POST {{baseUrl}}/account/social/google

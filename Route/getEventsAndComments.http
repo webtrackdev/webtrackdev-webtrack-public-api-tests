@@ -1,0 +1,44 @@
+### Obtener eventos y comentarios de una asignación — resultado esperado (200)
+POST {{baseUrl}}/Route/getEventsAndComments
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "routeAssignmentId": 90012345
+}
+
+### Obtener eventos y comentarios con límite personalizado — resultado esperado (200)
+POST {{baseUrl}}/Route/getEventsAndComments
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "routeAssignmentId": 90012345,
+  "limit": 20
+}
+
+### Sin token → 401
+POST {{baseUrl}}/Route/getEventsAndComments
+Content-Type: application/json
+
+{
+  "routeAssignmentId": 90012345
+}
+
+### RouteAssignmentId inválido (0) → 400 (debe ser mayor que 0)
+POST {{baseUrl}}/Route/getEventsAndComments
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "routeAssignmentId": 0
+}
+
+### RouteAssignmentId inexistente → 200 con listas vacías
+POST {{baseUrl}}/Route/getEventsAndComments
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "routeAssignmentId": 999999999
+}

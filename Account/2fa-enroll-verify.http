@@ -1,0 +1,53 @@
+### =====================================================
+### 2FA Enroll Verify - POST /account/2fa/enroll/verify
+### Confirma el enrolamiento 2FA con el código recibido
+### (email) o generado por la app (authenticator)
+### =====================================================
+
+### Test 1: Verificar enrolamiento por email (happy path) — 200
+POST {{baseUrl}}/account/2fa/enroll/verify
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "method": "Email",
+  "code": "123456"
+}
+
+### Test 2: Verificar enrolamiento con authenticator — 200
+POST {{baseUrl}}/account/2fa/enroll/verify
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "method": "Authenticator",
+  "code": "654321"
+}
+
+### Test 3: Método 2FA inválido — 400
+POST {{baseUrl}}/account/2fa/enroll/verify
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "method": "sms",
+  "code": "123456"
+}
+
+### Test 4: Sin token — 401
+POST {{baseUrl}}/account/2fa/enroll/verify
+Content-Type: application/json
+
+{
+  "method": "Email",
+  "code": "123456"
+}
+
+### Test 5: Campo requerido faltante (sin code) — 400
+POST {{baseUrl}}/account/2fa/enroll/verify
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "method": "Email"
+}

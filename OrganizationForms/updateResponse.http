@@ -1,0 +1,95 @@
+### Editar respuesta ya enviada con responses simples (debe pertenecer al usuario) — resultado esperado (200)
+POST {{baseUrl}}/OrganizationForms/updateResponse
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "responseId": 1,
+  "responses": [
+    { "questionId": 1, "responseText": "Respuesta corregida 1" },
+    { "questionId": 2, "responseText": "Respuesta corregida 2" }
+  ]
+}
+
+### Editar respuesta con responses y tableResponses (tabla explícita por pregunta: questionId + rowId) — resultado esperado (200)
+POST {{baseUrl}}/OrganizationForms/updateResponse
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "responseId": 1,
+  "responses": [
+    { "questionId": 1, "responseText": "Respuesta corregida" }
+  ],
+  "tableResponses": [
+    { "questionId": 2, "rowId": 1, "responseText": "Valor de tabla corregido" },
+    { "questionId": 2, "rowId": 2, "responseText": "Otro valor corregido" }
+  ]
+}
+
+### Editar respuesta de formulario solo-tabla (sin responses, solo tableResponses) — resultado esperado (200)
+POST {{baseUrl}}/OrganizationForms/updateResponse
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "responseId": 1,
+  "tableResponses": [
+    { "questionId": 1, "rowId": 1, "responseText": "Valor de tabla" }
+  ]
+}
+
+### Respuesta inexistente o de otro usuario (requireOwnership) → error del SP — resultado esperado (500)
+POST {{baseUrl}}/OrganizationForms/updateResponse
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "responseId": 999999999,
+  "responses": [
+    { "questionId": 1, "responseText": "No debería guardarse" }
+  ]
+}
+
+### Sin token → 401
+POST {{baseUrl}}/OrganizationForms/updateResponse
+Content-Type: application/json
+
+{
+  "responseId": 1,
+  "responses": [
+    { "questionId": 1, "responseText": "Respuesta corregida" }
+  ]
+}
+
+### Validación: sin responseId → 400
+POST {{baseUrl}}/OrganizationForms/updateResponse
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "responses": [
+    { "questionId": 1, "responseText": "Respuesta corregida" }
+  ]
+}
+
+### Validación: responseId = 0 (debe ser mayor a 0) → 400
+POST {{baseUrl}}/OrganizationForms/updateResponse
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "responseId": 0,
+  "responses": [
+    { "questionId": 1, "responseText": "Respuesta corregida" }
+  ]
+}
+
+### Validación: sin responses ni tableResponses → 400
+POST {{baseUrl}}/OrganizationForms/updateResponse
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "responseId": 1
+}

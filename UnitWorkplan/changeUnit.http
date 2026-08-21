@@ -1,0 +1,56 @@
+### Cambiar la unidad de una ejecución por unitId — 200
+POST {{baseUrl}}/UnitWorkplan/changeUnit
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "workPlanExecutionId": 1,
+  "unitId": 2
+}
+
+### Cambiar la unidad por unitPrivateCode — 200
+POST {{baseUrl}}/UnitWorkplan/changeUnit
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "workPlanExecutionId": 1,
+  "unitPrivateCode": "U-002"
+}
+
+### Sin token → 401
+POST {{baseUrl}}/UnitWorkplan/changeUnit
+Content-Type: application/json
+
+{
+  "workPlanExecutionId": 1,
+  "unitId": 2
+}
+
+### Sin workPlanExecutionId (requerido) → 400
+POST {{baseUrl}}/UnitWorkplan/changeUnit
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "unitId": 2
+}
+
+### Sin unitId ni unitPrivateCode (uno es requerido) → 400
+POST {{baseUrl}}/UnitWorkplan/changeUnit
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "workPlanExecutionId": 1
+}
+
+### Unidad inexistente → 400/500 según manejo del SP
+POST {{baseUrl}}/UnitWorkplan/changeUnit
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "workPlanExecutionId": 1,
+  "unitPrivateCode": "NO-EXISTE"
+}

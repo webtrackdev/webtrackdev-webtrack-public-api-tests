@@ -1,0 +1,33 @@
+### Cancelar una ejecución de plan de trabajo — 200
+POST {{baseUrl}}/UnitWorkplan/cancelExecution
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "workPlanExecutionId": 1
+}
+
+### Sin token → 401
+POST {{baseUrl}}/UnitWorkplan/cancelExecution
+Content-Type: application/json
+
+{
+  "workPlanExecutionId": 1
+}
+
+### Sin workPlanExecutionId (requerido) → 400
+POST {{baseUrl}}/UnitWorkplan/cancelExecution
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+}
+
+### Ejecución inexistente → 400/500 según manejo del SP
+POST {{baseUrl}}/UnitWorkplan/cancelExecution
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "workPlanExecutionId": 999999999
+}

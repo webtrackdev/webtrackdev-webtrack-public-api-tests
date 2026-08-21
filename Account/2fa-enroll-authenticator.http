@@ -1,0 +1,39 @@
+### =====================================================
+### 2FA Enroll Authenticator - POST /account/2fa/enroll/authenticator
+### Inicia el enrolamiento con app authenticator (TOTP);
+### requiere confirmar la contraseña del usuario
+### =====================================================
+
+### Test 1: Iniciar enrolamiento con contraseña correcta (happy path) — 200
+POST {{baseUrl}}/account/2fa/enroll/authenticator
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "password": "{{password}}"
+}
+
+### Test 2: Contraseña incorrecta — 401
+POST {{baseUrl}}/account/2fa/enroll/authenticator
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "password": "PASSWORD_INCORRECTA"
+}
+
+### Test 3: Sin token — 401
+POST {{baseUrl}}/account/2fa/enroll/authenticator
+Content-Type: application/json
+
+{
+  "password": "{{password}}"
+}
+
+### Test 4: Campo requerido faltante (sin password) — 400
+POST {{baseUrl}}/account/2fa/enroll/authenticator
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+}

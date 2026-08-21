@@ -1,0 +1,147 @@
+### =====================================================
+### Conversation/saveConversationResult - Test Cases
+### =====================================================
+# Endpoint ANÓNIMO ([AllowAnonymous]) que recibe multipart/form-data.
+# Guarda el resultado de una llamada o conversación del bot (Webi):
+# crea/reutiliza la conversación por número de teléfono, sube la grabación
+# (solo flowType=call) y notifica por SignalR. Sin token usa el usuario
+# de sistema -1; con Bearer opcional se escopa al tenant del token.
+# flowType solo acepta 'call' o 'conversation'.
+
+### Test 1: Llamada sin grabación (flowType=call) — 200
+POST {{baseUrl}}/conversation/saveConversationResult
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="phoneNumber"
+
+50255551234
+--WebAppBoundary
+Content-Disposition: form-data; name="callerPhoneNumber"
+
+50255550000
+--WebAppBoundary
+Content-Disposition: form-data; name="callerName"
+
+Juan Pérez
+--WebAppBoundary
+Content-Disposition: form-data; name="flowType"
+
+call
+--WebAppBoundary
+Content-Disposition: form-data; name="callStatus"
+
+completed
+--WebAppBoundary
+Content-Disposition: form-data; name="callDuration"
+
+300
+--WebAppBoundary
+Content-Disposition: form-data; name="callStartTime"
+
+2026-01-15T14:30:00
+--WebAppBoundary
+Content-Disposition: form-data; name="callEndTime"
+
+2026-01-15T14:35:00
+--WebAppBoundary
+Content-Disposition: form-data; name="transcriptText"
+
+Cliente confirma la entrega para mañana por la mañana.
+--WebAppBoundary
+Content-Disposition: form-data; name="comment"
+
+Llamada de confirmación de entrega.
+--WebAppBoundary--
+
+### Test 2: Llamada con grabación adjunta (el archivo recording.mp3 debe existir junto a este .http) — 200
+POST {{baseUrl}}/conversation/saveConversationResult
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="phoneNumber"
+
+50255551234
+--WebAppBoundary
+Content-Disposition: form-data; name="flowType"
+
+call
+--WebAppBoundary
+Content-Disposition: form-data; name="callStatus"
+
+completed
+--WebAppBoundary
+Content-Disposition: form-data; name="callDuration"
+
+120
+--WebAppBoundary
+Content-Disposition: form-data; name="recording"; filename="recording.mp3"
+Content-Type: audio/mpeg
+
+< ./recording.mp3
+--WebAppBoundary--
+
+### Test 3: Conversación de chat (flowType=conversation, el transcript se guarda como mensaje) — 200
+POST {{baseUrl}}/conversation/saveConversationResult
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="phoneNumber"
+
+50255551234
+--WebAppBoundary
+Content-Disposition: form-data; name="flowType"
+
+conversation
+--WebAppBoundary
+Content-Disposition: form-data; name="transcriptText"
+
+Bot: ¿Recibió su pedido? Cliente: Sí, todo en orden.
+--WebAppBoundary
+Content-Disposition: form-data; name="comment"
+
+Encuesta de satisfacción completada.
+--WebAppBoundary--
+
+### Test 4: Variante autenticada (Bearer opcional, escopa al tenant del token) — 200
+POST {{baseUrl}}/conversation/saveConversationResult
+Authorization: Bearer {{token}}
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="phoneNumber"
+
+50255551234
+--WebAppBoundary
+Content-Disposition: form-data; name="flowType"
+
+conversation
+--WebAppBoundary
+Content-Disposition: form-data; name="transcriptText"
+
+Conversación registrada con el usuario del token.
+--WebAppBoundary--
+
+### Test 5: Sin phoneNumber (campo requerido) → 400
+POST {{baseUrl}}/conversation/saveConversationResult
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="flowType"
+
+call
+--WebAppBoundary--
+
+### Test 6: flowType inválido (solo 'call' o 'conversation') → 400
+POST {{baseUrl}}/conversation/saveConversationResult
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="phoneNumber"
+
+50255551234
+--WebAppBoundary
+Content-Disposition: form-data; name="flowType"
+
+videocall
+--WebAppBoundary--

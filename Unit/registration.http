@@ -1,0 +1,52 @@
+### Registro de dispositivo Jobs con datos completos — 200
+POST {{baseUrl}}/Unit/registration
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitName": "Juan Perez - iPhone",
+  "serialNumber": "ABC123XYZ789",
+  "osId": 2,
+  "osVersion": "17.4",
+  "deviceManufacturer": "Apple",
+  "deviceModel": "iPhone 15",
+  "phoneNumber": "+50212345678"
+}
+
+### Registro mínimo (solo campos requeridos) — 200
+POST {{baseUrl}}/Unit/registration
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitName": "Pedro Lopez - Android",
+  "serialNumber": "SN-ANDROID-0002"
+}
+
+### Sin token → 401
+POST {{baseUrl}}/Unit/registration
+Content-Type: application/json
+
+{
+  "unitName": "Juan Perez - iPhone",
+  "serialNumber": "ABC123XYZ789"
+}
+
+### Sin serialNumber (campo requerido faltante) → 400
+POST {{baseUrl}}/Unit/registration
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitName": "Juan Perez - iPhone"
+}
+
+### unitName vacío (solo espacios) → 400
+POST {{baseUrl}}/Unit/registration
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitName": "   ",
+  "serialNumber": "ABC123XYZ789"
+}

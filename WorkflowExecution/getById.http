@@ -1,0 +1,64 @@
+### =====================================================
+### WorkflowExecution/getById - Casos de prueba (WD-1582)
+### Obtiene una ejecución de workflow por id interno o identificadores externos
+### =====================================================
+
+### Test 1: Buscar por workflowExecutionId (happy path) — 200
+POST {{baseUrl}}/WorkflowExecution/getById
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "workflowExecutionId": 1
+}
+
+### Test 2: Buscar por externalWorkflowId (filtro alterno) — 200
+POST {{baseUrl}}/WorkflowExecution/getById
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "externalWorkflowId": "wf-external-12345"
+}
+
+### Test 3: Buscar por externalRunId (filtro alterno) — 200
+POST {{baseUrl}}/WorkflowExecution/getById
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "externalRunId": "run-external-67890"
+}
+
+### Test 4: Sin token → 401
+POST {{baseUrl}}/WorkflowExecution/getById
+Content-Type: application/json
+
+{
+  "workflowExecutionId": 1
+}
+
+### Test 5: Sin ningún identificador → 400 (se requiere al menos uno)
+POST {{baseUrl}}/WorkflowExecution/getById
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{}
+
+### Test 6: workflowExecutionId inexistente → 404
+POST {{baseUrl}}/WorkflowExecution/getById
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "workflowExecutionId": 999999999
+}
+
+### Test 7: externalWorkflowId inexistente → 404
+POST {{baseUrl}}/WorkflowExecution/getById
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "externalWorkflowId": "wf-external-no-existe"
+}

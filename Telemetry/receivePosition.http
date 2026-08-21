@@ -1,0 +1,126 @@
+### =====================================================
+### Receive Position - Casos de prueba
+### Endpoint ANONIMO ([AllowAnonymous]) pero valida el ApiKey
+### del body contra Common (spAPI_Account_ValidateApiKey).
+### No lleva header Authorization.
+### =====================================================
+
+### Test 1: Recibir posiciones con ApiKey valido — esperado 200
+POST {{baseUrl}}/Telemetry/receivePosition
+Content-Type: application/json
+
+{
+  "unitIdentifier": "TEST-UNIT-001",
+  "apiKey": "{{apiKey}}",
+  "version": "1.0.0",
+  "device_model": "Pixel 7",
+  "user_permission_settings": "{\"locationAlways\":1,\"locationWhenInUse\":1,\"ignoreBatteryOptimizations\":1,\"activityRecognition\":1}",
+  "location": [
+    {
+      "isMoving": true,
+      "uuid": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "timestamp": "2026-08-21T15:30:00Z",
+      "odometer": 12500.5,
+      "coords": {
+        "latitude": 14.634915,
+        "longitude": -90.506882,
+        "accuracy": 5.0,
+        "speed": 12.5,
+        "speedAccuracy": 1.0,
+        "heading": 90.0,
+        "headingAccuracy": 2.0,
+        "altitude": 1500.0,
+        "altitudeAccuracy": 3.0
+      },
+      "activity": {
+        "type": "in_vehicle",
+        "confidence": 95
+      },
+      "battery": {
+        "isCharging": false,
+        "level": 0.85
+      }
+    }
+  ]
+}
+
+### Test 2: ApiKey invalido — esperado 401 (Invalid ApiKey)
+POST {{baseUrl}}/Telemetry/receivePosition
+Content-Type: application/json
+
+{
+  "unitIdentifier": "TEST-UNIT-001",
+  "apiKey": "apikey-invalido-12345",
+  "version": "1.0.0",
+  "location": [
+    {
+      "isMoving": true,
+      "timestamp": "2026-08-21T15:30:00Z",
+      "coords": {
+        "latitude": 14.634915,
+        "longitude": -90.506882,
+        "accuracy": 5.0,
+        "speed": 12.5,
+        "heading": 90.0,
+        "altitude": 1500.0
+      }
+    }
+  ]
+}
+
+### Test 3: Sin ApiKey en el body — esperado 401 (Invalid ApiKey)
+POST {{baseUrl}}/Telemetry/receivePosition
+Content-Type: application/json
+
+{
+  "unitIdentifier": "TEST-UNIT-001",
+  "version": "1.0.0",
+  "location": [
+    {
+      "isMoving": false,
+      "timestamp": "2026-08-21T15:30:00Z",
+      "coords": {
+        "latitude": 14.634915,
+        "longitude": -90.506882,
+        "accuracy": 5.0,
+        "speed": 0.0,
+        "heading": 0.0,
+        "altitude": 1500.0
+      }
+    }
+  ]
+}
+
+### Test 4: Sin unitIdentifier — esperado 400 (UnitIdentifier is required)
+POST {{baseUrl}}/Telemetry/receivePosition
+Content-Type: application/json
+
+{
+  "apiKey": "{{apiKey}}",
+  "version": "1.0.0",
+  "location": [
+    {
+      "isMoving": true,
+      "timestamp": "2026-08-21T15:30:00Z",
+      "coords": {
+        "latitude": 14.634915,
+        "longitude": -90.506882,
+        "accuracy": 5.0,
+        "speed": 12.5,
+        "heading": 90.0,
+        "altitude": 1500.0
+      }
+    }
+  ]
+}
+
+### Test 5: Sin datos de location (array vacio) — esperado 400 (Location data is required)
+POST {{baseUrl}}/Telemetry/receivePosition
+Content-Type: application/json
+
+{
+  "unitIdentifier": "TEST-UNIT-001",
+  "apiKey": "{{apiKey}}",
+  "version": "1.0.0",
+  "location": []
+}

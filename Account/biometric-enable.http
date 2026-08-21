@@ -1,0 +1,32 @@
+### =====================================================
+### Biometric Enable - POST /account/biometric/enable
+### Activa el flag biométrico por app (bitmask
+### Users.BiometricEnabledApps); permite saltar 2FA cuando
+### el login llega con loginVia = biometric
+### =====================================================
+
+### Test 1: Activar biometría para la app 22 (happy path) — 200
+POST {{baseUrl}}/account/biometric/enable
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "applicationIdentity": 22
+}
+
+### Test 2: Sin token — 401
+POST {{baseUrl}}/account/biometric/enable
+Content-Type: application/json
+
+{
+  "applicationIdentity": 22
+}
+
+### Test 3: Valor inválido (applicationIdentity no numérico) — 400
+POST {{baseUrl}}/account/biometric/enable
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "applicationIdentity": "abc"
+}

@@ -1,0 +1,44 @@
+### Eliminar referencia por locationId — resultado esperado (200)
+POST {{baseUrl}}/Location/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "locationId": 4138
+}
+
+### Eliminar referencia por privateCode — resultado esperado (200)
+POST {{baseUrl}}/Location/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "privateCode": "BG-NEW"
+}
+
+### Sin token → 401
+POST {{baseUrl}}/Location/delete
+Content-Type: application/json
+
+{
+  "locationId": 4138
+}
+
+### Sin locationId ni privateCode → 400
+POST {{baseUrl}}/Location/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "locationId": null,
+  "privateCode": null
+}
+
+### LocationId inexistente → 404
+POST {{baseUrl}}/Location/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "locationId": 999999999
+}

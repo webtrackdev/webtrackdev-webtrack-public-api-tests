@@ -1,0 +1,11 @@
+### =====================================================
+### 2FA Status - GET /account/2fa/status
+### Estado de enrolamiento 2FA del usuario autenticado
+### =====================================================
+
+### Test 1: Consultar estado 2FA del usuario actual (happy path) — 200
+GET {{baseUrl}}/account/2fa/status
+Authorization: Bearer {{token}}
+
+### Test 2: Sin token — 401
+GET {{baseUrl}}/account/2fa/status

@@ -1,0 +1,12 @@
+### Obtener resumen de jobs del usuario autenticado — resultado esperado (200)
+POST {{baseUrl}}/Jobs/getSummary
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{}
+
+### Sin token → 401
+POST {{baseUrl}}/Jobs/getSummary
+Content-Type: application/json
+
+{}

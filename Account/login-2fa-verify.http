@@ -1,0 +1,63 @@
+### =====================================================
+### Login 2FA Verify - POST /account/login/2fa/verify
+### NOTA: {{token}} debe ser el mfaToken devuelto por
+### /account/login cuando requiresTwoFactor = true
+### =====================================================
+
+### Test 1: Verificar código 2FA por email (happy path) — 200
+POST {{baseUrl}}/account/login/2fa/verify
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "code": "123456",
+  "method": "Email"
+}
+
+### Test 2: Verificar código 2FA con app authenticator — 200
+POST {{baseUrl}}/account/login/2fa/verify
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "code": "654321",
+  "method": "Authenticator"
+}
+
+### Test 3: Método 2FA inválido — 400
+POST {{baseUrl}}/account/login/2fa/verify
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "code": "123456",
+  "method": "sms"
+}
+
+### Test 4: Código incorrecto o expirado — 401
+POST {{baseUrl}}/account/login/2fa/verify
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "code": "000000",
+  "method": "Email"
+}
+
+### Test 5: Sin token (mfaToken) — 401
+POST {{baseUrl}}/account/login/2fa/verify
+Content-Type: application/json
+
+{
+  "code": "123456",
+  "method": "Email"
+}
+
+### Test 6: Campo requerido faltante (sin code) — 400
+POST {{baseUrl}}/account/login/2fa/verify
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "method": "Email"
+}

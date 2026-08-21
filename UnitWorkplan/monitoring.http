@@ -1,0 +1,50 @@
+### Monitoreo de planes de trabajo en un rango de fechas — 200
+POST {{baseUrl}}/UnitWorkplan/monitoring
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "startDate": "2026-08-01T00:00:00",
+  "endDate": "2026-08-31T23:59:59"
+}
+
+### Monitoreo filtrado por organización/división/subdivisión — 200
+POST {{baseUrl}}/UnitWorkplan/monitoring
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "startDate": "2026-08-01T00:00:00",
+  "endDate": "2026-08-31T23:59:59",
+  "organizationId": 1,
+  "divisionId": 1,
+  "subdivisionId": 1
+}
+
+### Sin token → 401
+POST {{baseUrl}}/UnitWorkplan/monitoring
+Content-Type: application/json
+
+{
+  "startDate": "2026-08-01T00:00:00",
+  "endDate": "2026-08-31T23:59:59"
+}
+
+### Sin startDate/endDate (requeridos) → 400
+POST {{baseUrl}}/UnitWorkplan/monitoring
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "organizationId": 1
+}
+
+### endDate menor que startDate → 400
+POST {{baseUrl}}/UnitWorkplan/monitoring
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "startDate": "2026-08-31T00:00:00",
+  "endDate": "2026-08-01T00:00:00"
+}

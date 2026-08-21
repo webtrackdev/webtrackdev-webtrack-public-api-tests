@@ -1,0 +1,74 @@
+### =====================================================
+### Conversation/insertChatAlert - Test Cases
+### =====================================================
+# Endpoint AUTENTICADO (Bearer JWT). Inserta una alerta de chat asociada a la
+# conversación del número de teléfono (la crea si no existe), actualiza el
+# preview de la conversación y notifica por SignalR.
+# Requeridos: phoneNumber, alertType, alertTitle.
+# Respuesta 200: { conversationsChatAlertId, conversationId }.
+
+### Test 1: Alerta básica — 200
+POST {{baseUrl}}/conversation/insertChatAlert
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "phoneNumber": "50255551234",
+  "alertType": "panic_button",
+  "alertTitle": "Botón de pánico activado",
+  "alertDescription": "El piloto activó el botón de pánico desde la app."
+}
+
+### Test 2: Alerta con metadata JSON y fecha explícita — 200
+POST {{baseUrl}}/conversation/insertChatAlert
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "phoneNumber": "+50255551234",
+  "alertType": "route_deviation",
+  "alertTitle": "Desviación de ruta detectada",
+  "alertDescription": "La unidad se desvió más de 500 m de la ruta asignada.",
+  "eventMetadata": "{\"unitId\": 123, \"routeId\": 45, \"deviationMeters\": 520}",
+  "createdAt": "2026-01-15T14:30:00"
+}
+
+### Test 3: Sin token → 401
+POST {{baseUrl}}/conversation/insertChatAlert
+Content-Type: application/json
+
+{
+  "phoneNumber": "50255551234",
+  "alertType": "panic_button",
+  "alertTitle": "Botón de pánico activado"
+}
+
+### Test 4: Sin phoneNumber (campo requerido) → 400
+POST {{baseUrl}}/conversation/insertChatAlert
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "alertType": "panic_button",
+  "alertTitle": "Botón de pánico activado"
+}
+
+### Test 5: Sin alertType (campo requerido) → 400
+POST {{baseUrl}}/conversation/insertChatAlert
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "phoneNumber": "50255551234",
+  "alertTitle": "Botón de pánico activado"
+}
+
+### Test 6: Sin alertTitle (campo requerido) → 400
+POST {{baseUrl}}/conversation/insertChatAlert
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "phoneNumber": "50255551234",
+  "alertType": "panic_button"
+}

@@ -1,0 +1,79 @@
+### Crear aviso de mantenimiento por horómetro (noticeId null = crear) — 200
+POST {{baseUrl}}/Maintenance/saveNoticeByHourmeter
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "noticeId": null,
+  "unitId": 1,
+  "notificationEmails": "taller@ejemplo.com;supervisor@ejemplo.com",
+  "maintenanceLineId": 1,
+  "maintenanceRangeId": 1,
+  "interval": 250,
+  "nextEvent": 1250,
+  "message": "Servicio de motor cada 250 horas",
+  "noticeTypeId2": 1
+}
+
+### Actualizar aviso existente (noticeId con valor) — 200
+POST {{baseUrl}}/Maintenance/saveNoticeByHourmeter
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "noticeId": 1,
+  "unitId": 1,
+  "notificationEmails": "taller@ejemplo.com",
+  "maintenanceLineId": 1,
+  "maintenanceRangeId": 1,
+  "interval": 300,
+  "nextEvent": 1500,
+  "message": "Servicio de motor cada 300 horas (actualizado)",
+  "noticeTypeId2": 1
+}
+
+### Sin token → 401
+POST {{baseUrl}}/Maintenance/saveNoticeByHourmeter
+Content-Type: application/json
+
+{
+  "noticeId": null,
+  "unitId": 1,
+  "notificationEmails": "taller@ejemplo.com",
+  "interval": 250,
+  "nextEvent": 1250,
+  "message": "Servicio de motor",
+  "noticeTypeId2": 1
+}
+
+### Validación: unitId con tipo inválido → 400
+POST {{baseUrl}}/Maintenance/saveNoticeByHourmeter
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "noticeId": null,
+  "unitId": "no-numerico",
+  "notificationEmails": "taller@ejemplo.com",
+  "interval": 250,
+  "nextEvent": 1250,
+  "message": "Servicio de motor",
+  "noticeTypeId2": 1
+}
+
+### Unidad inexistente (RAISERROR del SP) → 400
+POST {{baseUrl}}/Maintenance/saveNoticeByHourmeter
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "noticeId": null,
+  "unitId": 999999999,
+  "notificationEmails": "taller@ejemplo.com",
+  "maintenanceLineId": 1,
+  "maintenanceRangeId": 1,
+  "interval": 250,
+  "nextEvent": 1250,
+  "message": "Servicio de motor",
+  "noticeTypeId2": 1
+}

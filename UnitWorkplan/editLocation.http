@@ -1,0 +1,57 @@
+### Editar punto de una ejecución (por locationId) — 200
+POST {{baseUrl}}/UnitWorkplan/editLocation
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "workPlanExecutionId": 1,
+  "locationId": 1,
+  "locationName": "Punto A - Actualizado",
+  "radius": 150,
+  "minTime": 15,
+  "maxTime": 45
+}
+
+### Editar punto identificado por privateCode con ventana horaria — 200
+POST {{baseUrl}}/UnitWorkplan/editLocation
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "workPlanExecutionId": 1,
+  "privateCode": "REF-EXISTENTE",
+  "comments": "Ventana de atención actualizada",
+  "minHour": "2026-08-21T09:00:00",
+  "maxHour": "2026-08-21T16:00:00"
+}
+
+### Sin token → 401
+POST {{baseUrl}}/UnitWorkplan/editLocation
+Content-Type: application/json
+
+{
+  "workPlanExecutionId": 1,
+  "locationId": 1,
+  "minTime": 15
+}
+
+### Sin workPlanExecutionId (requerido) → 400
+POST {{baseUrl}}/UnitWorkplan/editLocation
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "locationId": 1,
+  "locationName": "Sin ejecución"
+}
+
+### Ejecución inexistente → 400/500 según manejo del SP
+POST {{baseUrl}}/UnitWorkplan/editLocation
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "workPlanExecutionId": 999999999,
+  "locationId": 1,
+  "minTime": 10
+}

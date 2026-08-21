@@ -1,0 +1,58 @@
+### Crear aviso de mantenimiento por fecha (noticeId null = crear) — 200
+POST {{baseUrl}}/Maintenance/saveNoticeByDate
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "noticeId": null,
+  "unitId": 1,
+  "notificationEmails": "taller@ejemplo.com;supervisor@ejemplo.com",
+  "interval": 90,
+  "nextEvent": "2026-09-15T08:00:00",
+  "message": "Cambio de aceite trimestral",
+  "noticeTypeId2": 1
+}
+
+### Actualizar aviso existente (noticeId con valor) — 200
+POST {{baseUrl}}/Maintenance/saveNoticeByDate
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "noticeId": 1,
+  "unitId": 1,
+  "notificationEmails": "taller@ejemplo.com",
+  "interval": 180,
+  "nextEvent": "2026-12-15T08:00:00",
+  "message": "Cambio de aceite semestral (actualizado)",
+  "noticeTypeId2": 1
+}
+
+### Sin token → 401
+POST {{baseUrl}}/Maintenance/saveNoticeByDate
+Content-Type: application/json
+
+{
+  "noticeId": null,
+  "unitId": 1,
+  "notificationEmails": "taller@ejemplo.com",
+  "interval": 90,
+  "nextEvent": "2026-09-15T08:00:00",
+  "message": "Cambio de aceite trimestral",
+  "noticeTypeId2": 1
+}
+
+### Validación: nextEvent con fecha inválida → 400
+POST {{baseUrl}}/Maintenance/saveNoticeByDate
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "noticeId": null,
+  "unitId": 1,
+  "notificationEmails": "taller@ejemplo.com",
+  "interval": 90,
+  "nextEvent": "fecha-invalida",
+  "message": "Cambio de aceite trimestral",
+  "noticeTypeId2": 1
+}

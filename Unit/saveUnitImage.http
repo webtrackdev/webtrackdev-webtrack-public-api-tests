@@ -1,0 +1,57 @@
+### Guardar metadatos de imagen nueva (URL ya subida) — 200
+POST {{baseUrl}}/Unit/saveUnitImage
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitId": 1,
+  "imageTypeId": 1,
+  "imageName": "Vista frontal",
+  "imageUrl": "/gps/abc123.jpg",
+  "isDefault": true
+}
+
+### Actualizar imagen existente (con imageId) — 200
+POST {{baseUrl}}/Unit/saveUnitImage
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitId": 1,
+  "imageId": 1,
+  "imageTypeId": 1,
+  "imageName": "Vista lateral",
+  "imageUrl": "/gps/abc123.jpg",
+  "isDefault": false
+}
+
+### Sin token → 401
+POST {{baseUrl}}/Unit/saveUnitImage
+Content-Type: application/json
+
+{
+  "unitId": 1,
+  "imageName": "Vista frontal",
+  "imageUrl": "/gps/abc123.jpg"
+}
+
+### UnitId inválido (0) → 400
+POST {{baseUrl}}/Unit/saveUnitImage
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitId": 0,
+  "imageName": "Vista frontal",
+  "imageUrl": "/gps/abc123.jpg"
+}
+
+### Sin imageUrl (campo requerido faltante) → 400
+POST {{baseUrl}}/Unit/saveUnitImage
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitId": 1,
+  "imageName": "Vista frontal"
+}

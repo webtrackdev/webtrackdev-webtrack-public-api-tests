@@ -1,0 +1,48 @@
+### =====================================================
+### Unlink Unit - POST /account/unlink
+### Desvincula la unidad (por número de serie) del usuario
+### autenticado y revoca la sesión asociada
+### =====================================================
+
+### Test 1: Desvincular unidad por número de serie (happy path) — 200
+POST {{baseUrl}}/account/unlink
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "serialNumber": "ABC123DEF456"
+}
+
+### Test 2: Sin token — 401
+POST {{baseUrl}}/account/unlink
+Content-Type: application/json
+
+{
+  "serialNumber": "ABC123DEF456"
+}
+
+### Test 3: Campo requerido faltante (sin serialNumber) — 400
+POST {{baseUrl}}/account/unlink
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+}
+
+### Test 4: SerialNumber vacío — 400
+POST {{baseUrl}}/account/unlink
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "serialNumber": "   "
+}
+
+### Test 5: Número de serie inexistente — 500 (error del SP)
+POST {{baseUrl}}/account/unlink
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "serialNumber": "SERIE_INEXISTENTE_999999999"
+}

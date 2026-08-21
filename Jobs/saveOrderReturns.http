@@ -1,0 +1,57 @@
+### Guardar devoluciones de una orden de un plan de trabajo — resultado esperado (200)
+POST {{baseUrl}}/Jobs/saveOrderReturns
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "workplanExecutionId": 1,
+  "orderId": 1,
+  "returnCount": 2,
+  "responses": "",
+  "tableResponses": "",
+  "responseDate": "2026-01-15T10:00:00"
+}
+
+### Sin token → 401
+POST {{baseUrl}}/Jobs/saveOrderReturns
+Content-Type: application/json
+
+{
+  "workplanExecutionId": 1,
+  "orderId": 1,
+  "returnCount": 2,
+  "responseDate": "2026-01-15T10:00:00"
+}
+
+### Validación: sin workplanExecutionId → 400
+POST {{baseUrl}}/Jobs/saveOrderReturns
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "orderId": 1,
+  "returnCount": 2,
+  "responseDate": "2026-01-15T10:00:00"
+}
+
+### Validación: sin returnCount → 400
+POST {{baseUrl}}/Jobs/saveOrderReturns
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "workplanExecutionId": 1,
+  "orderId": 1,
+  "responseDate": "2026-01-15T10:00:00"
+}
+
+### Validación: sin responseDate → 400
+POST {{baseUrl}}/Jobs/saveOrderReturns
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "workplanExecutionId": 1,
+  "orderId": 1,
+  "returnCount": 2
+}

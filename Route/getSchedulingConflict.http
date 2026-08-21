@@ -1,0 +1,49 @@
+### Verificar conflicto de programación por fecha — resultado esperado (200, hasConflict true/false)
+POST {{baseUrl}}/Route/getSchedulingConflict
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitId": 1001,
+  "startDate": "2026-01-15T08:00:00",
+  "minDiffTimeInMinutes": 30
+}
+
+### Verificar conflicto de programación por horario recurrente — resultado esperado (200)
+POST {{baseUrl}}/Route/getSchedulingConflict
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitId": 1001,
+  "scheduleId": 50,
+  "minDiffTimeInMinutes": 30
+}
+
+### Sin token → 401
+POST {{baseUrl}}/Route/getSchedulingConflict
+Content-Type: application/json
+
+{
+  "unitId": 1001,
+  "startDate": "2026-01-15T08:00:00"
+}
+
+### Sin unitId ni fecha/horario → 400 (validación del SP)
+POST {{baseUrl}}/Route/getSchedulingConflict
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "minDiffTimeInMinutes": 30
+}
+
+### UnitId inexistente → 400 (RAISERROR del SP)
+POST {{baseUrl}}/Route/getSchedulingConflict
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitId": 999999999,
+  "startDate": "2026-01-15T08:00:00"
+}

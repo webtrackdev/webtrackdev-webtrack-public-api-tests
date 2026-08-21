@@ -1,0 +1,12 @@
+### =====================================================
+### Login 2FA Resend Email - POST /account/login/2fa/resend-email
+### NOTA: {{token}} debe ser el mfaToken devuelto por
+### /account/login cuando requiresTwoFactor = true
+### =====================================================
+
+### Test 1: Reenviar código 2FA por email (happy path) — 200
+POST {{baseUrl}}/account/login/2fa/resend-email
+Authorization: Bearer {{token}}
+
+### Test 2: Sin token (mfaToken) — 401
+POST {{baseUrl}}/account/login/2fa/resend-email

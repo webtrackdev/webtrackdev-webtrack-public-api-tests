@@ -1,0 +1,14 @@
+### Obtener avisos de mantenimiento programados por odómetro (sin filtros) — 200
+GET {{baseUrl}}/Maintenance/scheduledNoticesByOdometer
+Authorization: Bearer {{token}}
+
+### Con filtros de operador/organización/división/subdivisión — 200
+GET {{baseUrl}}/Maintenance/scheduledNoticesByOdometer?operatorId=1&organizationId=1&divisionId=1&subdivisionId=1
+Authorization: Bearer {{token}}
+
+### Sin token → 401
+GET {{baseUrl}}/Maintenance/scheduledNoticesByOdometer
+
+### Filtro con tipo inválido (divisionId no numérico) → 400
+GET {{baseUrl}}/Maintenance/scheduledNoticesByOdometer?divisionId=abc
+Authorization: Bearer {{token}}

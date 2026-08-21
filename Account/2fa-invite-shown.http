@@ -1,0 +1,11 @@
+### =====================================================
+### 2FA Invite Shown - POST /account/2fa/invite-shown
+### Marca como mostrada la invitación post-login a activar 2FA
+### =====================================================
+
+### Test 1: Marcar invitación 2FA como mostrada (happy path) — 200
+POST {{baseUrl}}/account/2fa/invite-shown
+Authorization: Bearer {{token}}
+
+### Test 2: Sin token — 401
+POST {{baseUrl}}/account/2fa/invite-shown
