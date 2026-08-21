@@ -1,0 +1,80 @@
+### Test 1: Change Status Bulk - Disable several units
+POST {{baseUrl}}/Unit/changeStatusBulk
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "units": [
+    { "unitId": 1, "unitStatus": 0 },
+    { "unitId": 2, "unitStatus": 0 }
+  ]
+}
+
+### Test 2: Change Status Bulk - Re-enable several units
+POST {{baseUrl}}/Unit/changeStatusBulk
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "units": [
+    { "unitId": 1, "unitStatus": 1 },
+    { "unitId": 2, "unitStatus": 1 }
+  ]
+}
+
+### Test 3: Change Status Bulk - Different status per unit
+POST {{baseUrl}}/Unit/changeStatusBulk
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "units": [
+    { "unitId": 1, "unitStatus": 0 },
+    { "unitId": 2, "unitStatus": 3 }
+  ]
+}
+
+### Test 4: Change Status Bulk - Partial result (one unit not accessible)
+POST {{baseUrl}}/Unit/changeStatusBulk
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "units": [
+    { "unitId": 1, "unitStatus": 0 },
+    { "unitId": 999999, "unitStatus": 0 }
+  ]
+}
+
+### Test 5: Change Status Bulk - Invalid (empty list)
+POST {{baseUrl}}/Unit/changeStatusBulk
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "units": []
+}
+
+### Test 6: Change Status Bulk - Invalid (duplicated unitId)
+POST {{baseUrl}}/Unit/changeStatusBulk
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "units": [
+    { "unitId": 1, "unitStatus": 0 },
+    { "unitId": 1, "unitStatus": 1 }
+  ]
+}
+
+### Test 7: Change Status Bulk - Invalid (status out of catalog)
+POST {{baseUrl}}/Unit/changeStatusBulk
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "units": [
+    { "unitId": 1, "unitStatus": 0 },
+    { "unitId": 2, "unitStatus": 99 }
+  ]
+}

@@ -1,0 +1,29 @@
+### =====================================================
+### Update Users Status (batch) - Test Cases (WD-1433)
+### =====================================================
+
+### Test 1: Suspend several users
+POST {{baseUrl}}/user/updateUsersStatus
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "userIds": [
+    2687,
+    2649
+  ],
+  "newStatus": 2
+}
+
+### Test 2: Reactivate users
+POST {{baseUrl}}/user/updateUsersStatus
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "userIds": [
+    2687,
+    2649
+  ],
+  "newStatus": 1
+}

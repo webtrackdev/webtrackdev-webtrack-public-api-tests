@@ -1,0 +1,60 @@
+### Test 1: Quick Edit - Rename unit
+POST {{baseUrl}}/Unit/quickEdit
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitId": 1,
+  "unitName": "Camion 01 - Reparto Norte"
+}
+
+### Test 2: Quick Edit - Update several fields
+POST {{baseUrl}}/Unit/quickEdit
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitId": 1,
+  "unitName": "Camion 01",
+  "alias": "C-01",
+  "privateCode": "UNIT-GT-5001"
+}
+
+### Test 3: Quick Edit - Clear alias with empty string
+POST {{baseUrl}}/Unit/quickEdit
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitId": 1,
+  "alias": ""
+}
+
+### Test 4: Quick Edit - Invalid (no editable field)
+POST {{baseUrl}}/Unit/quickEdit
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitId": 1
+}
+
+### Test 5: Quick Edit - Invalid (empty unitName)
+POST {{baseUrl}}/Unit/quickEdit
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitId": 1,
+  "unitName": "   "
+}
+
+### Test 6: Quick Edit - Unit not accessible
+POST {{baseUrl}}/Unit/quickEdit
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitId": 999999,
+  "unitName": "No deberia actualizar"
+}

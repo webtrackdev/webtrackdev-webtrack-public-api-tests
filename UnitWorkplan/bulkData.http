@@ -1,0 +1,128 @@
+### WD-1750 - Bulk Data unificado (un solo SP transaccional)
+### Caso 1: referencias existentes por locationId y por privateCode
+POST {{baseUrl}}/v3/UnitWorkplan/bulkData
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "unitPrivateCode": "U-001",
+    "workplanName": "WD-1750 existentes",
+    "startDate": "2026-08-06T08:00:00",
+    "endDate": "2026-08-06T18:00:00",
+    "locations": [
+        {
+            "locationId": 1,
+            "radius": 100,
+            "minTime": 10,
+            "maxTime": 30
+        },
+        {
+            "privateCode": "REF-EXISTENTE",
+            "minTime": 15,
+            "maxTime": 45
+        }
+    ]
+}
+
+### Caso 2: creación de referencia nueva con cliente (locationsCreated = 1)
+### Verificar en DB: Locations con CustomerId, org del cliente, UserLocations, AuditCreateSourceId = 2
+POST {{baseUrl}}/v3/UnitWorkplan/bulkData
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "unitPrivateCode": "U-001",
+    "workplanName": "WD-1750 creación",
+    "startDate": "2026-08-06T08:00:00",
+    "endDate": "2026-08-06T18:00:00",
+    "locations": [
+        {
+            "privateCode": "REF-NUEVA-001",
+            "locationName": "Referencia nueva WD-1750",
+            "latitude": 14.6349,
+            "longitude": -90.5069,
+            "radius": 100,
+            "customerPrivateCode": "CLI-001"
+        }
+    ]
+}
+
+### Caso 3: creación solo con dirección (sin coordenadas) → se crea en 0,0
+### locationsCreatedWithoutCoordinates = 1; la geocodificación en background la completará (pendiente WD-1688)
+POST {{baseUrl}}/v3/UnitWorkplan/bulkData
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "unitPrivateCode": "U-001",
+    "workplanName": "WD-1750 solo dirección",
+    "startDate": "2026-08-06T08:00:00",
+    "endDate": "2026-08-06T18:00:00",
+    "locations": [
+        {
+            "privateCode": "REF-NUEVA-002",
+            "locationName": "Referencia solo dirección",
+            "locationAddress": "4a avenida 15-45 zona 10, Guatemala",
+            "radius": 80
+        }
+    ]
+}
+
+### Caso 4: fila inválida (sin privateCode ni datos para crear) → 400 y NO se crea nada
+### Verificar en DB que no quedó Visita huérfana (rollback total)
+POST {{baseUrl}}/v3/UnitWorkplan/bulkData
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "unitPrivateCode": "U-001",
+    "workplanName": "WD-1750 inválido",
+    "startDate": "2026-08-06T08:00:00",
+    "endDate": "2026-08-06T18:00:00",
+    "locations": [
+        {
+            "privateCode": "REF-NUEVA-003",
+            "locationName": "Referencia válida",
+            "latitude": 14.6349,
+            "longitude": -90.5069
+        },
+        {
+            "locationName": "Sin privateCode ni coordenadas ni dirección"
+        }
+    ]
+}
+
+### Caso 5: referencia duplicada en el payload → se deduplica (no truena la PK de VisitaPunto)
+POST {{baseUrl}}/v3/UnitWorkplan/bulkData
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "unitPrivateCode": "U-001",
+    "workplanName": "WD-1750 duplicada",
+    "startDate": "2026-08-06T08:00:00",
+    "endDate": "2026-08-06T18:00:00",
+    "locations": [
+        {
+            "locationId": 1,
+            "minTime": 10
+        },
+        {
+            "locationId": 1,
+            "minTime": 20
+        }
+    ]
+}
+
+### Caso 6: unidad inexistente → 400 Unit not found
+POST {{baseUrl}}/v3/UnitWorkplan/bulkData
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "unitPrivateCode": "NO-EXISTE",
+    "workplanName": "WD-1750 unidad inválida",
+    "startDate": "2026-08-06T08:00:00",
+    "endDate": "2026-08-06T18:00:00",
+    "locations": []
+}
