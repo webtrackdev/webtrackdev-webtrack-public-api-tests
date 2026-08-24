@@ -45,3 +45,23 @@ Content-Type: application/json
 {
   "unitId": 1
 }
+
+### WD-2050: unidad inexistente o fuera del scope del partner → 400
+POST {{baseUrl}}/Unit/deleteImage
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitId": 999999999,
+  "imageId": 1
+}
+
+### WD-2050: imagen inexistente para la unidad (antes respondía 200 sin borrar nada) → 400
+POST {{baseUrl}}/Unit/deleteImage
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitId": 1,
+  "imageId": 999999999
+}

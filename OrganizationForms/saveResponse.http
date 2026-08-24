@@ -121,3 +121,16 @@ Content-Type: application/json
   "organizationFormId": 1,
   "responseDate": "2026-08-21T10:00:00"
 }
+
+### WD-2050: formulario inexistente o fuera del scope del partner → 400
+POST {{baseUrl}}/OrganizationForms/saveResponse
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "organizationFormId": 999999999,
+  "responseDate": "2026-08-24T10:00:00",
+  "responses": [
+    { "questionId": 1, "responseText": "No debería guardarse" }
+  ]
+}

@@ -55,3 +55,15 @@ Content-Type: application/json
   "orderId": 1,
   "returnCount": 2
 }
+
+### WD-2050: ejecución de plan inexistente o fuera del scope del partner → 400
+POST {{baseUrl}}/Jobs/saveOrderReturns
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "workplanExecutionId": 999999999,
+  "orderId": 1,
+  "returnCount": 1,
+  "responseDate": "2026-08-24T10:00:00"
+}

@@ -39,7 +39,7 @@ Content-Type: application/json
   ]
 }
 
-### Respuesta inexistente o de otro usuario (requireOwnership) → error del SP — resultado esperado (500)
+### Respuesta inexistente o de otro usuario (requireOwnership) → RAISERROR del SP mapeado a 400 (WD-2050; antes 500) — resultado esperado (400)
 POST {{baseUrl}}/OrganizationForms/updateResponse
 Authorization: Bearer {{token}}
 Content-Type: application/json

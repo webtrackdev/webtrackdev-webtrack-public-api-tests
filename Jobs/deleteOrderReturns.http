@@ -48,3 +48,14 @@ Content-Type: application/json
   "responseId": 1,
   "orderId": 1
 }
+
+### WD-2050: ejecución de plan inexistente o fuera del scope del partner → 400
+POST {{baseUrl}}/Jobs/deleteOrderReturns
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "responseId": 1,
+  "orderId": 1,
+  "workplanExecutionId": 999999999
+}

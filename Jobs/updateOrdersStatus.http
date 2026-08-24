@@ -1,11 +1,11 @@
 ### Actualizar el estado de órdenes de un plan de trabajo — resultado esperado (200)
-### orders es un string JSON: arreglo de objetos con orderId
+### orders es un string JSON: arreglo de objetos con orderId, workplanExecutionId y locationId (los 3 son obligatorios para el SP)
 POST {{baseUrl}}/Jobs/updateOrdersStatus
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "orders": "[{\"orderId\":1},{\"orderId\":2}]",
+  "orders": "[{\"orderId\":1,\"workplanExecutionId\":1,\"locationId\":1},{\"orderId\":2,\"workplanExecutionId\":1,\"locationId\":1}]",
   "orderStatusId": 1
 }
 
@@ -43,5 +43,15 @@ Content-Type: application/json
 
 {
   "orders": "",
+  "orderStatusId": 1
+}
+
+### WD-2050: ejecución de plan inexistente o fuera del scope del partner → 400
+POST {{baseUrl}}/Jobs/updateOrdersStatus
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "orders": "[{\"orderId\":1,\"workplanExecutionId\":999999999,\"locationId\":1}]",
   "orderStatusId": 1
 }
