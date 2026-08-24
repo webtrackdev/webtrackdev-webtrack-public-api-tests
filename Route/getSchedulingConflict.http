@@ -29,7 +29,7 @@ Content-Type: application/json
   "startDate": "2026-01-15T08:00:00"
 }
 
-### Sin unitId ni fecha/horario → 400 (validación del SP)
+### Sin unitId ni fecha/horario → 400 (validación del controller: unitId y startDate|scheduleId son requeridos)
 POST {{baseUrl}}/Route/getSchedulingConflict
 Authorization: Bearer {{token}}
 Content-Type: application/json
@@ -38,7 +38,7 @@ Content-Type: application/json
   "minDiffTimeInMinutes": 30
 }
 
-### UnitId inexistente → 400 (RAISERROR del SP)
+### UnitId inexistente o fuera del scope del usuario → 400 (RAISERROR del SP)
 POST {{baseUrl}}/Route/getSchedulingConflict
 Authorization: Bearer {{token}}
 Content-Type: application/json

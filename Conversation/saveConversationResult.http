@@ -5,7 +5,8 @@
 # Guarda el resultado de una llamada o conversación del bot (Webi):
 # crea/reutiliza la conversación por número de teléfono, sube la grabación
 # (solo flowType=call) y notifica por SignalR. Sin token usa el usuario
-# de sistema -1; con Bearer opcional se escopa al tenant del token.
+# de sistema -1 (sin registro de billing, no hay ApiKey); con Bearer
+# opcional se escopa al tenant del token y sí factura.
 # flowType solo acepta 'call' o 'conversation'.
 
 ### Test 1: Llamada sin grabación (flowType=call) — 200

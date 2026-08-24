@@ -4,6 +4,9 @@
 ### El idToken se obtiene del SDK nativo del proveedor;
 ### la cuenta debe estar previamente vinculada (social/link).
 ### Anónimo (no requiere Authorization).
+### provider no distingue mayúsculas (google == Google). Con los
+### tokens de placeholder de este archivo solo se puede verificar
+### 401/400/503: el 200 y el 409 requieren un id_token real.
 ### =====================================================
 
 ### Test 1: Login con Google y cuenta vinculada (happy path) — 200
@@ -36,7 +39,7 @@ Content-Type: application/json
   "apiKey": "{{apiKey}}"
 }
 
-### Test 4: Proveedor no configurado/soportado — 503 (EXTERNAL_PROVIDER_NOT_CONFIGURED)
+### Test 4: Proveedor desconocido — 400 (EXTERNAL_PROVIDER_UNSUPPORTED). 503 solo si el proveedor es conocido pero no está configurado
 POST {{baseUrl}}/account/social/login
 Content-Type: application/json
 

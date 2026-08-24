@@ -1,7 +1,9 @@
 ### =====================================================
 ### Social Link - POST /account/social/link
 ### Vincula una cuenta externa (google / facebook / apple)
-### al usuario autenticado
+### al usuario autenticado. provider no distingue mayúsculas.
+### Con tokens de placeholder solo se verifica 401/400/503;
+### el 200 y el 409 requieren un id_token real.
 ### =====================================================
 
 ### Test 1: Vincular cuenta de Google (happy path) — 200
