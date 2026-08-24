@@ -1,0 +1,47 @@
+### Actualizar el estado de órdenes de un plan de trabajo — resultado esperado (200)
+### orders es un string JSON: arreglo de objetos con orderId
+POST {{baseUrl}}/Jobs/updateOrdersStatus
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "orders": "[{\"orderId\":1},{\"orderId\":2}]",
+  "orderStatusId": 1
+}
+
+### Sin token → 401
+POST {{baseUrl}}/Jobs/updateOrdersStatus
+Content-Type: application/json
+
+{
+  "orders": "[{\"orderId\":1}]",
+  "orderStatusId": 1
+}
+
+### Validación: sin orders → 400
+POST {{baseUrl}}/Jobs/updateOrdersStatus
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "orderStatusId": 1
+}
+
+### Validación: sin orderStatusId → 400
+POST {{baseUrl}}/Jobs/updateOrdersStatus
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "orders": "[{\"orderId\":1}]"
+}
+
+### Validación: orders vacío → 400
+POST {{baseUrl}}/Jobs/updateOrdersStatus
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "orders": "",
+  "orderStatusId": 1
+}

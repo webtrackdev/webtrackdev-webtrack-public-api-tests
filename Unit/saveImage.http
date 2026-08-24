@@ -1,0 +1,85 @@
+### Subir imagen de unidad (multipart/form-data; ajustar la ruta del archivo local) — 200
+POST {{baseUrl}}/Unit/saveImage
+Authorization: Bearer {{token}}
+Content-Type: multipart/form-data; boundary=WebtrackBoundary
+
+--WebtrackBoundary
+Content-Disposition: form-data; name="UnitId"
+
+1
+--WebtrackBoundary
+Content-Disposition: form-data; name="ImageTypeId"
+
+1
+--WebtrackBoundary
+Content-Disposition: form-data; name="ImageName"
+
+Vista frontal
+--WebtrackBoundary
+Content-Disposition: form-data; name="IsDefault"
+
+true
+--WebtrackBoundary
+Content-Disposition: form-data; name="File"; filename="frontal.jpg"
+Content-Type: image/jpeg
+
+< ./frontal.jpg
+--WebtrackBoundary--
+
+### Sin token → 401
+POST {{baseUrl}}/Unit/saveImage
+Content-Type: multipart/form-data; boundary=WebtrackBoundary
+
+--WebtrackBoundary
+Content-Disposition: form-data; name="UnitId"
+
+1
+--WebtrackBoundary
+Content-Disposition: form-data; name="File"; filename="frontal.jpg"
+Content-Type: image/jpeg
+
+< ./frontal.jpg
+--WebtrackBoundary--
+
+### UnitId inválido (0) → 400
+POST {{baseUrl}}/Unit/saveImage
+Authorization: Bearer {{token}}
+Content-Type: multipart/form-data; boundary=WebtrackBoundary
+
+--WebtrackBoundary
+Content-Disposition: form-data; name="UnitId"
+
+0
+--WebtrackBoundary
+Content-Disposition: form-data; name="File"; filename="frontal.jpg"
+Content-Type: image/jpeg
+
+< ./frontal.jpg
+--WebtrackBoundary--
+
+### Extensión no permitida (solo jpg, jpeg, png, gif, webp, bmp) → 400
+POST {{baseUrl}}/Unit/saveImage
+Authorization: Bearer {{token}}
+Content-Type: multipart/form-data; boundary=WebtrackBoundary
+
+--WebtrackBoundary
+Content-Disposition: form-data; name="UnitId"
+
+1
+--WebtrackBoundary
+Content-Disposition: form-data; name="File"; filename="notas.txt"
+Content-Type: text/plain
+
+< ./notas.txt
+--WebtrackBoundary--
+
+### Sin archivo (File requerido) → 400
+POST {{baseUrl}}/Unit/saveImage
+Authorization: Bearer {{token}}
+Content-Type: multipart/form-data; boundary=WebtrackBoundary
+
+--WebtrackBoundary
+Content-Disposition: form-data; name="UnitId"
+
+1
+--WebtrackBoundary--

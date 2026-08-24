@@ -1,0 +1,41 @@
+### Cambiar la ubicación on-job por coordenadas — resultado esperado (200)
+POST {{baseUrl}}/Jobs/changeOnJobLocation
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "jobId": 1,
+  "latitude": 14.634915,
+  "longitude": -90.506882
+}
+
+### Sin token → 401
+POST {{baseUrl}}/Jobs/changeOnJobLocation
+Content-Type: application/json
+
+{
+  "jobId": 1,
+  "latitude": 14.634915,
+  "longitude": -90.506882
+}
+
+### Validación: sin jobId → 400
+POST {{baseUrl}}/Jobs/changeOnJobLocation
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "latitude": 14.634915,
+  "longitude": -90.506882
+}
+
+### Validación: jobId menor o igual a 0 → 400
+POST {{baseUrl}}/Jobs/changeOnJobLocation
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "jobId": 0,
+  "latitude": 14.634915,
+  "longitude": -90.506882
+}

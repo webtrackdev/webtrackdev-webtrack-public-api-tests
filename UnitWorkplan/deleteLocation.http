@@ -1,0 +1,47 @@
+### Eliminar punto de una ejecución por locationId — 200
+POST {{baseUrl}}/UnitWorkplan/deleteLocation
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "workPlanExecutionId": 1,
+  "locationId": 2
+}
+
+### Eliminar punto identificado por privateCode — 200
+POST {{baseUrl}}/UnitWorkplan/deleteLocation
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "workPlanExecutionId": 1,
+  "privateCode": "REF-EXISTENTE"
+}
+
+### Sin token → 401
+POST {{baseUrl}}/UnitWorkplan/deleteLocation
+Content-Type: application/json
+
+{
+  "workPlanExecutionId": 1,
+  "locationId": 2
+}
+
+### Sin workPlanExecutionId (requerido) → 400
+POST {{baseUrl}}/UnitWorkplan/deleteLocation
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "locationId": 2
+}
+
+### Ejecución inexistente → 400/500 según manejo del SP
+POST {{baseUrl}}/UnitWorkplan/deleteLocation
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "workPlanExecutionId": 999999999,
+  "locationId": 2
+}

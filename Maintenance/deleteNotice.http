@@ -1,0 +1,38 @@
+### Eliminar aviso de mantenimiento — 200
+POST {{baseUrl}}/Maintenance/deleteNotice
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "noticeId": 1,
+  "unitId": 1
+}
+
+### Sin token → 401
+POST {{baseUrl}}/Maintenance/deleteNotice
+Content-Type: application/json
+
+{
+  "noticeId": 1,
+  "unitId": 1
+}
+
+### Validación: noticeId con tipo inválido → 400
+POST {{baseUrl}}/Maintenance/deleteNotice
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "noticeId": "no-numerico",
+  "unitId": 1
+}
+
+### Aviso inexistente — verificar comportamiento del SP (200 o error)
+POST {{baseUrl}}/Maintenance/deleteNotice
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "noticeId": 999999999,
+  "unitId": 999999999
+}

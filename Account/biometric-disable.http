@@ -1,0 +1,31 @@
+### =====================================================
+### Biometric Disable - POST /account/biometric/disable
+### Desactiva el flag biométrico por app (bitmask
+### Users.BiometricEnabledApps)
+### =====================================================
+
+### Test 1: Desactivar biometría para la app 22 (happy path) — 200
+POST {{baseUrl}}/account/biometric/disable
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "applicationIdentity": 22
+}
+
+### Test 2: Sin token — 401
+POST {{baseUrl}}/account/biometric/disable
+Content-Type: application/json
+
+{
+  "applicationIdentity": 22
+}
+
+### Test 3: Valor inválido (applicationIdentity no numérico) — 400
+POST {{baseUrl}}/account/biometric/disable
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "applicationIdentity": "abc"
+}

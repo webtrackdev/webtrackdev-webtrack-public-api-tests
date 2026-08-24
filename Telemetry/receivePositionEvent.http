@@ -1,0 +1,102 @@
+### =====================================================
+### Receive Position Event - Casos de prueba
+### Endpoint ANONIMO ([AllowAnonymous]) pero valida el ApiKey
+### del body contra Common (spAPI_Account_ValidateApiKey).
+### No lleva header Authorization.
+### =====================================================
+
+### Test 1: Recibir evento de posicion con ApiKey valido — esperado 200
+POST {{baseUrl}}/Telemetry/receivePositionEvent
+Content-Type: application/json
+
+{
+  "unitIdentifier": "TEST-UNIT-001",
+  "unitId": "TEST-UNIT-001",
+  "version": "1.0.0",
+  "apiKey": "{{apiKey}}",
+  "user_permission_settings": "{\"locationAlways\":1,\"locationWhenInUse\":1,\"ignoreBatteryOptimizations\":1,\"activityRecognition\":1}",
+  "rawData": {
+    "event": "geofence",
+    "timestamp": "2026-08-21T15:30:00Z",
+    "latitude": 14.634915,
+    "longitude": -90.506882,
+    "speed": 12.5,
+    "heading": 90.0,
+    "odometer": 12500.5,
+    "battery": 0.85
+  }
+}
+
+### Test 2: Solo unitId (sin unitIdentifier) — esperado 200
+POST {{baseUrl}}/Telemetry/receivePositionEvent
+Content-Type: application/json
+
+{
+  "unitId": "TEST-UNIT-001",
+  "version": "1.0.0",
+  "apiKey": "{{apiKey}}",
+  "rawData": {
+    "event": "motionchange",
+    "timestamp": "2026-08-21T15:35:00Z",
+    "latitude": 14.640112,
+    "longitude": -90.512345,
+    "speed": 0.0,
+    "isMoving": false
+  }
+}
+
+### Test 3: ApiKey invalido — esperado 401 (Invalid ApiKey)
+POST {{baseUrl}}/Telemetry/receivePositionEvent
+Content-Type: application/json
+
+{
+  "unitIdentifier": "TEST-UNIT-001",
+  "version": "1.0.0",
+  "apiKey": "apikey-invalido-12345",
+  "rawData": {
+    "event": "geofence",
+    "timestamp": "2026-08-21T15:30:00Z",
+    "latitude": 14.634915,
+    "longitude": -90.506882
+  }
+}
+
+### Test 4: Sin ApiKey en el body — esperado 401 (Invalid ApiKey)
+POST {{baseUrl}}/Telemetry/receivePositionEvent
+Content-Type: application/json
+
+{
+  "unitIdentifier": "TEST-UNIT-001",
+  "version": "1.0.0",
+  "rawData": {
+    "event": "geofence",
+    "timestamp": "2026-08-21T15:30:00Z",
+    "latitude": 14.634915,
+    "longitude": -90.506882
+  }
+}
+
+### Test 5: Sin unitIdentifier ni unitId — esperado 400 (UnitIdentifier or UnitId is required)
+POST {{baseUrl}}/Telemetry/receivePositionEvent
+Content-Type: application/json
+
+{
+  "version": "1.0.0",
+  "apiKey": "{{apiKey}}",
+  "rawData": {
+    "event": "geofence",
+    "timestamp": "2026-08-21T15:30:00Z",
+    "latitude": 14.634915,
+    "longitude": -90.506882
+  }
+}
+
+### Test 6: Sin rawData — esperado 400 (RawData is required)
+POST {{baseUrl}}/Telemetry/receivePositionEvent
+Content-Type: application/json
+
+{
+  "unitIdentifier": "TEST-UNIT-001",
+  "version": "1.0.0",
+  "apiKey": "{{apiKey}}"
+}

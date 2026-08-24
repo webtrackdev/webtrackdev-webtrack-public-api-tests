@@ -1,0 +1,43 @@
+### Obtener todas las asignaciones activas (sin filtros) — resultado esperado (200)
+POST {{baseUrl}}/Route/getActiveAssignments
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+}
+
+### Asignaciones activas filtradas por rango de fechas — resultado esperado (200)
+POST {{baseUrl}}/Route/getActiveAssignments
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "startDate": "2026-01-01T00:00:00",
+  "endDate": "2026-01-31T23:59:59"
+}
+
+### Asignaciones activas filtradas por organización y unidad — resultado esperado (200)
+POST {{baseUrl}}/Route/getActiveAssignments
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "organizationId": 1,
+  "divisionId": 10,
+  "subdivisionId": 100,
+  "unitId": 5001
+}
+
+### Sin token → 401
+POST {{baseUrl}}/Route/getActiveAssignments
+Content-Type: application/json
+
+{
+}
+
+### Body nulo → 400 (payload requerido)
+POST {{baseUrl}}/Route/getActiveAssignments
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+null

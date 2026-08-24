@@ -1,0 +1,72 @@
+### Agregar punto a una ejecución con referencia existente por locationId — 200
+POST {{baseUrl}}/UnitWorkplan/addLocation
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "workPlanExecutionId": 1,
+  "locationId": 1,
+  "radius": 100,
+  "minTime": 10,
+  "maxTime": 30,
+  "minHour": "2026-08-21T08:00:00",
+  "maxHour": "2026-08-21T17:00:00"
+}
+
+### Agregar punto con referencia existente por privateCode — 200
+POST {{baseUrl}}/UnitWorkplan/addLocation
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "workPlanExecutionId": 1,
+  "privateCode": "REF-EXISTENTE",
+  "comments": "Entrega en bodega",
+  "minTime": 15,
+  "maxTime": 45
+}
+
+### Agregar punto creando la referencia (privateCode nuevo + nombre + coordenadas + cliente) — 200
+POST {{baseUrl}}/UnitWorkplan/addLocation
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "workPlanExecutionId": 1,
+  "privateCode": "REF-NUEVA-ADD-001",
+  "locationName": "Referencia nueva addLocation",
+  "locationAddress": "4a avenida 15-45 zona 10, Guatemala",
+  "latitude": 14.6349,
+  "longitude": -90.5069,
+  "radius": 100,
+  "customerPrivateCode": "CLI-001"
+}
+
+### Sin token → 401
+POST {{baseUrl}}/UnitWorkplan/addLocation
+Content-Type: application/json
+
+{
+  "workPlanExecutionId": 1,
+  "locationId": 1
+}
+
+### Sin workPlanExecutionId (requerido) → 400
+POST {{baseUrl}}/UnitWorkplan/addLocation
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "locationId": 1,
+  "minTime": 10
+}
+
+### Ejecución inexistente → 400/500 según manejo del SP
+POST {{baseUrl}}/UnitWorkplan/addLocation
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "workPlanExecutionId": 999999999,
+  "locationId": 1
+}

@@ -1,0 +1,46 @@
+### Agregar un comentario a un job — resultado esperado (200)
+POST {{baseUrl}}/Jobs/addComment
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "jobId": 1,
+  "comment": "Comentario de prueba desde el API"
+}
+
+### Sin token → 401
+POST {{baseUrl}}/Jobs/addComment
+Content-Type: application/json
+
+{
+  "jobId": 1,
+  "comment": "Comentario de prueba desde el API"
+}
+
+### Validación: sin jobId → 400
+POST {{baseUrl}}/Jobs/addComment
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "comment": "Comentario sin job"
+}
+
+### Validación: sin comment → 400
+POST {{baseUrl}}/Jobs/addComment
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "jobId": 1
+}
+
+### Validación: comment vacío (solo espacios) → 400
+POST {{baseUrl}}/Jobs/addComment
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "jobId": 1,
+  "comment": "   "
+}

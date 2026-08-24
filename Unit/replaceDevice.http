@@ -1,0 +1,62 @@
+### Reemplazo de dispositivo con datos completos — 200
+POST {{baseUrl}}/Unit/replaceDevice
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitIdToReplace": 1,
+  "serialNumber": "NEW123XYZ789",
+  "osId": 1,
+  "osVersion": "14",
+  "deviceManufacturer": "Google",
+  "deviceModel": "Pixel 7",
+  "phoneNumber": "+50212345678"
+}
+
+### Reemplazo mínimo (solo campos requeridos) — 200
+POST {{baseUrl}}/Unit/replaceDevice
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitIdToReplace": 1,
+  "serialNumber": "NEW-SN-0002"
+}
+
+### Sin token → 401
+POST {{baseUrl}}/Unit/replaceDevice
+Content-Type: application/json
+
+{
+  "unitIdToReplace": 1,
+  "serialNumber": "NEW123XYZ789"
+}
+
+### unitIdToReplace inválido (0) → 400
+POST {{baseUrl}}/Unit/replaceDevice
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitIdToReplace": 0,
+  "serialNumber": "NEW123XYZ789"
+}
+
+### Sin serialNumber (campo requerido faltante) → 400
+POST {{baseUrl}}/Unit/replaceDevice
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitIdToReplace": 1
+}
+
+### Unidad inexistente → 400
+POST {{baseUrl}}/Unit/replaceDevice
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitIdToReplace": 999999999,
+  "serialNumber": "NEW123XYZ789"
+}

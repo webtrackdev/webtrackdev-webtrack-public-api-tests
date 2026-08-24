@@ -1,0 +1,48 @@
+### =====================================================
+### 2FA Disable Method - POST /account/2fa/disable/{method}
+### Desactiva UN método 2FA específico (Email o Authenticator);
+### requiere confirmar la contraseña
+### =====================================================
+
+### Test 1: Desactivar método Email (happy path) — 200
+POST {{baseUrl}}/account/2fa/disable/Email
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "password": "{{password}}"
+}
+
+### Test 2: Desactivar método Authenticator — 200
+POST {{baseUrl}}/account/2fa/disable/Authenticator
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "password": "{{password}}"
+}
+
+### Test 3: Método 2FA inválido en la ruta — 400
+POST {{baseUrl}}/account/2fa/disable/sms
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "password": "{{password}}"
+}
+
+### Test 4: Sin token — 401
+POST {{baseUrl}}/account/2fa/disable/Email
+Content-Type: application/json
+
+{
+  "password": "{{password}}"
+}
+
+### Test 5: Campo requerido faltante (sin password) — 400
+POST {{baseUrl}}/account/2fa/disable/Email
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+}

@@ -1,0 +1,50 @@
+### Cambiar la ubicación de un job por locationId — resultado esperado (200)
+POST {{baseUrl}}/Jobs/changeJobLocation
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "jobId": 1,
+  "locationId": 100,
+  "locationAddress": "Av. Principal 123, Zona 10"
+}
+
+### Cambiar la ubicación de un job solo con dirección — resultado esperado (200)
+POST {{baseUrl}}/Jobs/changeJobLocation
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "jobId": 1,
+  "locationAddress": "Nueva dirección de prueba"
+}
+
+### Sin token → 401
+POST {{baseUrl}}/Jobs/changeJobLocation
+Content-Type: application/json
+
+{
+  "jobId": 1,
+  "locationId": 100,
+  "locationAddress": "Av. Principal 123, Zona 10"
+}
+
+### Validación: sin jobId → 400
+POST {{baseUrl}}/Jobs/changeJobLocation
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "locationId": 100,
+  "locationAddress": "Av. Principal 123, Zona 10"
+}
+
+### Validación: jobId menor o igual a 0 → 400
+POST {{baseUrl}}/Jobs/changeJobLocation
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "jobId": 0,
+  "locationId": 100
+}

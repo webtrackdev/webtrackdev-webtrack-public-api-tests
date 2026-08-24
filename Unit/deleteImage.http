@@ -1,0 +1,47 @@
+### Eliminar (borrado lógico) una imagen de la unidad — 200
+POST {{baseUrl}}/Unit/deleteImage
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitId": 1,
+  "imageId": 1
+}
+
+### Sin token → 401
+POST {{baseUrl}}/Unit/deleteImage
+Content-Type: application/json
+
+{
+  "unitId": 1,
+  "imageId": 1
+}
+
+### UnitId inválido (0) → 400
+POST {{baseUrl}}/Unit/deleteImage
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitId": 0,
+  "imageId": 1
+}
+
+### ImageId inválido (0) → 400
+POST {{baseUrl}}/Unit/deleteImage
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitId": 1,
+  "imageId": 0
+}
+
+### Sin imageId (campo requerido faltante) → 400
+POST {{baseUrl}}/Unit/deleteImage
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitId": 1
+}

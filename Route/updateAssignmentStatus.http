@@ -1,0 +1,73 @@
+### Pausar asignación de ruta (Status 5) — resultado esperado (200)
+POST {{baseUrl}}/Route/updateAssignmentStatus
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "routeAssignmentId": 90012345,
+  "status": 5,
+  "removalReason": "Pausa por almuerzo del piloto"
+}
+
+### Cancelar asignación de ruta (Status 8) — resultado esperado (200)
+POST {{baseUrl}}/Route/updateAssignmentStatus
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "routeAssignmentId": 90012345,
+  "status": 8,
+  "removalReason": "Cliente canceló la entrega"
+}
+
+### Finalizar asignación de ruta (Status 6) — resultado esperado (200)
+POST {{baseUrl}}/Route/updateAssignmentStatus
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "routeAssignmentId": 90012345,
+  "status": 6,
+  "removalReason": "Ruta finalizada desde API"
+}
+
+### Sin token → 401
+POST {{baseUrl}}/Route/updateAssignmentStatus
+Content-Type: application/json
+
+{
+  "routeAssignmentId": 90012345,
+  "status": 5,
+  "removalReason": "Pausa por almuerzo del piloto"
+}
+
+### Sin RouteAssignmentId ni Status → 400 (ambos requeridos)
+POST {{baseUrl}}/Route/updateAssignmentStatus
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "removalReason": "Sin datos requeridos"
+}
+
+### Status inválido (fuera de 0,2,3,5,6,8) → 400
+POST {{baseUrl}}/Route/updateAssignmentStatus
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "routeAssignmentId": 90012345,
+  "status": 99,
+  "removalReason": "Estado no soportado"
+}
+
+### RouteAssignmentId inexistente → 400 (RAISERROR del SP)
+POST {{baseUrl}}/Route/updateAssignmentStatus
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "routeAssignmentId": 999999999,
+  "status": 5,
+  "removalReason": "Asignación que no existe"
+}

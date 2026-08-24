@@ -1,0 +1,95 @@
+### =====================================================
+### Register Bulk - POST /account/register-bulk
+### Registro de hasta 20 usuarios por request (autenticado).
+### Los errores por usuario regresan en data.errors dentro
+### del 200 (accessLevelId/roleId inválidos, username duplicado).
+### =====================================================
+
+### Test 1: Registrar 2 usuarios válidos (happy path) — 200
+POST {{baseUrl}}/account/register-bulk
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "users": [
+    {
+      "username": "bulkuser1@example.com",
+      "password": "SecurePassword123",
+      "email": "bulkuser1@example.com",
+      "phoneNumber": "+50255551111",
+      "accessLevelId": 20,
+      "roleId": 1001,
+      "operatorId": 307,
+      "organizationId": 229,
+      "divisionId": 192,
+      "subdivisionId": 336
+    },
+    {
+      "username": "bulkuser2@example.com",
+      "password": "SecurePassword123",
+      "email": "bulkuser2@example.com",
+      "phoneNumber": "+50255552222",
+      "accessLevelId": 20,
+      "roleId": 1001,
+      "operatorId": 307,
+      "organizationId": 229,
+      "divisionId": 192,
+      "subdivisionId": 336
+    }
+  ]
+}
+
+### Test 2: AccessLevelId inválido — 200 con el usuario en data.errors
+POST {{baseUrl}}/account/register-bulk
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "users": [
+    {
+      "username": "bulkuser3@example.com",
+      "password": "SecurePassword123",
+      "email": "bulkuser3@example.com",
+      "phoneNumber": "+50255553333",
+      "accessLevelId": 99,
+      "roleId": 1001,
+      "organizationId": 229,
+      "divisionId": 192,
+      "subdivisionId": 336
+    }
+  ]
+}
+
+### Test 3: Sin token — 401
+POST {{baseUrl}}/account/register-bulk
+Content-Type: application/json
+
+{
+  "users": [
+    {
+      "username": "bulkuser4@example.com",
+      "password": "SecurePassword123",
+      "email": "bulkuser4@example.com",
+      "phoneNumber": "+50255554444",
+      "accessLevelId": 20,
+      "roleId": 1001,
+      "organizationId": 229,
+      "divisionId": 192,
+      "subdivisionId": 336
+    }
+  ]
+}
+
+### Test 4: Lista de usuarios vacía — 400
+POST {{baseUrl}}/account/register-bulk
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "users": []
+}
+
+### Test 5: Payload nulo — 400
+POST {{baseUrl}}/account/register-bulk
+Authorization: Bearer {{token}}
+Content-Type: application/json

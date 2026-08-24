@@ -1,0 +1,68 @@
+### Quick Create - Crea Organización + División + Subdivisión con body completo — resultado esperado (200)
+POST {{baseUrl}}/Organization/quickCreate
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "organizationName": "Acme Corporation",
+  "contactPhone": "+502 2222-3333",
+  "organizationAddress": "5ta Avenida 10-30 zona 1",
+  "contactName": "Juan Pérez",
+  "contactEmail": "juan.perez@acme.com",
+  "operatorId": 1,
+  "agentId": 5,
+  "alertConsoleActive": true,
+  "tradeName": "Acme Corp",
+  "organizationType": 1,
+  "divisionName": "División Norte",
+  "subdivisionName": "Subdivisión Guatemala",
+  "comments": "Organización creada desde la batería E2E"
+}
+
+### Quick Create - Solo campos requeridos (División y Subdivisión heredan el nombre de la Organización) — resultado esperado (200)
+POST {{baseUrl}}/Organization/quickCreate
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "organizationName": "Organización Mínima E2E",
+  "operatorId": 1
+}
+
+### Sin token → 401
+POST {{baseUrl}}/Organization/quickCreate
+Content-Type: application/json
+
+{
+  "organizationName": "Acme Corporation",
+  "operatorId": 1
+}
+
+### Body inválido - falta organizationName (requerido) → 400
+POST {{baseUrl}}/Organization/quickCreate
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "operatorId": 1,
+  "divisionName": "División Norte"
+}
+
+### Body inválido - falta operatorId (requerido) → 400
+POST {{baseUrl}}/Organization/quickCreate
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "organizationName": "Acme Corporation"
+}
+
+### Body inválido - organizationName excede el máximo de 200 caracteres → 400
+POST {{baseUrl}}/Organization/quickCreate
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "organizationName": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+  "operatorId": 1
+}

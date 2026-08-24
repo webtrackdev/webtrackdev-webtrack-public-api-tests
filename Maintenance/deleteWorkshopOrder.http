@@ -1,0 +1,34 @@
+### Eliminar orden de taller — 200
+POST {{baseUrl}}/Maintenance/deleteWorkshopOrder
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "workshopOrderId": 1
+}
+
+### Sin token → 401
+POST {{baseUrl}}/Maintenance/deleteWorkshopOrder
+Content-Type: application/json
+
+{
+  "workshopOrderId": 1
+}
+
+### Validación: workshopOrderId con tipo inválido → 400
+POST {{baseUrl}}/Maintenance/deleteWorkshopOrder
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "workshopOrderId": "no-numerico"
+}
+
+### Orden inexistente — verificar comportamiento del SP (200 o error)
+POST {{baseUrl}}/Maintenance/deleteWorkshopOrder
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "workshopOrderId": 999999999
+}

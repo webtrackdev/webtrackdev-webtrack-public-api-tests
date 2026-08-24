@@ -1,0 +1,46 @@
+### Subir archivo para respuesta de formulario (multipart/form-data, máx. 10 MB) — resultado esperado (200)
+POST {{baseUrl}}/OrganizationForms/uploadFile
+Authorization: Bearer {{token}}
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="file"; filename="evidencia-prueba.txt"
+Content-Type: text/plain
+
+Contenido de prueba del archivo de evidencia del formulario.
+--WebAppBoundary--
+
+### Subir imagen desde disco (ajusta la ruta a un archivo local existente) — resultado esperado (200)
+POST {{baseUrl}}/OrganizationForms/uploadFile
+Authorization: Bearer {{token}}
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="file"; filename="foto-prueba.jpg"
+Content-Type: image/jpeg
+
+< ./foto-prueba.jpg
+--WebAppBoundary--
+
+### Sin token → 401
+POST {{baseUrl}}/OrganizationForms/uploadFile
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="file"; filename="evidencia-prueba.txt"
+Content-Type: text/plain
+
+Contenido de prueba del archivo.
+--WebAppBoundary--
+
+### Validación: sin archivo (campo con nombre distinto a "file") → 400
+POST {{baseUrl}}/OrganizationForms/uploadFile
+Authorization: Bearer {{token}}
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="otroCampo"; filename="evidencia-prueba.txt"
+Content-Type: text/plain
+
+Este campo no se llama "file", el endpoint no lo recibe.
+--WebAppBoundary--

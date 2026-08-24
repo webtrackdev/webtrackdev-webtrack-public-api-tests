@@ -1,0 +1,35 @@
+### Obtener jobs programados con rango de fechas — resultado esperado (200)
+POST {{baseUrl}}/Jobs/getScheduledJobs
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "startDate": "2026-01-01T00:00:00",
+  "endDate": "2026-12-31T23:59:59"
+}
+
+### Sin filtros (body vacío, usa defaults del SP) — resultado esperado (200)
+POST {{baseUrl}}/Jobs/getScheduledJobs
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{}
+
+### Sin token → 401
+POST {{baseUrl}}/Jobs/getScheduledJobs
+Content-Type: application/json
+
+{
+  "startDate": "2026-01-01T00:00:00",
+  "endDate": "2026-12-31T23:59:59"
+}
+
+### Validación: startDate con formato inválido → 400
+POST {{baseUrl}}/Jobs/getScheduledJobs
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "startDate": "no-es-una-fecha",
+  "endDate": "2026-12-31T23:59:59"
+}

@@ -1,0 +1,34 @@
+### Obtener checkpoints y trayecto de una ruta — resultado esperado (200)
+POST {{baseUrl}}/Route/getRouteInformation
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "routeId": 1
+}
+
+### Sin token → 401
+POST {{baseUrl}}/Route/getRouteInformation
+Content-Type: application/json
+
+{
+  "routeId": 1
+}
+
+### RouteId inválido (0) → 400 (requerido y mayor que 0)
+POST {{baseUrl}}/Route/getRouteInformation
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "routeId": 0
+}
+
+### RouteId inexistente → 200 con listas vacías
+POST {{baseUrl}}/Route/getRouteInformation
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "routeId": 999999999
+}

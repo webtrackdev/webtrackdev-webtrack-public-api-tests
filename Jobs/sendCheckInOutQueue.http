@@ -1,0 +1,62 @@
+### Enviar cola de check in/out de una unidad — resultado esperado (200)
+POST {{baseUrl}}/Jobs/sendCheckInOutQueue
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitIdentifier": "UNIT-001",
+  "appVersion": "1.0.0",
+  "queue": "[{\"working\":1,\"location\":{\"utcTime\":\"2026-01-15T20:30:00Z\",\"latitude\":14.634915,\"longitude\":-90.506882,\"speed\":0,\"heading\":0,\"odometer\":1000}}]"
+}
+
+### Sin token → 401
+POST {{baseUrl}}/Jobs/sendCheckInOutQueue
+Content-Type: application/json
+
+{
+  "unitIdentifier": "UNIT-001",
+  "appVersion": "1.0.0",
+  "queue": "[{\"working\":1,\"location\":{\"utcTime\":\"2026-01-15T20:30:00Z\",\"latitude\":14.634915,\"longitude\":-90.506882}}]"
+}
+
+### Validación: sin unitIdentifier → 400
+POST {{baseUrl}}/Jobs/sendCheckInOutQueue
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "appVersion": "1.0.0",
+  "queue": "[{\"working\":1,\"location\":{\"utcTime\":\"2026-01-15T20:30:00Z\",\"latitude\":14.634915,\"longitude\":-90.506882}}]"
+}
+
+### Validación: sin queue → 400
+POST {{baseUrl}}/Jobs/sendCheckInOutQueue
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitIdentifier": "UNIT-001",
+  "appVersion": "1.0.0"
+}
+
+### Validación: queue no es un JSON válido → 400
+POST {{baseUrl}}/Jobs/sendCheckInOutQueue
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitIdentifier": "UNIT-001",
+  "appVersion": "1.0.0",
+  "queue": "esto no es json"
+}
+
+### Validación: queue es un arreglo vacío → 400
+POST {{baseUrl}}/Jobs/sendCheckInOutQueue
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitIdentifier": "UNIT-001",
+  "appVersion": "1.0.0",
+  "queue": "[]"
+}

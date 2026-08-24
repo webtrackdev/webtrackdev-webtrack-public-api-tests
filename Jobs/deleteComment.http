@@ -1,0 +1,32 @@
+### Eliminar un comentario de un job — resultado esperado (200)
+POST {{baseUrl}}/Jobs/deleteComment
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "jobCommentId": 1
+}
+
+### Sin token → 401
+POST {{baseUrl}}/Jobs/deleteComment
+Content-Type: application/json
+
+{
+  "jobCommentId": 1
+}
+
+### Validación: sin jobCommentId → 400
+POST {{baseUrl}}/Jobs/deleteComment
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{}
+
+### Validación: jobCommentId menor o igual a 0 → 400
+POST {{baseUrl}}/Jobs/deleteComment
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "jobCommentId": 0
+}

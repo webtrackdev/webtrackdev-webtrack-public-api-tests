@@ -1,0 +1,98 @@
+### =====================================================
+### WorkflowExecution/save - Casos de prueba (WD-1582)
+### Crea o actualiza una ejecución de workflow (upsert por workflowExecutionId)
+### =====================================================
+
+### Test 1: Crear una ejecución de workflow nueva (happy path) — 200
+POST {{baseUrl}}/WorkflowExecution/save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "workflowTypeId": 1,
+  "workflowStatusId": 1,
+  "externalWorkflowId": "wf-external-12345",
+  "externalRunId": "run-external-67890",
+  "inputJson": "{\"routeId\": 123, \"unitId\": 456}",
+  "startTime": "2026-08-21T14:30:00",
+  "routeAssignmentId": 1,
+  "useSignals": true
+}
+
+### Test 2: Actualizar una ejecución existente a completada con resultado — 200
+POST {{baseUrl}}/WorkflowExecution/save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "workflowExecutionId": 1,
+  "workflowStatusId": 2,
+  "resultJson": "{\"success\": true, \"assignmentId\": 789}",
+  "endTime": "2026-08-21T14:35:00"
+}
+
+### Test 3: Marcar una ejecución existente como fallida con mensaje de error — 200
+POST {{baseUrl}}/WorkflowExecution/save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "workflowExecutionId": 1,
+  "workflowStatusId": 3,
+  "errorMessage": "Failed to process route assignment",
+  "endTime": "2026-08-21T14:40:00"
+}
+
+### Test 4: Ejecución hija con parentWorkflowExecutionId — 200
+POST {{baseUrl}}/WorkflowExecution/save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "workflowTypeId": 1,
+  "workflowStatusId": 1,
+  "externalWorkflowId": "wf-external-child-001",
+  "externalRunId": "run-external-child-001",
+  "startTime": "2026-08-21T15:00:00",
+  "parentWorkflowExecutionId": 1,
+  "useSignals": false
+}
+
+### Test 5: Sin token → 401
+POST {{baseUrl}}/WorkflowExecution/save
+Content-Type: application/json
+
+{
+  "workflowTypeId": 1,
+  "workflowStatusId": 1,
+  "externalWorkflowId": "wf-external-12345",
+  "externalRunId": "run-external-67890"
+}
+
+### Test 6: Body con tipo inválido (workflowTypeId como texto) → 400
+POST {{baseUrl}}/WorkflowExecution/save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "workflowTypeId": "no-es-numero",
+  "workflowStatusId": 1
+}
+
+### Test 7: Body vacío, el SP no puede guardar sin datos mínimos → 400
+POST {{baseUrl}}/WorkflowExecution/save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{}
+
+### Test 8: Actualizar una ejecución inexistente → 400
+POST {{baseUrl}}/WorkflowExecution/save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "workflowExecutionId": 999999999,
+  "workflowStatusId": 2,
+  "endTime": "2026-08-21T14:35:00"
+}

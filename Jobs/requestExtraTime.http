@@ -1,0 +1,53 @@
+### Solicitar tiempo extra para un job — resultado esperado (200)
+POST {{baseUrl}}/Jobs/requestExtraTime
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "jobId": 1,
+  "extraTime": 30,
+  "comment": "Se necesita más tiempo para completar el trabajo",
+  "latitude": 14.634915,
+  "longitude": -90.506882
+}
+
+### Sin token → 401
+POST {{baseUrl}}/Jobs/requestExtraTime
+Content-Type: application/json
+
+{
+  "jobId": 1,
+  "extraTime": 30,
+  "comment": "Se necesita más tiempo para completar el trabajo"
+}
+
+### Validación: sin jobId → 400
+POST {{baseUrl}}/Jobs/requestExtraTime
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "extraTime": 30,
+  "comment": "Se necesita más tiempo"
+}
+
+### Validación: sin extraTime → 400
+POST {{baseUrl}}/Jobs/requestExtraTime
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "jobId": 1,
+  "comment": "Se necesita más tiempo"
+}
+
+### Validación: extraTime menor o igual a 0 → 400
+POST {{baseUrl}}/Jobs/requestExtraTime
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "jobId": 1,
+  "extraTime": 0,
+  "comment": "Se necesita más tiempo"
+}

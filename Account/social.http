@@ -1,0 +1,12 @@
+### =====================================================
+### Social - GET /account/social
+### Lista las cuentas externas vinculadas del usuario
+### autenticado (solo metadatos, sin ProviderKey)
+### =====================================================
+
+### Test 1: Listar vinculaciones sociales (happy path) — 200
+GET {{baseUrl}}/account/social
+Authorization: Bearer {{token}}
+
+### Test 2: Sin token — 401
+GET {{baseUrl}}/account/social

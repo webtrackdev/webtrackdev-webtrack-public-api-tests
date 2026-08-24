@@ -1,0 +1,12 @@
+### =====================================================
+### 2FA Recovery Codes Regenerate - POST /account/2fa/recovery-codes/regenerate
+### Regenera los códigos de recuperación del usuario
+### (invalida los anteriores)
+### =====================================================
+
+### Test 1: Regenerar códigos de recuperación (happy path) — 200
+POST {{baseUrl}}/account/2fa/recovery-codes/regenerate
+Authorization: Bearer {{token}}
+
+### Test 2: Sin token — 401
+POST {{baseUrl}}/account/2fa/recovery-codes/regenerate

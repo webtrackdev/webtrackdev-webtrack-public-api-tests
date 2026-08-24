@@ -1,0 +1,58 @@
+### Insertar comentario en una asignación de ruta — resultado esperado (200)
+POST {{baseUrl}}/Route/insertComment
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "routeAssignmentId": 90012345,
+  "comment": "Cliente llamó para reportar atraso en la entrega. ETA actualizado a 3:30 PM."
+}
+
+### Insertar comentario con tipo de comentario — resultado esperado (200)
+POST {{baseUrl}}/Route/insertComment
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "routeAssignmentId": 90012345,
+  "comment": "Unidad detenida por tráfico en ruta al Atlántico.",
+  "routeCommentTypeId": 1
+}
+
+### Sin token → 401
+POST {{baseUrl}}/Route/insertComment
+Content-Type: application/json
+
+{
+  "routeAssignmentId": 90012345,
+  "comment": "Comentario sin autenticación"
+}
+
+### Sin RouteAssignmentId → 400 (requerido y mayor que 0)
+POST {{baseUrl}}/Route/insertComment
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "comment": "Comentario sin asignación"
+}
+
+### Comment vacío → 400 (requerido)
+POST {{baseUrl}}/Route/insertComment
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "routeAssignmentId": 90012345,
+  "comment": ""
+}
+
+### RouteAssignmentId inexistente → 400 (el comentario no se puede insertar)
+POST {{baseUrl}}/Route/insertComment
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "routeAssignmentId": 999999999,
+  "comment": "Comentario a asignación que no existe"
+}

@@ -1,0 +1,47 @@
+### =====================================================
+### Customer/delete - Test Cases
+### NOTA: el endpoint ahora es [HttpPost] (antes HttpDelete)
+### =====================================================
+
+### Test 1: Eliminar cliente por customerId — resultado esperado (200)
+POST {{baseUrl}}/Customer/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "customerId": 126
+}
+
+### Test 2: Eliminar cliente por privateCode (filtro alterno) — resultado esperado (200)
+POST {{baseUrl}}/Customer/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "privateCode": "CEMACO-TEST"
+}
+
+### Test 3: Sin token → 401
+POST {{baseUrl}}/Customer/delete
+Content-Type: application/json
+
+{
+  "customerId": 126
+}
+
+### Test 4: Validación - sin customerId ni privateCode → 400
+POST {{baseUrl}}/Customer/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+}
+
+### Test 5: Cliente inexistente → 404
+POST {{baseUrl}}/Customer/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "customerId": 999999999
+}

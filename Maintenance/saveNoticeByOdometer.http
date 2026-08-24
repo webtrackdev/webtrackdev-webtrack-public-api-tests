@@ -1,0 +1,62 @@
+### Crear aviso de mantenimiento por odómetro (noticeId null = crear) — 200
+POST {{baseUrl}}/Maintenance/saveNoticeByOdometer
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "noticeId": null,
+  "unitId": 1,
+  "notificationEmails": "taller@ejemplo.com;supervisor@ejemplo.com",
+  "maintenanceLineId": 1,
+  "maintenanceRangeId": 1,
+  "interval": 5000,
+  "nextEvent": 55000,
+  "message": "Servicio mayor cada 5,000 km",
+  "noticeTypeId2": 1
+}
+
+### Actualizar aviso existente (noticeId con valor) — 200
+POST {{baseUrl}}/Maintenance/saveNoticeByOdometer
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "noticeId": 1,
+  "unitId": 1,
+  "notificationEmails": "taller@ejemplo.com",
+  "maintenanceLineId": 1,
+  "maintenanceRangeId": 1,
+  "interval": 10000,
+  "nextEvent": 60000,
+  "message": "Servicio mayor cada 10,000 km (actualizado)",
+  "noticeTypeId2": 1
+}
+
+### Sin token → 401
+POST {{baseUrl}}/Maintenance/saveNoticeByOdometer
+Content-Type: application/json
+
+{
+  "noticeId": null,
+  "unitId": 1,
+  "notificationEmails": "taller@ejemplo.com",
+  "interval": 5000,
+  "nextEvent": 55000,
+  "message": "Servicio mayor",
+  "noticeTypeId2": 1
+}
+
+### Validación: interval con tipo inválido → 400
+POST {{baseUrl}}/Maintenance/saveNoticeByOdometer
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "noticeId": null,
+  "unitId": 1,
+  "notificationEmails": "taller@ejemplo.com",
+  "interval": "no-numerico",
+  "nextEvent": 55000,
+  "message": "Servicio mayor",
+  "noticeTypeId2": 1
+}

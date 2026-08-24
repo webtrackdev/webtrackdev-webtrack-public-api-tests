@@ -1,0 +1,12 @@
+### Obtener asignaciones (planes de trabajo) del usuario autenticado — resultado esperado (200)
+POST {{baseUrl}}/Jobs/getAssignments
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{}
+
+### Sin token → 401
+POST {{baseUrl}}/Jobs/getAssignments
+Content-Type: application/json
+
+{}

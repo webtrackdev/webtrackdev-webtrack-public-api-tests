@@ -1,0 +1,34 @@
+### =====================================================
+### Delete Users (batch) - Test Cases (WD-1433)
+### =====================================================
+
+### Test 1: Deactivate two users
+POST {{baseUrl}}/user/deleteUsers
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "users": [
+    "user1@example.com",
+    "user2@example.com"
+  ]
+}
+
+### Test 2: Error - Empty list (should return 400)
+POST {{baseUrl}}/user/deleteUsers
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "users": []
+}
+
+### Test 3: Sin token de autorización → 401
+POST {{baseUrl}}/user/deleteUsers
+Content-Type: application/json
+
+{
+  "users": [
+    "user1@example.com"
+  ]
+}

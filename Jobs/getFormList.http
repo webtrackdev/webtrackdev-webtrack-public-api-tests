@@ -1,0 +1,12 @@
+### Obtener la lista de formularios de jobs del usuario — resultado esperado (200)
+POST {{baseUrl}}/Jobs/getFormList
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{}
+
+### Sin token → 401
+POST {{baseUrl}}/Jobs/getFormList
+Content-Type: application/json
+
+{}

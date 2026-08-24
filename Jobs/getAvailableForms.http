@@ -1,0 +1,41 @@
+### Obtener formularios disponibles de un job (con secciones y preguntas) — resultado esperado (200)
+POST {{baseUrl}}/Jobs/getAvailableForms
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "jobId": 1
+}
+
+### Sin token → 401
+POST {{baseUrl}}/Jobs/getAvailableForms
+Content-Type: application/json
+
+{
+  "jobId": 1
+}
+
+### Validación: sin jobId → 400
+POST {{baseUrl}}/Jobs/getAvailableForms
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{}
+
+### Validación: jobId menor o igual a 0 → 400
+POST {{baseUrl}}/Jobs/getAvailableForms
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "jobId": 0
+}
+
+### Job inexistente: devuelve lista vacía de formularios — resultado esperado (200)
+POST {{baseUrl}}/Jobs/getAvailableForms
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "jobId": 999999999
+}

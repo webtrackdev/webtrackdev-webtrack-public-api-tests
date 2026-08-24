@@ -1,0 +1,57 @@
+### Monitoreo de odómetro sin filtros (todas las unidades visibles) — 200
+POST {{baseUrl}}/Unit/monitoringOdometer
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+}
+
+### Monitoreo de odómetro filtrado por unitId — 200
+POST {{baseUrl}}/Unit/monitoringOdometer
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitId": 1
+}
+
+### Monitoreo de odómetro filtrado por privateCode — 200
+POST {{baseUrl}}/Unit/monitoringOdometer
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "privateCode": "UNIT-GT-5001"
+}
+
+### Monitoreo de odómetro filtrado por nombre y deviceIdentifier — 200
+POST {{baseUrl}}/Unit/monitoringOdometer
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitName": "Camion",
+  "deviceIdentifier": "358000000000001"
+}
+
+### Sin token → 401
+POST {{baseUrl}}/Unit/monitoringOdometer
+Content-Type: application/json
+
+{
+  "unitId": 1
+}
+
+### Sin body (filters null) → 400
+POST {{baseUrl}}/Unit/monitoringOdometer
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+### Filtro con unidad inexistente (lista vacía, count 0) — 200
+POST {{baseUrl}}/Unit/monitoringOdometer
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitId": 999999999
+}

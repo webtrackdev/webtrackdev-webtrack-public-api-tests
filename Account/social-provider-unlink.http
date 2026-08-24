@@ -1,0 +1,17 @@
+### =====================================================
+### Social Unlink (alias) - POST /account/social/{provider}/unlink
+### Alias explícito de POST /account/social/{provider}:
+### desvincula la cuenta externa del proveedor indicado.
+### Responde 204 sin body.
+### =====================================================
+
+### Test 1: Desvincular cuenta de Google (happy path) — 204
+POST {{baseUrl}}/account/social/google/unlink
+Authorization: Bearer {{token}}
+
+### Test 2: Desvincular cuenta de Apple — 204
+POST {{baseUrl}}/account/social/apple/unlink
+Authorization: Bearer {{token}}
+
+### Test 3: Sin token — 401
+POST {{baseUrl}}/account/social/google/unlink

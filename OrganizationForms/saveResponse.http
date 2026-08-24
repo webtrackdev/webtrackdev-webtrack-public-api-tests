@@ -1,0 +1,123 @@
+### Guardar respuesta de formulario con responses simples — resultado esperado (200)
+POST {{baseUrl}}/OrganizationForms/saveResponse
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "organizationFormId": 1,
+  "responseDate": "2026-08-21T10:00:00",
+  "responses": [
+    { "questionId": 1, "responseText": "Respuesta de prueba 1" },
+    { "questionId": 2, "responseText": "Respuesta de prueba 2" }
+  ]
+}
+
+### Guardar respuesta completa (responses + tableResponses + job + coordenadas + copia al cliente) — resultado esperado (200)
+POST {{baseUrl}}/OrganizationForms/saveResponse
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "organizationFormId": 1,
+  "responseDate": "2026-08-21T10:30:00",
+  "responses": [
+    { "questionId": 1, "responseText": "Todo en orden" }
+  ],
+  "tableResponses": [
+    { "sectionId": 1, "rowId": 1, "responses": ["OK", "Sin observaciones"] },
+    { "sectionId": 1, "rowId": 2, "responses": ["OK", "Revisado"] }
+  ],
+  "copyToCustomer": true,
+  "customerEmails": "cliente@email.com",
+  "jobId": 1,
+  "workplanExecutionId": 1,
+  "orderId": 1,
+  "returnCount": 1,
+  "deviceLatitude": 14.634915,
+  "deviceLongitude": -90.506882
+}
+
+### Guardar respuesta de formulario solo-tabla (sin responses, solo tableResponses) — resultado esperado (200)
+POST {{baseUrl}}/OrganizationForms/saveResponse
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "organizationFormId": 1,
+  "responseDate": "2026-08-21T11:00:00",
+  "tableResponses": [
+    { "sectionId": 1, "rowId": 1, "responses": ["Valor A", "Valor B"] }
+  ]
+}
+
+### Guardar respuesta de formulario global de Webtrack (id negativo, p.ej. -1) — resultado esperado (200)
+POST {{baseUrl}}/OrganizationForms/saveResponse
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "organizationFormId": -1,
+  "responseDate": "2026-08-21T11:30:00",
+  "responses": [
+    { "questionId": 1, "responseText": "Respuesta a formulario global" }
+  ]
+}
+
+### Sin token → 401
+POST {{baseUrl}}/OrganizationForms/saveResponse
+Content-Type: application/json
+
+{
+  "organizationFormId": 1,
+  "responseDate": "2026-08-21T10:00:00",
+  "responses": [
+    { "questionId": 1, "responseText": "Respuesta de prueba" }
+  ]
+}
+
+### Validación: sin organizationFormId → 400
+POST {{baseUrl}}/OrganizationForms/saveResponse
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "responseDate": "2026-08-21T10:00:00",
+  "responses": [
+    { "questionId": 1, "responseText": "Respuesta de prueba" }
+  ]
+}
+
+### Validación: organizationFormId = 0 (no identifica formulario) → 400
+POST {{baseUrl}}/OrganizationForms/saveResponse
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "organizationFormId": 0,
+  "responseDate": "2026-08-21T10:00:00",
+  "responses": [
+    { "questionId": 1, "responseText": "Respuesta de prueba" }
+  ]
+}
+
+### Validación: sin responseDate → 400
+POST {{baseUrl}}/OrganizationForms/saveResponse
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "organizationFormId": 1,
+  "responses": [
+    { "questionId": 1, "responseText": "Respuesta de prueba" }
+  ]
+}
+
+### Validación: sin responses ni tableResponses → 400
+POST {{baseUrl}}/OrganizationForms/saveResponse
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "organizationFormId": 1,
+  "responseDate": "2026-08-21T10:00:00"
+}

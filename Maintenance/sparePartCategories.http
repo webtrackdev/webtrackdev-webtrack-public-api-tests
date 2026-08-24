@@ -1,0 +1,6 @@
+### Obtener catálogo de categorías de repuestos — 200
+GET {{baseUrl}}/Maintenance/sparePartCategories
+Authorization: Bearer {{token}}
+
+### Sin token → 401
+GET {{baseUrl}}/Maintenance/sparePartCategories

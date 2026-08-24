@@ -1,0 +1,142 @@
+### WD-1912 — Order/createForzaGuide
+# Resuelve la orden dentro de la organización del token (cualquier origen). Si no
+# existe y la organización tiene Odoo habilitado, corre el MISMO sync de Odoo de
+# Reactive (Foundation.IntegrationSyncService) y vuelve a buscar. No crea órdenes,
+# clientes ni sucursales: para eso están el sync, v3/Customer y v3/Location.
+# Una guía por despacho (picking): con varios despachos envía dispatchNumber o
+# externalDispatchId junto con la venta; si solo va la venta, el API descarta
+# cancelados y con guía activa, y elige solo si queda exactamente uno
+# (warning ORDER_HAS_MULTIPLE_DISPATCHES). Idempotente por despacho.
+# Errores con el AppError estándar (number + message): 400 = 1011, 500 = 1004.
+# El municipio va como HeaderCodeTownship de Forza (guide.shipping.townshipCode,
+# ver getForzaTownships).
+
+### 1) Orden de Odoo por número de venta (si aún no está en Reactive, el sync la importa)
+POST {{baseUrl}}/order/createForzaGuide
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "order": { "orderNumber": "S01476" },
+  "guide": {
+    "serviceType": "STD",
+    "recipient": { "phone": "23456789", "email": "recepcion@prueba.test" },
+    "shipping": { "townshipCode": "0101", "address1": "12 calle 1-25 zona 10" },
+    "packages": { "count": 1, "totalWeightKg": 2.5, "declaredValue": 150.00, "description": "Medicamentos", "fragile": true }
+  }
+}
+
+### 2) Misma orden otra vez → guía reutilizada (guide.reused = true)
+POST {{baseUrl}}/order/createForzaGuide
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "order": { "orderNumber": "S01476" },
+  "guide": { "serviceType": "STD", "recipient": { "phone": "23456789" }, "shipping": { "townshipCode": "0101" } }
+}
+
+### 3) Forzar guía adicional
+POST {{baseUrl}}/order/createForzaGuide
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "order": { "orderNumber": "S01476" },
+  "guide": { "serviceType": "STD", "recipient": { "phone": "23456789" }, "shipping": { "townshipCode": "0101" }, "allowAdditionalGuide": true }
+}
+
+### 4) Venta con varios despachos: elegir uno con dispatchNumber
+POST {{baseUrl}}/order/createForzaGuide
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "order": { "orderNumber": "S01474", "dispatchNumber": "LSFE/OUT/01151" },
+  "guide": { "serviceType": "STD", "recipient": { "phone": "23456789" }, "shipping": { "townshipCode": "0101" } }
+}
+
+### 5) Orden de Reactive por id (cualquier origen: Manual, Import, ...)
+POST {{baseUrl}}/order/createForzaGuide
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "order": { "orderId": 1 },
+  "guide": { "serviceType": "STD", "recipient": { "phone": "23456789" }, "shipping": { "townshipCode": "0101" } }
+}
+
+### 6) COD (contra entrega)
+POST {{baseUrl}}/order/createForzaGuide
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "order": { "orderNumber": "S01475" },
+  "guide": {
+    "serviceType": "COD",
+    "recipient": { "phone": "23456789" },
+    "shipping": { "townshipCode": "0101" },
+    "packages": { "count": 1, "totalWeightKg": 1, "declaredValue": 250.00, "description": "Pedido COD" },
+    "cod": { "amount": 250.00, "bankId": "1", "bankAccountName": "Farmacia X, S.A.", "bankAccountId": "0123456789", "bankAccountType": "MONETARIA" },
+    "allowAdditionalGuide": true
+  }
+}
+
+### 7) EXPRESS (entrega en centro express de Forza)
+POST {{baseUrl}}/order/createForzaGuide
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "order": { "orderNumber": "S01475" },
+  "guide": {
+    "serviceType": "EXPRESS",
+    "recipient": { "phone": "23456789" },
+    "shipping": { "townshipCode": "0101" },
+    "expressCenterCode": "226952",
+    "allowAdditionalGuide": true
+  }
+}
+
+### 8) Errores: sin townshipCode → 400 VALIDATION_FAILURE
+POST {{baseUrl}}/order/createForzaGuide
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{ "order": { "orderNumber": "S01476" }, "guide": { "serviceType": "STD", "recipient": { "phone": "23456789" }, "shipping": { "address1": "x" } } }
+
+### 9) Errores: venta en borrador en Odoo (sin despacho, el sync no la trae) → 400
+POST {{baseUrl}}/order/createForzaGuide
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{ "order": { "orderNumber": "S01310" }, "guide": { "serviceType": "STD", "recipient": { "phone": "23456789" }, "shipping": { "townshipCode": "0101" } } }
+
+### 10) Venta con dos despachos (uno cancelado): auto-selecciona el activo (warning ORDER_HAS_MULTIPLE_DISPATCHES)
+POST {{baseUrl}}/order/createForzaGuide
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{ "order": { "orderNumber": "S01474" }, "guide": { "serviceType": "STD", "recipient": { "phone": "23456789" }, "shipping": { "townshipCode": "0101" } } }
+
+### 11) Errores: despacho cancelado en Odoo → 400
+POST {{baseUrl}}/order/createForzaGuide
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{ "order": { "orderNumber": "S01474", "dispatchNumber": "LSFE/OUT/01149" }, "guide": { "serviceType": "STD", "recipient": { "phone": "23456789" }, "shipping": { "townshipCode": "0101" } } }
+
+### 12) Errores: orden inexistente (Reactive y Odoo) → 400
+POST {{baseUrl}}/order/createForzaGuide
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{ "order": { "orderNumber": "S09999" }, "guide": { "serviceType": "STD", "recipient": { "phone": "23456789" }, "shipping": { "townshipCode": "0101" } } }
+
+### 13) Errores: el despacho no pertenece a la venta referida → 400
+POST {{baseUrl}}/order/createForzaGuide
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{ "order": { "orderNumber": "S01476", "dispatchNumber": "LSFE/OUT/01151" }, "guide": { "serviceType": "STD", "recipient": { "phone": "23456789" }, "shipping": { "townshipCode": "0101" } } }

@@ -1,0 +1,59 @@
+### =====================================================
+### Social Login - POST /account/social/login
+### Login con proveedor externo (google / facebook / apple).
+### El idToken se obtiene del SDK nativo del proveedor;
+### la cuenta debe estar previamente vinculada (social/link).
+### Anónimo (no requiere Authorization).
+### provider no distingue mayúsculas (google == Google). Con los
+### tokens de placeholder de este archivo solo se puede verificar
+### 401/400/503: el 200 y el 409 requieren un id_token real.
+### =====================================================
+
+### Test 1: Login con Google y cuenta vinculada (happy path) — 200
+POST {{baseUrl}}/account/social/login
+Content-Type: application/json
+
+{
+  "provider": "google",
+  "idToken": "ID_TOKEN_DEL_SDK_DE_GOOGLE",
+  "apiKey": "{{apiKey}}"
+}
+
+### Test 2: idToken inválido o expirado — 401
+POST {{baseUrl}}/account/social/login
+Content-Type: application/json
+
+{
+  "provider": "google",
+  "idToken": "TOKEN_INVALIDO",
+  "apiKey": "{{apiKey}}"
+}
+
+### Test 3: Cuenta externa NO vinculada a un usuario — 409 (EXTERNAL_NOT_LINKED)
+POST {{baseUrl}}/account/social/login
+Content-Type: application/json
+
+{
+  "provider": "facebook",
+  "idToken": "ID_TOKEN_DE_CUENTA_SIN_VINCULAR",
+  "apiKey": "{{apiKey}}"
+}
+
+### Test 4: Proveedor desconocido — 400 (EXTERNAL_PROVIDER_UNSUPPORTED). 503 solo si el proveedor es conocido pero no está configurado
+POST {{baseUrl}}/account/social/login
+Content-Type: application/json
+
+{
+  "provider": "twitter",
+  "idToken": "CUALQUIER_TOKEN",
+  "apiKey": "{{apiKey}}"
+}
+
+### Test 5: Campo requerido faltante (sin idToken) — 400
+POST {{baseUrl}}/account/social/login
+Content-Type: application/json
+
+{
+  "provider": "google",
+  "apiKey": "{{apiKey}}"
+}

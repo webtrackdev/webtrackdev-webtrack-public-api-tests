@@ -1,0 +1,48 @@
+### Listar respuestas del usuario del día actual sin filtros (body vacío) — resultado esperado (200)
+POST {{baseUrl}}/OrganizationForms/getResponses
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{}
+
+### Listar respuestas filtrando por formulario — resultado esperado (200)
+POST {{baseUrl}}/OrganizationForms/getResponses
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "organizationFormId": 1
+}
+
+### Listar respuestas filtrando por job — resultado esperado (200)
+POST {{baseUrl}}/OrganizationForms/getResponses
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "jobId": 1
+}
+
+### Formulario inexistente → lista vacía — resultado esperado (200)
+POST {{baseUrl}}/OrganizationForms/getResponses
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "organizationFormId": 999999999
+}
+
+### Sin token → 401
+POST {{baseUrl}}/OrganizationForms/getResponses
+Content-Type: application/json
+
+{}
+
+### Validación: organizationFormId con tipo inválido (texto en campo numérico) → 400
+POST {{baseUrl}}/OrganizationForms/getResponses
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "organizationFormId": "abc"
+}

@@ -1,0 +1,34 @@
+### Obtener información de una asignación de ruta — resultado esperado (200)
+POST {{baseUrl}}/Route/getAssignmentInformation
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "routeAssignmentId": 90012345
+}
+
+### Sin token → 401
+POST {{baseUrl}}/Route/getAssignmentInformation
+Content-Type: application/json
+
+{
+  "routeAssignmentId": 90012345
+}
+
+### RouteAssignmentId inválido (0) → 400 (requerido y mayor que 0)
+POST {{baseUrl}}/Route/getAssignmentInformation
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "routeAssignmentId": 0
+}
+
+### RouteAssignmentId inexistente → 400 (no encontrada o sin acceso)
+POST {{baseUrl}}/Route/getAssignmentInformation
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "routeAssignmentId": 999999999
+}

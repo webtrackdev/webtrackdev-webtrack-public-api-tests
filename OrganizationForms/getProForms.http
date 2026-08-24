@@ -1,0 +1,39 @@
+### Listar formularios completos (headers + secciones + preguntas + respuestas) sin filtro — resultado esperado (200)
+POST {{baseUrl}}/OrganizationForms/getProForms
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{}
+
+### Listar formularios completos filtrando por tipo de formulario — resultado esperado (200)
+POST {{baseUrl}}/OrganizationForms/getProForms
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "formTypeId": 1
+}
+
+### Tipo de formulario inexistente → lista vacía — resultado esperado (200)
+POST {{baseUrl}}/OrganizationForms/getProForms
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "formTypeId": 250
+}
+
+### Sin token → 401
+POST {{baseUrl}}/OrganizationForms/getProForms
+Content-Type: application/json
+
+{}
+
+### Validación: formTypeId fuera de rango de byte (0-255) → 400
+POST {{baseUrl}}/OrganizationForms/getProForms
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "formTypeId": 999
+}

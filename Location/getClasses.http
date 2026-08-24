@@ -1,0 +1,6 @@
+### Obtener catálogo de clases de referencia — resultado esperado (200)
+POST {{baseUrl}}/Location/getClasses
+Authorization: Bearer {{token}}
+
+### Sin token → 401
+POST {{baseUrl}}/Location/getClasses

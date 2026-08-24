@@ -1,0 +1,55 @@
+### =====================================================
+### Social Link - POST /account/social/link
+### Vincula una cuenta externa (google / facebook / apple)
+### al usuario autenticado. provider no distingue mayúsculas.
+### Con tokens de placeholder solo se verifica 401/400/503;
+### el 200 y el 409 requieren un id_token real.
+### =====================================================
+
+### Test 1: Vincular cuenta de Google (happy path) — 200
+POST {{baseUrl}}/account/social/link
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "provider": "google",
+  "idToken": "ID_TOKEN_DEL_SDK_DE_GOOGLE"
+}
+
+### Test 2: idToken inválido o expirado — 401
+POST {{baseUrl}}/account/social/link
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "provider": "google",
+  "idToken": "TOKEN_INVALIDO"
+}
+
+### Test 3: Cuenta ya vinculada a otro usuario — 409 (EXTERNAL_LINK_CONFLICT)
+POST {{baseUrl}}/account/social/link
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "provider": "google",
+  "idToken": "ID_TOKEN_DE_CUENTA_YA_VINCULADA"
+}
+
+### Test 4: Sin token — 401
+POST {{baseUrl}}/account/social/link
+Content-Type: application/json
+
+{
+  "provider": "google",
+  "idToken": "ID_TOKEN_DEL_SDK_DE_GOOGLE"
+}
+
+### Test 5: Campo requerido faltante (sin provider) — 400
+POST {{baseUrl}}/account/social/link
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "idToken": "ID_TOKEN_DEL_SDK_DE_GOOGLE"
+}

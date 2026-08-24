@@ -1,0 +1,104 @@
+### =====================================================
+### Register - POST /account/register
+### Self-register (anónimo, no requiere Authorization).
+### Reglas server-side: RoleId siempre 1001; si no viene
+### subdivisionId se crea una nueva (requiere operatorId)
+### y el usuario queda AccessLevel 2; con subdivisión
+### válida queda AccessLevel 20.
+### =====================================================
+
+### Test 1: Registro con subdivisión existente (happy path) — 200
+POST {{baseUrl}}/account/register
+Content-Type: application/json
+
+{
+  "username": "johndoe.register@example.com",
+  "password": "SecurePassword123",
+  "email": "johndoe.register@example.com",
+  "phoneNumber": "+50255551234",
+  "accessLevelId": 20,
+  "roleId": 1001,
+  "name": "Juan Pérez",
+  "operatorId": 307,
+  "organizationId": 229,
+  "divisionId": 192,
+  "subdivisionId": 336
+}
+
+### Test 2: Registro sin subdivisión (se crea una nueva; requiere operatorId) — 200
+POST {{baseUrl}}/account/register
+Content-Type: application/json
+
+{
+  "username": "janedoe.register@example.com",
+  "password": "SecurePassword123",
+  "email": "janedoe.register@example.com",
+  "phoneNumber": "+50255555678",
+  "accessLevelId": 2,
+  "roleId": 1001,
+  "name": "Jane Pérez",
+  "operatorId": 307,
+  "organizationId": 229,
+  "divisionId": 192
+}
+
+### Test 3: Sin organizationId — 400 (ORGANIZATION_REQUIRED)
+POST {{baseUrl}}/account/register
+Content-Type: application/json
+
+{
+  "username": "sinorg.register@example.com",
+  "password": "SecurePassword123",
+  "email": "sinorg.register@example.com",
+  "phoneNumber": "+50255550000",
+  "accessLevelId": 20,
+  "roleId": 1001,
+  "operatorId": 307
+}
+
+### Test 4: Username ya existente — 400
+POST {{baseUrl}}/account/register
+Content-Type: application/json
+
+{
+  "username": "johndoe.register@example.com",
+  "password": "SecurePassword123",
+  "email": "johndoe.register@example.com",
+  "phoneNumber": "+50255551234",
+  "accessLevelId": 20,
+  "roleId": 1001,
+  "operatorId": 307,
+  "organizationId": 229,
+  "divisionId": 192,
+  "subdivisionId": 336
+}
+
+### Test 5: Campo requerido faltante (sin password) — 400
+POST {{baseUrl}}/account/register
+Content-Type: application/json
+
+{
+  "username": "sinpass.register@example.com",
+  "email": "sinpass.register@example.com",
+  "phoneNumber": "+50255559999",
+  "accessLevelId": 20,
+  "roleId": 1001,
+  "organizationId": 229
+}
+
+### Test 6: Organización sin licencias disponibles — 409 (LICENSES_EXHAUSTED)
+POST {{baseUrl}}/account/register
+Content-Type: application/json
+
+{
+  "username": "sinlicencia.register@example.com",
+  "password": "SecurePassword123",
+  "email": "sinlicencia.register@example.com",
+  "phoneNumber": "+50255558888",
+  "accessLevelId": 20,
+  "roleId": 1001,
+  "operatorId": 307,
+  "organizationId": 999999999,
+  "divisionId": 1,
+  "subdivisionId": 1
+}
