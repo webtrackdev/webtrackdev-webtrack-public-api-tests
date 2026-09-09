@@ -23,3 +23,47 @@ Content-Type: application/json
     "SubdivisionPrivateCode": null
   }
 }
+### WD-2104: mover una referencia existente a otras coordenadas
+### Solo lat/lng; el resto de los campos se conserva.
+POST {{baseUrl}}/Location/save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "LocationId": 4138,
+  "LocationName": "Bodega Central (Actualizada)",
+  "Latitude": 14.6500,
+  "Longitude": -90.5100,
+  "Membership": {
+    "CustomerId": 2
+  }
+}
+
+### WD-2104: update sin coordenadas ni radio
+### Conserva lat/lng/radius actuales de la referencia.
+POST {{baseUrl}}/Location/save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "LocationId": 4138,
+  "LocationName": "Bodega Central (solo nombre)",
+  "Membership": {
+    "CustomerId": 2
+  }
+}
+
+### WD-2104: solo latitud → 400
+### Esperado: "Latitude and Longitude must be provided together".
+POST {{baseUrl}}/Location/save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "LocationId": 4138,
+  "LocationName": "Bodega Central (Actualizada)",
+  "Latitude": 14.6500,
+  "Membership": {
+    "CustomerId": 2
+  }
+}
