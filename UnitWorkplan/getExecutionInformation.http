@@ -32,3 +32,37 @@ Authorization: Bearer {{token}}
 {
   "workplanExecutionId": 999999999
 }
+
+### WD-2553 — Pedidos por ubicación en la respuesta — 200
+### Cada ubicación trae workPlanExecutionId y la lista orders con una entrada por
+### despacho: orderId, orderNumber, dispatchNumber, externalId, externalDispatchId,
+### volume, deliveredCount, pendingCount, returnedCount, orderStatusId,
+### orderStatusDescription y orderStatusCategory.
+### El campo orderNumber de la ubicación sigue siendo el texto separado por coma.
+### Una ubicación sin pedidos trae orders = [] (nunca null).
+POST {{baseUrl}}/UnitWorkplan/getExecutionInformation
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "workplanExecutionId": 1
+}
+
+### WD-2553 — Sin workplanExecutionId → 200 con lista vacía
+### El filtro del wrapper es por igualdad: no devuelve todas las ejecuciones accesibles.
+POST {{baseUrl}}/UnitWorkplan/getExecutionInformation
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{}
+
+### WD-2553 — Ejecución fuera del alcance del usuario → 200 con lista vacía
+### El filtro por unidades del usuario aplica a los DOS result sets, así que
+### tampoco se devuelven pedidos de ejecuciones ajenas.
+POST {{baseUrl}}/UnitWorkplan/getExecutionInformation
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "workplanExecutionId": 999999999
+}
