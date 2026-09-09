@@ -55,3 +55,61 @@ Authorization: Bearer {{token}}
   "locationId": 1,
   "minTime": 10
 }
+
+### WD-2553 — Reemplazar el conjunto de pedidos de la parada — 200
+### La lista reemplaza por completo: las que estaban y no vienen en el payload se
+### liberan (si no tienen devoluciones registradas). S00043 no existe y se crea.
+POST {{baseUrl}}/UnitWorkplan/editLocation
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "workPlanExecutionId": 1,
+  "locationId": 1,
+  "minTime": 15,
+  "maxTime": 45,
+  "orders": [
+    { "orderId": 1001, "volume": 10 },
+    { "orderNumber": "S00043", "volume": 2 }
+  ]
+}
+
+### WD-2553 — orders vacío quita todos los pedidos de la parada — 200
+### Las órdenes sin devoluciones se desvinculan y vuelven a Pendiente en el catálogo;
+### VisitaPunto.OrderNumber queda en null y la parada NO se recrea.
+POST {{baseUrl}}/UnitWorkplan/editLocation
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "workPlanExecutionId": 1,
+  "locationId": 1,
+  "orders": []
+}
+
+### WD-2553 — Sin la clave orders no se tocan los pedidos — 200
+### Verificar con getExecutionInformation que los pedidos siguen vinculados.
+POST {{baseUrl}}/UnitWorkplan/editLocation
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "workPlanExecutionId": 1,
+  "locationId": 1,
+  "minTime": 20,
+  "maxTime": 60
+}
+
+### WD-2553 — Pedido ambiguo al editar → 400
+### Esperado: message que empieza con "ambiguousOrders:" y la parada sin cambios.
+POST {{baseUrl}}/UnitWorkplan/editLocation
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "workPlanExecutionId": 1,
+  "locationId": 1,
+  "orders": [
+    { "orderNumber": "S00042", "volume": 1 }
+  ]
+}

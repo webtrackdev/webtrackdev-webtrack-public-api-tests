@@ -1,0 +1,35 @@
+### Anular guía por id
+POST {{baseUrl}}/Order/cancelForzaGuide
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "guideId": 22
+}
+
+### Anular guía por número de rastreo (serie + número: FD + 30854701)
+POST {{baseUrl}}/Order/cancelForzaGuide
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "trackingNumber": "FD30854701"
+}
+
+### Idempotencia: repetir la anulación devuelve alreadyCancelled = true sin llamar a Forza
+POST {{baseUrl}}/Order/cancelForzaGuide
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "trackingNumber": "FD30854701"
+}
+
+### 400: trackingNumber inválido (sin serie o sin número)
+POST {{baseUrl}}/Order/cancelForzaGuide
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "trackingNumber": "30854701"
+}

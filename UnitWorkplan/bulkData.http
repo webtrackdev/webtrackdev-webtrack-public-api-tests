@@ -1,6 +1,6 @@
 ### WD-1750 - Bulk Data unificado (un solo SP transaccional)
 ### Caso 1: referencias existentes por locationId y por privateCode
-POST {{baseUrl}}/v3/UnitWorkplan/bulkData
+POST {{baseUrl}}/UnitWorkplan/bulkData
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
@@ -26,7 +26,7 @@ Authorization: Bearer {{token}}
 
 ### Caso 2: creación de referencia nueva con cliente (locationsCreated = 1)
 ### Verificar en DB: Locations con CustomerId, org del cliente, UserLocations, AuditCreateSourceId = 2
-POST {{baseUrl}}/v3/UnitWorkplan/bulkData
+POST {{baseUrl}}/UnitWorkplan/bulkData
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
@@ -49,7 +49,7 @@ Authorization: Bearer {{token}}
 
 ### Caso 3: creación solo con dirección (sin coordenadas) → se crea en 0,0
 ### locationsCreatedWithoutCoordinates = 1; la geocodificación en background la completará (pendiente WD-1688)
-POST {{baseUrl}}/v3/UnitWorkplan/bulkData
+POST {{baseUrl}}/UnitWorkplan/bulkData
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
@@ -70,7 +70,7 @@ Authorization: Bearer {{token}}
 
 ### Caso 4: fila inválida (sin privateCode ni datos para crear) → 400 y NO se crea nada
 ### Verificar en DB que no quedó Visita huérfana (rollback total)
-POST {{baseUrl}}/v3/UnitWorkplan/bulkData
+POST {{baseUrl}}/UnitWorkplan/bulkData
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
@@ -93,7 +93,7 @@ Authorization: Bearer {{token}}
 }
 
 ### Caso 5: referencia duplicada en el payload → se deduplica (no truena la PK de VisitaPunto)
-POST {{baseUrl}}/v3/UnitWorkplan/bulkData
+POST {{baseUrl}}/UnitWorkplan/bulkData
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
@@ -115,7 +115,7 @@ Authorization: Bearer {{token}}
 }
 
 ### Caso 6: unidad inexistente → 400 Unit not found
-POST {{baseUrl}}/v3/UnitWorkplan/bulkData
+POST {{baseUrl}}/UnitWorkplan/bulkData
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
@@ -125,4 +125,196 @@ Authorization: Bearer {{token}}
     "startDate": "2026-08-06T08:00:00",
     "endDate": "2026-08-06T18:00:00",
     "locations": []
+}
+
+### WD-2553 - Pedidos por ubicación
+### Caso 7: pedido nuevo y pedido existente por orderId
+### El número S00042 no existe en el catálogo y se crea (Source = WorkplanExecution);
+### la orden 1001 ya existe y solo se vincula.
+### Esperado: ordersLinked = 2, ordersCreated = 1, unresolvedOrders = []
+POST {{baseUrl}}/UnitWorkplan/bulkData
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "unitPrivateCode": "U-001",
+    "workplanName": "WD-2553 pedidos",
+    "startDate": "2026-09-15T08:00:00",
+    "endDate": "2026-09-15T18:00:00",
+    "locations": [
+        {
+            "locationId": 1,
+            "radius": 100,
+            "orders": [
+                { "orderNumber": "S00042", "volume": 10 },
+                { "orderId": 1001, "volume": 4 }
+            ]
+        }
+    ]
+}
+
+### Caso 8: venta con dos despachos, desambiguados con dispatchNumber
+### Cada despacho es una orden distinta del catálogo y se vincula por separado.
+### Esperado: ordersLinked = 2, ordersCreated = 0, dos filas en WorkplanExecutionOrders
+POST {{baseUrl}}/UnitWorkplan/bulkData
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "unitPrivateCode": "U-001",
+    "workplanName": "WD-2553 dos despachos",
+    "startDate": "2026-09-15T08:00:00",
+    "endDate": "2026-09-15T18:00:00",
+    "locations": [
+        {
+            "locationId": 1,
+            "radius": 100,
+            "orders": [
+                { "orderNumber": "S00042", "dispatchNumber": "WH/OUT/00042", "volume": 6 },
+                { "orderNumber": "S00042", "dispatchNumber": "WH/OUT/00043", "volume": 4 }
+            ]
+        }
+    ]
+}
+
+### Caso 9: desambiguación por externalDispatchId (id del despacho en el origen)
+### Esperado: ordersLinked = 1, ordersCreated = 0
+POST {{baseUrl}}/UnitWorkplan/bulkData
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "unitPrivateCode": "U-001",
+    "workplanName": "WD-2553 por externalDispatchId",
+    "startDate": "2026-09-15T08:00:00",
+    "endDate": "2026-09-15T18:00:00",
+    "locations": [
+        {
+            "locationId": 1,
+            "radius": 100,
+            "orders": [
+                { "externalDispatchId": "7001", "volume": 3 }
+            ]
+        }
+    ]
+}
+
+### Caso 10: venta con varios despachos SIN desambiguador → 400 ambiguousOrders
+### La validación ocurre antes de abrir la transacción: NO se crea el plan.
+### Esperado: message con los despachos candidatos en formato orderId:dispatchNumber
+### Verificar en DB que no quedó Visita nueva para la unidad
+POST {{baseUrl}}/UnitWorkplan/bulkData
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "unitPrivateCode": "U-001",
+    "workplanName": "WD-2553 ambigua",
+    "startDate": "2026-09-15T08:00:00",
+    "endDate": "2026-09-15T18:00:00",
+    "locations": [
+        {
+            "locationId": 1,
+            "radius": 100,
+            "orders": [
+                { "orderNumber": "S00042", "volume": 10 }
+            ]
+        }
+    ]
+}
+
+### Caso 11: ambigüedad en la segunda ubicación → tampoco se crea la primera
+### Comprueba que el rechazo es transaccional para todo el payload
+POST {{baseUrl}}/UnitWorkplan/bulkData
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "unitPrivateCode": "U-001",
+    "workplanName": "WD-2553 ambigua parcial",
+    "startDate": "2026-09-15T08:00:00",
+    "endDate": "2026-09-15T18:00:00",
+    "locations": [
+        { "locationId": 1, "radius": 100, "orders": [ { "orderId": 1001, "volume": 1 } ] },
+        { "locationId": 2, "radius": 100, "orders": [ { "orderNumber": "S00042", "volume": 2 } ] }
+    ]
+}
+
+### Caso 12: referencia que no resuelve ni se puede crear (sin orderNumber)
+### Un pedido no resuelto NO impide crear el plan; se reporta con su motivo.
+### Esperado: workPlanExecutionId válido, ordersLinked = 1 y unresolvedOrders con la entrada descartada
+POST {{baseUrl}}/UnitWorkplan/bulkData
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "unitPrivateCode": "U-001",
+    "workplanName": "WD-2553 no resuelta",
+    "startDate": "2026-09-15T08:00:00",
+    "endDate": "2026-09-15T18:00:00",
+    "locations": [
+        {
+            "locationId": 1,
+            "radius": 100,
+            "orders": [
+                { "orderId": 1001, "volume": 1 },
+                { "externalId": "999999", "volume": 2 }
+            ]
+        }
+    ]
+}
+
+### Caso 13: el mismo pedido en dos ubicaciones del payload → gana la primera
+### Esperado: ordersLinked = 1 y unresolvedOrders con la entrada duplicada
+POST {{baseUrl}}/UnitWorkplan/bulkData
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "unitPrivateCode": "U-001",
+    "workplanName": "WD-2553 duplicada",
+    "startDate": "2026-09-15T08:00:00",
+    "endDate": "2026-09-15T18:00:00",
+    "locations": [
+        { "locationId": 1, "radius": 100, "orders": [ { "orderId": 1002, "volume": 5 } ] },
+        { "locationId": 2, "radius": 100, "orders": [ { "orderId": 1002, "volume": 5 } ] }
+    ]
+}
+
+### Caso 14: lista de pedidos vacía → equivalente a omitirla en creación
+### En un plan nuevo no hay nada que quitar. Esperado: ordersLinked = 0
+POST {{baseUrl}}/UnitWorkplan/bulkData
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "unitPrivateCode": "U-001",
+    "workplanName": "WD-2553 orders vacío",
+    "startDate": "2026-09-15T08:00:00",
+    "endDate": "2026-09-15T18:00:00",
+    "locations": [
+        { "locationId": 1, "radius": 100, "orders": [] }
+    ]
+}
+
+### Caso 15: volume negativo → 400 por validación del modelo
+### Lo rechaza [Range] antes de llegar al wrapper
+POST {{baseUrl}}/UnitWorkplan/bulkData
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "unitPrivateCode": "U-001",
+    "workplanName": "WD-2553 volume negativo",
+    "startDate": "2026-09-15T08:00:00",
+    "endDate": "2026-09-15T18:00:00",
+    "locations": [
+        {
+            "locationId": 1,
+            "radius": 100,
+            "orders": [
+                { "orderId": 1001, "volume": -1 }
+            ]
+        }
+    ]
 }

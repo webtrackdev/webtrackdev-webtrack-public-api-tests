@@ -70,3 +70,64 @@ Authorization: Bearer {{token}}
   "workPlanExecutionId": 999999999,
   "locationId": 1
 }
+
+### WD-2553 — Agregar punto con pedidos — 200
+### La orden 1001 ya existe y se vincula a la parada; S00042 se resuelve por su despacho.
+### El wrapper delega en spWT_Workplans_SaveWorkplanExecutionOrders.
+POST {{baseUrl}}/UnitWorkplan/addLocation
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "workPlanExecutionId": 1,
+  "locationId": 3,
+  "radius": 100,
+  "orders": [
+    { "orderNumber": "S00042", "dispatchNumber": "WH/OUT/00042", "volume": 10 },
+    { "orderId": 1001, "volume": 2 }
+  ]
+}
+
+### WD-2553 — Agregar punto con pedido nuevo (se crea en el catálogo) — 200
+### S00099 no existe: se da de alta con Source = WorkplanExecution y se vincula.
+POST {{baseUrl}}/UnitWorkplan/addLocation
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "workPlanExecutionId": 1,
+  "locationId": 3,
+  "radius": 100,
+  "orders": [
+    { "orderNumber": "S00099", "volume": 7 }
+  ]
+}
+
+### WD-2553 — Sin la clave orders no se tocan los pedidos — 200
+### Comportamiento del contrato anterior: solo cambian los campos enviados.
+POST {{baseUrl}}/UnitWorkplan/addLocation
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "workPlanExecutionId": 1,
+  "locationId": 4,
+  "radius": 100,
+  "minTime": 10
+}
+
+### WD-2553 — Pedido ambiguo (venta con dos despachos sin desambiguador) → 400
+### El wrapper hace RAISERROR ANTES del upsert, así que la ubicación NO se agrega.
+### Esperado: message que empieza con "ambiguousOrders:" y los despachos candidatos.
+POST {{baseUrl}}/UnitWorkplan/addLocation
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "workPlanExecutionId": 1,
+  "locationId": 6,
+  "radius": 100,
+  "orders": [
+    { "orderNumber": "S00042", "volume": 1 }
+  ]
+}

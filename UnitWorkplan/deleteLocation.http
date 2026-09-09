@@ -45,3 +45,18 @@ Authorization: Bearer {{token}}
   "workPlanExecutionId": 999999999,
   "locationId": 2
 }
+
+### WD-2553 — Eliminar un punto con pedidos vinculados — 200
+### El wrapper libera los pedidos antes de dar de baja la parada: no se envía
+### ninguna lista desde el API (equivale a orders = []).
+### Esperado: la parada queda en estado 'X', sin filas en WorkplanExecutionOrders,
+### y los pedidos sin devoluciones vuelven a Pendiente en el catálogo.
+### Las filas con ReturnedCount > 0 se conservan a propósito (historia de la entrega).
+POST {{baseUrl}}/UnitWorkplan/deleteLocation
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "workPlanExecutionId": 1,
+  "locationId": 2
+}
