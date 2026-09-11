@@ -1,0 +1,38 @@
+### Test 1: Send Custom Command - Using UnitId
+POST {{baseUrl}}/Unit/sendCustomCommand
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitId": 1,
+  "command": "AT+GTQSS=gv300,1,0,0,0,0,FFFF$"
+}
+
+### Test 2: Send Custom Command - Using PrivateCode
+POST {{baseUrl}}/Unit/sendCustomCommand
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "privateCode": "UNIT-001",
+  "command": "AT+GTQSS=gv300,1,0,0,0,0,FFFF$"
+}
+
+### Test 3: Send Custom Command - Invalid (no unit identifier)
+POST {{baseUrl}}/Unit/sendCustomCommand
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "command": "AT+GTQSS=gv300,1,0,0,0,0,FFFF$"
+}
+
+### Test 4: Send Custom Command - Invalid (empty command)
+POST {{baseUrl}}/Unit/sendCustomCommand
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitId": 1,
+  "command": ""
+}
