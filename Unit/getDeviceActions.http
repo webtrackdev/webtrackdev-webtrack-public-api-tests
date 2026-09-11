@@ -1,0 +1,25 @@
+### Test 1: Get Device Actions - Using UnitId
+POST {{baseUrl}}/Unit/getDeviceActions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitId": 1
+}
+
+### Test 2: Get Device Actions - Using PrivateCode
+POST {{baseUrl}}/Unit/getDeviceActions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "privateCode": "UNIT-001"
+}
+
+### Test 3: Get Device Actions - Invalid (no unit identifier)
+POST {{baseUrl}}/Unit/getDeviceActions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+}
