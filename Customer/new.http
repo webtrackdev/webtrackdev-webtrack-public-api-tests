@@ -10,3 +10,15 @@ Content-Type: application/json
     "organizationId": 229
   }
 }
+
+### Sin token → 401
+POST {{baseUrl}}/Customer/Save
+Content-Type: application/json
+
+{
+  "customerName": "CEMACO",
+  "privateCode": "CENACO-TEST",
+  "membership": {
+    "organizationId": 229
+  }
+}

@@ -63,3 +63,10 @@ POST {{baseUrl}}/account/cancelWebtrackNotifications
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
+### Test 8: Sin token → 401
+POST {{baseUrl}}/account/cancelWebtrackNotifications
+Content-Type: application/json
+
+{
+  "organizationId": 123
+}

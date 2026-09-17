@@ -6,3 +6,11 @@ Content-Type: application/json
 {
   "customerId": "126"
 }
+
+### Sin token → 401
+DELETE {{baseUrl}}/Customer/Delete
+Content-Type: application/json
+
+{
+  "customerId": "126"
+}

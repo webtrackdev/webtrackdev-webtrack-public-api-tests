@@ -45,3 +45,12 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {}
+
+### Test 6: Sin token → 401
+POST {{baseUrl}}/Account/GetNotifications
+Content-Type: application/json
+
+{
+  "limit": 20,
+  "offset": 0
+}

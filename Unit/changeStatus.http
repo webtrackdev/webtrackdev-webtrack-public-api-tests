@@ -56,3 +56,12 @@ Content-Type: application/json
   "unitId": 999999,
   "unitStatus": 0
 }
+
+### Test 7: Sin token → 401
+POST {{baseUrl}}/Unit/changeStatus
+Content-Type: application/json
+
+{
+  "unitId": 1,
+  "unitStatus": 0
+}

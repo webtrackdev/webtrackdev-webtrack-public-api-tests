@@ -51,3 +51,13 @@ Content-Type: application/json
   "emails": "",
   "ttl": 3600
 }
+
+### Test 6: Sin token → 401
+POST {{baseUrl}}/Unit/shareLink
+Content-Type: application/json
+
+{
+  "unitId": 1,
+  "emails": "usuario@dominiousuario.net",
+  "ttl": 3600
+}

@@ -139,3 +139,15 @@ Content-Type: application/json
   "startDate": "2025-10-20T00:00:00",
   "endDate": "2025-10-27T23:59:59"
 }
+
+### Test 12: Sin token → 401
+POST {{baseUrl}}/Telemetry/getTemperatureSensorReport
+Content-Type: application/json
+
+{
+  "unitId": 2415,
+  "sensorId": 210,
+  "measureId": 1,
+  "startDate": "2024-10-29T10:19:00",
+  "endDate": "2025-10-31T23:59:59"
+}

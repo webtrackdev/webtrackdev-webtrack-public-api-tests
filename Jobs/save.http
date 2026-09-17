@@ -83,3 +83,15 @@ Authorization: Bearer {{token}}
 ### La API los convierte internamente a formato separado por ^
 ### ===========================================
 
+### Sin token → 401
+POST {{baseUrl}}/Jobs/save
+Content-Type: application/json
+
+{
+    "jobTitle": "Nuevo Job de Prueba",
+    "jobStatus": 6,
+    "jobTypeId": 1,
+    "jobPriority": 1,
+    "jobDescription": "Descripción del job de prueba",
+    "jobAddress": "Dirección de prueba"
+}

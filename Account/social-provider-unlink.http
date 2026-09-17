@@ -15,3 +15,6 @@ Authorization: Bearer {{token}}
 
 ### Test 3: Sin token — 401
 POST {{baseUrl}}/account/social/google/unlink
+
+### Test 4: Sin token — 401
+POST {{baseUrl}}/account/social/apple/unlink

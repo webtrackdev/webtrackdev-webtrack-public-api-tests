@@ -11,3 +11,16 @@ Content-Type: application/json
     "locationId": 4212
   }
 }
+
+### Sin token → 401
+POST {{baseUrl}}/Customer/AssignLocation
+Content-Type: application/json
+
+{
+  "customer": {
+    "customerId": 2
+  },
+  "location": {
+    "locationId": 4212
+  }
+}

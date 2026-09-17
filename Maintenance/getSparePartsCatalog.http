@@ -1,3 +1,6 @@
 ### Obtener catálogo de repuestos
 GET {{baseUrl}}/Maintenance/sparePartsCatalog
 Authorization: Bearer {{token}}
+
+### Sin token → 401
+GET {{baseUrl}}/Maintenance/sparePartsCatalog

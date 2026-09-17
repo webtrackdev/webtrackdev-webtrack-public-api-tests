@@ -106,3 +106,14 @@ Authorization: Bearer {{token}}
 ### - totalExecutionTime: Tiempo total en segundos (opcional, para finalización)
 ### ===========================================
 
+### Sin token → 401
+POST {{baseUrl}}/Jobs/changeStatus
+Content-Type: application/json
+
+{
+    "jobId": 12345,
+    "newJobStatus": 1,
+    "comment": "Iniciando job",
+    "latitude": 14.634915,
+    "longitude": -90.506882
+}

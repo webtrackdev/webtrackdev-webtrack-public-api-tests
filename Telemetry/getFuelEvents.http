@@ -73,3 +73,13 @@ Content-Type: application/json
   "startDate": "2025-10-29T00:00:00",
   "endDate": "2025-11-05T23:59:59"
 }
+
+### Test 8: Sin token → 401
+POST {{baseUrl}}/Telemetry/getFuelEvents
+Content-Type: application/json
+
+{
+  "unitId": 2157,
+  "startDate": "2025-01-29T00:00:00",
+  "endDate": "2025-11-05T23:59:59"
+}

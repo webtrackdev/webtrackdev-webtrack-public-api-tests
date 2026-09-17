@@ -8,3 +8,13 @@ Content-Type: application/json
   "customerId": 3,
   "locationClassId": 34
 }
+
+### Sin token → 401
+POST {{baseUrl}}/Location/GetCatalog
+Content-Type: application/json
+
+{
+  "organizationId": 229,
+  "customerId": 3,
+  "locationClassId": 34
+}

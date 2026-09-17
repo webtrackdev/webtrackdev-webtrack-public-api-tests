@@ -8,3 +8,13 @@ Content-Type: application/json
   "divisionId": 1,
   "sourceLocationClassId": 0
 }
+
+### Sin token → 401
+POST {{baseUrl}}/Route/GetCatalog
+Content-Type: application/json
+
+{
+  "organizationId": 1,
+  "divisionId": 1,
+  "sourceLocationClassId": 0
+}

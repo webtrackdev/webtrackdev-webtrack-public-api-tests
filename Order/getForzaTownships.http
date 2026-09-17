@@ -30,3 +30,9 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 { "department": "Narnia" }
+
+### Sin token → 401
+POST {{baseUrl}}/order/getForzaTownships
+Content-Type: application/json
+
+{}

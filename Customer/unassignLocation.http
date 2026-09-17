@@ -7,3 +7,12 @@ Content-Type: application/json
   "customerId": 127,
   "locationId": 4157
 }
+
+### Sin token → 401
+POST {{baseUrl}}/Customer/UnassignLocation
+Content-Type: application/json
+
+{
+  "customerId": 127,
+  "locationId": 4157
+}

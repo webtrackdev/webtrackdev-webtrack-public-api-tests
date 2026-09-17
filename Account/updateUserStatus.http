@@ -99,3 +99,12 @@ Content-Type: application/json
 POST {{baseUrl}}/account/updateUserStatus
 Authorization: Bearer {{token}}
 Content-Type: application/json
+
+### Test 11: Sin token → 401
+POST {{baseUrl}}/account/updateUserStatus
+Content-Type: application/json
+
+{
+  "userId": 12345,
+  "newStatus": 1
+}

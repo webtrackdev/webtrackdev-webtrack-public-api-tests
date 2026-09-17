@@ -95,3 +95,20 @@ Authorization: Bearer {{token}}
   "roleId": 1001,
   "utcZoneId": 178
 }
+
+### Sin token → 401
+POST {{baseUrl}}/account/quickCreate
+Content-Type: application/json
+
+{
+  "email": "johndoe@example.com",
+  "completeName": "John Doe",
+  "passwordMode": "invite",
+  "operatorId": 307,
+  "organizationId": 229,
+  "divisionId": 192,
+  "subdivisionId": 336,
+  "accessLevelId": 20,
+  "roleId": 1001,
+  "utcZoneId": 178
+}

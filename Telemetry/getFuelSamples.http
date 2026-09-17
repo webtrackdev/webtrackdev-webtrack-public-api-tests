@@ -121,3 +121,15 @@ Content-Type: application/json
   "startDate": "2025-10-29T00:00:00",
   "endDate": "2025-11-05T23:59:59"
 }
+
+### Test 10: Sin token → 401
+POST {{baseUrl}}/Telemetry/getFuelSamples
+Content-Type: application/json
+
+{
+  "unitId": 2157,
+  "sensorId": 127,
+  "measureId": 1,
+  "startDate": "2025-01-29T00:00:00",
+  "endDate": "2025-11-05T23:59:59"
+}

@@ -140,3 +140,17 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 { "order": { "orderNumber": "S01476", "dispatchNumber": "LSFE/OUT/01151" }, "guide": { "serviceType": "STD", "recipient": { "phone": "23456789" }, "shipping": { "townshipCode": "0101" } } }
+
+### Sin token → 401
+POST {{baseUrl}}/order/createForzaGuide
+Content-Type: application/json
+
+{
+  "order": { "orderNumber": "S01476" },
+  "guide": {
+    "serviceType": "STD",
+    "recipient": { "phone": "23456789", "email": "recepcion@prueba.test" },
+    "shipping": { "townshipCode": "0101", "address1": "12 calle 1-25 zona 10" },
+    "packages": { "count": 1, "totalWeightKg": 2.5, "declaredValue": 150.00, "description": "Medicamentos", "fragile": true }
+  }
+}

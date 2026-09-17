@@ -147,3 +147,19 @@ Content-Type: application/json
   "endDate": "2025-12-31T23:59:59",
   "entityTypeId": 1
 }
+
+### Test 10: Sin token → 401
+POST {{baseUrl}}/account/updateSystemNotification
+Content-Type: application/json
+
+{
+  "systemNotificationId": null,
+  "messageType": 1,
+  "messageTitle": "Notificación de prueba",
+  "message": "Este es el contenido de la notificación de prueba",
+  "startDate": "2025-12-11T00:00:00",
+  "endDate": "2025-12-31T23:59:59",
+  "entityTypeId": 1,
+  "showToast": 1,
+  "toastTime": 5000
+}

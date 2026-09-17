@@ -1,5 +1,5 @@
 ### Bulk Data - Crear plan de trabajo
-POST {{baseUrl}}/v3/UnitWorkplan/bulkData
+POST {{baseUrl}}/UnitWorkplan/bulkData
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
@@ -31,7 +31,7 @@ Authorization: Bearer {{token}}
 }
 
 ### Add Location
-POST {{baseUrl}}/v3/UnitWorkplan/addLocation
+POST {{baseUrl}}/UnitWorkplan/addLocation
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
@@ -47,7 +47,7 @@ Authorization: Bearer {{token}}
 }
 
 ### Edit Location
-POST {{baseUrl}}/v3/UnitWorkplan/editLocation
+POST {{baseUrl}}/UnitWorkplan/editLocation
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
@@ -60,7 +60,7 @@ Authorization: Bearer {{token}}
 }
 
 ### Delete Location
-POST {{baseUrl}}/v3/UnitWorkplan/deleteLocation
+POST {{baseUrl}}/UnitWorkplan/deleteLocation
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
@@ -70,7 +70,7 @@ Authorization: Bearer {{token}}
 }
 
 ### Cancel Execution
-POST {{baseUrl}}/v3/UnitWorkplan/cancelExecution
+POST {{baseUrl}}/UnitWorkplan/cancelExecution
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
@@ -79,7 +79,7 @@ Authorization: Bearer {{token}}
 }
 
 ### Change Unit
-POST {{baseUrl}}/v3/UnitWorkplan/changeUnit
+POST {{baseUrl}}/UnitWorkplan/changeUnit
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
@@ -89,7 +89,7 @@ Authorization: Bearer {{token}}
 }
 
 ### Monitoring
-POST {{baseUrl}}/v3/UnitWorkplan/monitoring
+POST {{baseUrl}}/UnitWorkplan/monitoring
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
@@ -100,7 +100,7 @@ Authorization: Bearer {{token}}
 }
 
 ### Get Execution Information
-POST {{baseUrl}}/v3/UnitWorkplan/getExecutionInformation
+POST {{baseUrl}}/UnitWorkplan/getExecutionInformation
 Content-Type: application/json
 Authorization: Bearer {{token}}
 

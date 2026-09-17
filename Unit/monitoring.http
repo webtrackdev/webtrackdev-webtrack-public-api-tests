@@ -8,3 +8,13 @@ Content-Type: application/json
   "divisionId": 3,
   "unitName": "CX"
 }
+
+### Sin token → 401
+POST {{baseUrl}}/Unit/Monitoring
+Content-Type: application/json
+
+{
+  "organizationId": 1,
+  "divisionId": 3,
+  "unitName": "CX"
+}

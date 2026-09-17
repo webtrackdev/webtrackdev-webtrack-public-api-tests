@@ -49,3 +49,13 @@ Content-Type: application/json
 {
   "deviceActionId": 1
 }
+
+### Test 6: Sin token → 401
+POST {{baseUrl}}/Unit/executeAction
+Content-Type: application/json
+
+{
+  "unitId":1,
+  "deviceActionId": 1,
+  "parameters": null
+}

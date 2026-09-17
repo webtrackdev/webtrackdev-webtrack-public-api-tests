@@ -85,3 +85,13 @@ Content-Type: application/json
   "phoneNumber": "50255551234",
   "flowType": "videocall"
 }
+
+### Test 8: Sin token — 401
+POST {{baseUrl}}/conversation/saveConversationResultJson
+Content-Type: application/json
+
+{
+  "phoneNumber": "50255551234",
+  "flowType": "conversation",
+  "transcriptText": "Conversación registrada con el usuario del token."
+}

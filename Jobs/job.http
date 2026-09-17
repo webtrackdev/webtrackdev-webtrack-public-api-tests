@@ -3,14 +3,14 @@
 ### ===========================================
 
 ### 1. Get Summary
-POST {{baseUrl}}/Job/getSummary
+POST {{baseUrl}}/Jobs/getSummary
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {}
 
 ### 2. Save Job (Create)
-POST {{baseUrl}}/Job/save
+POST {{baseUrl}}/Jobs/save
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
@@ -24,7 +24,7 @@ Authorization: Bearer {{token}}
 }
 
 ### 3. Get Job Information
-POST {{baseUrl}}/Job/getInformation
+POST {{baseUrl}}/Jobs/getInformation
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
@@ -33,14 +33,14 @@ Authorization: Bearer {{token}}
 }
 
 ### 4. Get Assignments (Work Plans)
-POST {{baseUrl}}/Job/getAssignments
+POST {{baseUrl}}/Jobs/getAssignments
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {}
 
 ### 5. Get Work Plan Jobs
-POST {{baseUrl}}/Job/getWorkPlanJobs
+POST {{baseUrl}}/Jobs/getWorkPlanJobs
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
@@ -49,7 +49,7 @@ Authorization: Bearer {{token}}
 }
 
 ### 6. Get Active Jobs
-POST {{baseUrl}}/Job/getActiveJobs
+POST {{baseUrl}}/Jobs/getActiveJobs
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
@@ -59,7 +59,7 @@ Authorization: Bearer {{token}}
 }
 
 ### 7. Get Pending Jobs
-POST {{baseUrl}}/Job/getPendingJobs
+POST {{baseUrl}}/Jobs/getPendingJobs
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
@@ -69,7 +69,7 @@ Authorization: Bearer {{token}}
 }
 
 ### 8. Get Finalized Jobs
-POST {{baseUrl}}/Job/getFinalizedJobs
+POST {{baseUrl}}/Jobs/getFinalizedJobs
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
@@ -79,7 +79,7 @@ Authorization: Bearer {{token}}
 }
 
 ### 9. Get Scheduled Jobs
-POST {{baseUrl}}/Job/getScheduledJobs
+POST {{baseUrl}}/Jobs/getScheduledJobs
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
@@ -89,7 +89,7 @@ Authorization: Bearer {{token}}
 }
 
 ### 10. Change On Job Location (by coordinates)
-POST {{baseUrl}}/Job/changeOnJobLocation
+POST {{baseUrl}}/Jobs/changeOnJobLocation
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
@@ -100,7 +100,7 @@ Authorization: Bearer {{token}}
 }
 
 ### 11. Change Job Location (by locationId)
-POST {{baseUrl}}/Job/changeJobLocation
+POST {{baseUrl}}/Jobs/changeJobLocation
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
@@ -111,7 +111,7 @@ Authorization: Bearer {{token}}
 }
 
 ### 12. Change Job Status
-POST {{baseUrl}}/Job/changeStatus
+POST {{baseUrl}}/Jobs/changeStatus
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
@@ -126,7 +126,7 @@ Authorization: Bearer {{token}}
 }
 
 ### 13. Request Extra Time
-POST {{baseUrl}}/Job/requestExtraTime
+POST {{baseUrl}}/Jobs/requestExtraTime
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
@@ -139,7 +139,7 @@ Authorization: Bearer {{token}}
 }
 
 ### 14. Get Job Comments
-POST {{baseUrl}}/Job/getComments
+POST {{baseUrl}}/Jobs/getComments
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
@@ -148,7 +148,7 @@ Authorization: Bearer {{token}}
 }
 
 ### 15. Get Job Files
-POST {{baseUrl}}/Job/getFiles
+POST {{baseUrl}}/Jobs/getFiles
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
@@ -157,7 +157,7 @@ Authorization: Bearer {{token}}
 }
 
 ### 16. Add Job Comment
-POST {{baseUrl}}/Job/addComment
+POST {{baseUrl}}/Jobs/addComment
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
@@ -167,7 +167,7 @@ Authorization: Bearer {{token}}
 }
 
 ### 17. Delete Job Comment
-POST {{baseUrl}}/Job/deleteComment
+POST {{baseUrl}}/Jobs/deleteComment
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
@@ -176,14 +176,14 @@ Authorization: Bearer {{token}}
 }
 
 ### 18. Get Form List
-POST {{baseUrl}}/Job/getFormList
+POST {{baseUrl}}/Jobs/getFormList
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {}
 
 ### 19. Get Available Forms for Job
-POST {{baseUrl}}/Job/getAvailableForms
+POST {{baseUrl}}/Jobs/getAvailableForms
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
@@ -192,7 +192,7 @@ Authorization: Bearer {{token}}
 }
 
 ### 20. Send Check In/Out Queue
-POST {{baseUrl}}/Job/sendCheckInOutQueue
+POST {{baseUrl}}/Jobs/sendCheckInOutQueue
 Content-Type: application/json
 Authorization: Bearer {{token}}
 

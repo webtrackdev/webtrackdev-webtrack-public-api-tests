@@ -8,3 +8,13 @@ Content-Type: application/json
   "customerPrivateCode": "TACO",
   "includeLocations": true
 }
+
+### Sin token → 401
+POST {{baseUrl}}/Customer/GetCatalog
+Content-Type: application/json
+
+{
+  "organizationId": 1,
+  "customerPrivateCode": "TACO",
+  "includeLocations": true
+}

@@ -400,3 +400,21 @@ Content-Type: application/json
     "customerPrivateCode": "CEMACO-TEST"
   }
 }
+
+### Test 20: Sin token → 401
+POST {{baseUrl}}/Route/Save
+Content-Type: application/json
+
+{
+  "routeName": "WT-2711 PrivateCode - Ambos",
+  "source": {
+    "privateCode": "1234"
+  },
+  "target": {
+    "privateCode": "CEMACO-CAYALA"
+  },
+  "membership": {
+    "organizationId": 229,
+    "customerPrivateCode": "CEMACO-TEST"
+  }
+}

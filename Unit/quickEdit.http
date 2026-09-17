@@ -58,3 +58,12 @@ Content-Type: application/json
   "unitId": 999999,
   "unitName": "No deberia actualizar"
 }
+
+### Test 7: Sin token → 401
+POST {{baseUrl}}/Unit/quickEdit
+Content-Type: application/json
+
+{
+  "unitId": 1,
+  "unitName": "Camion 01 - Reparto Norte"
+}

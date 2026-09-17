@@ -42,3 +42,11 @@ Content-Type: application/json
 {
   "unitId": 999999
 }
+
+### Sin token → 401
+POST {{baseUrl}}/Unit/getInformation
+Content-Type: application/json
+
+{
+  "unitId": 2157
+}

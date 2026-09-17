@@ -46,3 +46,12 @@ Content-Type: application/json
 {
   "notificationIds": "180"
 }
+
+### Test 6: Sin token → 401
+POST {{baseUrl}}/Account/SaveNotificationRead
+Content-Type: application/json
+
+{
+  "notificationTypeId": 1,
+  "notificationIds": "180"
+}

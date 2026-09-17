@@ -70,3 +70,32 @@ Content-Type: application/json
   "startDate": "2026-08-12",
   "completionType": 1
 }
+
+### Sin token — 401
+POST {{baseUrl}}/Route/assignUnitRoute
+Content-Type: application/json
+
+{
+  "customerName": "Cliente Asignación WD1688",
+  "unit": {
+    "unitId": 2
+  },
+  "route": {
+    "routeName": "Ruta WD-1688 nombres de cliente",
+    "privateCode": "RT-WD1688-01",
+    "source": {
+      "privateCode": "LOC-WD1688-SRC",
+      "locationName": "Bodega Origen WD1688",
+      "locationAddress": "12 calle 1-25 zona 10, Ciudad de Guatemala",
+      "customerName": "Cliente Origen WD1688"
+    },
+    "target": {
+      "privateCode": "LOC-WD1688-TGT",
+      "locationName": "Sucursal Destino WD1688",
+      "locationAddress": "Km 17.5 carretera a El Salvador, Guatemala",
+      "customerName": "Cliente Destino WD1688"
+    }
+  },
+  "startDate": "2026-08-10",
+  "completionType": 1
+}

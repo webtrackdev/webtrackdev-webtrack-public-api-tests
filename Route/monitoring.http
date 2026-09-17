@@ -20,3 +20,13 @@ Content-Type: application/json
   "endDate": "2026-02-09",
   "getAllActive": false
 }
+
+### Sin token → 401
+POST {{baseUrl}}/Route/monitoring
+Content-Type: application/json
+
+{
+  "startDate": "2025-01-01",
+  "endDate": "2026-02-09",
+  "getAllActive": true
+}

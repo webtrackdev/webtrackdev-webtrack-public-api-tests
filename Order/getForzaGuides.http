@@ -22,3 +22,9 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 { "order": { "orderId": 999999 } }
+
+### Sin token → 401
+POST {{baseUrl}}/order/getForzaGuides
+Content-Type: application/json
+
+{ "order": { "orderNumber": "S01476" } }

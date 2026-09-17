@@ -1,0 +1,587 @@
+<title>Auditoría Public API v3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&display=swap">
+
+<style>
+  :root {
+    --ground:#F7F8FA; --surface:#FFFFFF; --ink:#131A24; --ink-soft:#3D4753;
+    --muted:#5A6572; --rule:#DEE3EA; --rule-strong:#B9C2CE; --code-bg:#EFF2F6;
+    --crit:#B3261E; --crit-bg:#FBEDEC;
+    --high:#9A5B0C; --high-bg:#FBF3E8;
+    --med:#2B4C8C;  --med-bg:#EDF1F9;
+    --env:#4C5866;  --env-bg:#EEF0F3;
+    --bad:#B3261E;  --good:#1F6B45;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:#0F131A; --surface:#161C25; --ink:#E7ECF3; --ink-soft:#C2CAD5;
+      --muted:#8B95A3; --rule:#262E3A; --rule-strong:#3A4553; --code-bg:#1B222C;
+      --crit:#F2867C; --crit-bg:#2A1917;
+      --high:#E0A55C; --high-bg:#261D12;
+      --med:#8FB0E8;  --med-bg:#161F2E;
+      --env:#98A3B1;  --env-bg:#1A1F26;
+      --bad:#F2867C;  --good:#6FC79B;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground:#0F131A; --surface:#161C25; --ink:#E7ECF3; --ink-soft:#C2CAD5;
+    --muted:#8B95A3; --rule:#262E3A; --rule-strong:#3A4553; --code-bg:#1B222C;
+    --crit:#F2867C; --crit-bg:#2A1917;
+    --high:#E0A55C; --high-bg:#261D12;
+    --med:#8FB0E8;  --med-bg:#161F2E;
+    --env:#98A3B1;  --env-bg:#1A1F26;
+    --bad:#F2867C;  --good:#6FC79B;
+  }
+
+  * { box-sizing:border-box; }
+
+  body {
+    background:var(--ground); color:var(--ink);
+    font-family:"IBM Plex Sans",ui-sans-serif,system-ui,sans-serif;
+    font-size:15px; line-height:1.55; margin:0;
+    padding:2.4rem 1rem 4rem; -webkit-font-smoothing:antialiased;
+  }
+
+  .page { max-width:58rem; margin:0 auto; display:flex; flex-direction:column; gap:.9rem; }
+
+  h1 {
+    font-family:"IBM Plex Serif",ui-serif,Georgia,serif; font-weight:600;
+    font-size:clamp(1.7rem,4vw,2.3rem); line-height:1.15;
+    letter-spacing:-.015em; margin:0;
+  }
+
+  .meta {
+    font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:.75rem;
+    color:var(--muted); margin:.5rem 0 0;
+    display:flex; flex-wrap:wrap; gap:.3rem 1.3rem;
+  }
+  .meta b { color:var(--ink-soft); font-weight:500; }
+
+  h2 {
+    font-family:"IBM Plex Mono",ui-monospace,monospace;
+    font-size:.72rem; font-weight:600; letter-spacing:.13em; text-transform:uppercase;
+    color:var(--muted); margin:1.9rem 0 .2rem;
+    padding-bottom:.45rem; border-bottom:2px solid var(--rule-strong);
+    display:flex; flex-wrap:wrap; gap:.2rem .8rem; align-items:baseline;
+  }
+  .h2n { font-weight:400; letter-spacing:.06em; text-transform:none; opacity:.8; }
+
+  /* ---------- endpoint ---------- */
+
+  .ep {
+    background:var(--surface); border:1px solid var(--rule);
+    display:flex; flex-direction:column;
+  }
+
+  .ep__head {
+    display:flex; flex-wrap:wrap; align-items:baseline; gap:.5rem .8rem;
+    padding:.7rem .9rem; border-bottom:1px solid var(--rule); background:var(--code-bg);
+  }
+  .ep__head h3 {
+    font-family:"IBM Plex Mono",ui-monospace,monospace;
+    font-size:.87rem; font-weight:600; margin:0; flex:1 1 20ch;
+    overflow-wrap:anywhere; color:var(--ink);
+  }
+  .ep__head .verb { color:var(--muted); font-weight:500; }
+  .src {
+    font-family:"IBM Plex Mono",ui-monospace,monospace;
+    font-size:.7rem; color:var(--muted); white-space:nowrap;
+  }
+
+  .sev {
+    font-family:"IBM Plex Mono",ui-monospace,monospace;
+    font-size:.6rem; font-weight:600; letter-spacing:.09em; text-transform:uppercase;
+    padding:.18em .5em; border:1px solid currentColor; white-space:nowrap;
+  }
+  .sev--crit{color:var(--crit);background:var(--crit-bg)}
+  .sev--high{color:var(--high);background:var(--high-bg)}
+  .sev--med {color:var(--med); background:var(--med-bg)}
+  .sev--env {color:var(--env); background:var(--env-bg)}
+  .sev--qa  {color:var(--env); background:var(--env-bg)}
+
+  /* ---------- caso ---------- */
+
+  .case { padding:.8rem .9rem; border-bottom:1px solid var(--rule); }
+  .case:last-child { border-bottom:0; }
+
+  .case__t {
+    font-size:.86rem; font-weight:500; color:var(--ink);
+    margin:0 0 .55rem;
+  }
+
+  .case dl {
+    display:grid; grid-template-columns:5.4rem 1fr;
+    gap:.3rem .8rem; margin:0; align-items:baseline;
+  }
+
+  .case dt {
+    font-family:"IBM Plex Mono",ui-monospace,monospace;
+    font-size:.63rem; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--muted); padding-top:.15rem;
+  }
+
+  .case dd { margin:0; font-size:.83rem; color:var(--ink-soft); }
+
+  .case dd code {
+    font-family:"IBM Plex Mono",ui-monospace,monospace;
+    font-size:.78rem; background:var(--code-bg); border:1px solid var(--rule);
+    padding:.1em .35em; overflow-wrap:anywhere; display:inline;
+  }
+
+  .case dd b {
+    font-family:"IBM Plex Mono",ui-monospace,monospace;
+    font-variant-numeric:tabular-nums; font-size:.83rem; font-weight:600;
+    margin-right:.3rem;
+  }
+  .bad  { color:var(--bad); }
+  .good { color:var(--good); }
+
+  .note {
+    display:block; font-family:"IBM Plex Mono",ui-monospace,monospace;
+    font-size:.68rem; color:var(--muted); margin-top:.25rem;
+  }
+
+  @media (max-width:36rem) {
+    .case dl { grid-template-columns:1fr; gap:.15rem; }
+    .case dt { padding-top:.4rem; }
+  }
+
+  /* ---------- pie ---------- */
+
+  .foot {
+    border-top:2px solid var(--rule-strong); margin-top:1.4rem; padding-top:.9rem;
+    font-size:.8rem; color:var(--muted); max-width:62ch;
+  }
+  .foot code { font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:.92em; }
+
+  @page { size:A4; margin:13mm; }
+
+  @media print {
+    :root {
+      --ground:#FFF; --surface:#FFF; --ink:#131A24; --ink-soft:#2E3742;
+      --muted:#55606D; --rule:#C9D0DA; --rule-strong:#8F9AA9; --code-bg:#F2F5F8;
+      --crit:#9C1F18; --crit-bg:#FAEBEA; --high:#854E09; --high-bg:#FAF2E6;
+      --med:#24427A;  --med-bg:#EBF0F8; --env:#3F4A57;  --env-bg:#EDEFF2;
+      --bad:#9C1F18;  --good:#155C39;
+    }
+    * { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+    body { padding:0; font-size:9.5pt; }
+    .page { max-width:none; }
+    .ep, .case { break-inside:avoid; }
+    h2 { break-after:avoid; margin-top:1.1rem; }
+    .case dd code { font-size:7.6pt; }
+  }
+
+
+  .meta .fix b { color:var(--good); }
+
+  .table-wrap { overflow-x:auto; border:1px solid var(--rule); background:var(--surface); }
+  table { border-collapse:collapse; width:100%; min-width:40rem; }
+  th {
+    font-family:"IBM Plex Mono",ui-monospace,monospace;
+    font-size:.63rem; font-weight:600; letter-spacing:.11em; text-transform:uppercase;
+    color:var(--muted); text-align:left; padding:.45rem .8rem;
+    border-bottom:1px solid var(--rule-strong); background:var(--code-bg); white-space:nowrap;
+  }
+  td { padding:.4rem .8rem; border-bottom:1px solid var(--rule); font-size:.82rem; vertical-align:top; }
+  tbody tr:last-child td { border-bottom:0; }
+  td.mono {
+    font-family:"IBM Plex Mono",ui-monospace,monospace;
+    font-size:.78rem; white-space:nowrap;
+  }
+  th.n, td.n { text-align:right; }
+  td.n b {
+    font-family:"IBM Plex Mono",ui-monospace,monospace;
+    font-variant-numeric:tabular-nums; font-weight:600;
+  }
+
+  @media print { .table-wrap { overflow-x:visible; } table { min-width:0; } th,td { padding:.25rem .5rem; font-size:7.8pt; } thead { display:table-header-group; } tr { break-inside:avoid; } }
+
+  @media (prefers-reduced-motion:reduce) { * { animation:none!important; transition:none!important; } }
+</style>
+
+<div class="page">
+
+  <header>
+    <h1>Auditoría Public API v3</h1>
+    <p class="meta">
+      <span><b>45</b> antes</span>
+      <span><b>27</b> ahora</span>
+      <span class="fix"><b>18</b> corregidos</span>
+      <span>17 endpoints</span>
+      <span>desarrollo.webtrack.online/api/v3</span>
+      <span>2026-08-22</span>
+    </p>
+  </header>
+  <h2>Corregidos desde la corrida anterior <span class="h2n">18 casos</span></h2>
+  <div class="table-wrap"><table><thead><tr><th>Endpoint</th><th>Caso</th><th class="n">Antes</th><th class="n">Ahora</th></tr></thead><tbody>
+    <tr><td class="mono">/Customer/delete</td><td>Sin token</td><td class="n"><b class="bad">405</b></td><td class="n"><b class="good">401</b></td></tr>
+    <tr><td class="mono">/Customer/delete</td><td>Validación - sin customerId ni privateCode</td><td class="n"><b class="bad">405</b></td><td class="n"><b class="good">400</b></td></tr>
+    <tr><td class="mono">/Customer/delete</td><td>Cliente inexistente</td><td class="n"><b class="bad">405</b></td><td class="n"><b class="good">404</b></td></tr>
+    <tr><td class="mono">/Location/delete</td><td>LocationId inexistente</td><td class="n"><b class="bad">405</b></td><td class="n"><b class="good">404</b></td></tr>
+    <tr><td class="mono">/Location/delete</td><td>Sin locationId ni privateCode</td><td class="n"><b class="bad">405</b></td><td class="n"><b class="good">400</b></td></tr>
+    <tr><td class="mono">/Location/delete</td><td>Sin token</td><td class="n"><b class="bad">405</b></td><td class="n"><b class="good">401</b></td></tr>
+    <tr><td class="mono">/Maintenance/deleteNotice</td><td>Sin token</td><td class="n"><b class="bad">405</b></td><td class="n"><b class="good">401</b></td></tr>
+    <tr><td class="mono">/Maintenance/deleteNotice</td><td>Validación: noticeId con tipo inválido</td><td class="n"><b class="bad">405</b></td><td class="n"><b class="good">400</b></td></tr>
+    <tr><td class="mono">/Maintenance/deleteWorkshopOrder</td><td>Sin token</td><td class="n"><b class="bad">405</b></td><td class="n"><b class="good">401</b></td></tr>
+    <tr><td class="mono">/Maintenance/deleteWorkshopOrder</td><td>Validación: workshopOrderId con tipo inválido</td><td class="n"><b class="bad">405</b></td><td class="n"><b class="good">400</b></td></tr>
+    <tr><td class="mono">/Maintenance/saveNoticeByHourmeter</td><td>Unidad inexistente (RAISERROR del SP)</td><td class="n"><b class="bad">500</b></td><td class="n"><b class="good">400</b></td></tr>
+    <tr><td class="mono">/Route/delete</td><td>RouteId inexistente</td><td class="n"><b class="bad">200</b></td><td class="n"><b class="good">400</b></td></tr>
+    <tr><td class="mono">/Telemetry/receivePosition</td><td>ApiKey invalido — esperado 401 (Invalid ApiKey)</td><td class="n"><b class="bad">200</b></td><td class="n"><b class="good">401</b></td></tr>
+    <tr><td class="mono">/Telemetry/receivePosition</td><td>Sin ApiKey en el body — esperado 401 (Invalid ApiKey)</td><td class="n"><b class="bad">200</b></td><td class="n"><b class="good">401</b></td></tr>
+    <tr><td class="mono">/Telemetry/receivePositionEvent</td><td>ApiKey invalido — esperado 401 (Invalid ApiKey)</td><td class="n"><b class="bad">200</b></td><td class="n"><b class="good">401</b></td></tr>
+    <tr><td class="mono">/Telemetry/receivePositionEvent</td><td>Sin ApiKey en el body — esperado 401 (Invalid ApiKey)</td><td class="n"><b class="bad">200</b></td><td class="n"><b class="good">401</b></td></tr>
+    <tr><td class="mono">/WorkflowExecution/save</td><td>Body vacío, el SP no puede guardar sin datos mínimos</td><td class="n"><b class="bad">500</b></td><td class="n"><b class="good">400</b></td></tr>
+    <tr><td class="mono">/account/social/google</td><td>Sin token</td><td class="n"><b class="bad">405</b></td><td class="n"><b class="good">401</b></td></tr>
+  </tbody></table></div>
+  <h2>Crítico · expone la traza SQL y el esquema de la base <span class="h2n">5 endpoints · 5 casos</span></h2>
+  <article class="ep">
+    <div class="ep__head">
+      <span class="sev sev--crit">Crít</span>
+      <h3><span class="verb">POST</span> /Route/insertComment</h3>
+      <span class="src">Route/insertComment.http</span>
+    </div>
+    <div class="case">
+      <p class="case__t">RouteAssignmentId inexistente</p>
+      <dl>
+        <dt>Enviamos</dt><dd><code>{ &quot;routeAssignmentId&quot;: 999999999, &quot;comment&quot;: &quot;Comentario a asignación que no existe&quot; }</code></dd>
+        <dt>Responde</dt><dd><b class="bad">500</b> <code>No se encontró el RouteAssignment con el ID proporcionado.</code><span class="note">traza de 1289 caracteres · error SQL 50000</span></dd>
+        <dt>Debería</dt><dd><b class="good">400</b> rechazar la entrada con un mensaje de validación</dd>
+      </dl>
+    </div>
+  </article>
+  <article class="ep">
+    <div class="ep__head">
+      <span class="sev sev--crit">Crít</span>
+      <h3><span class="verb">POST</span> /UnitWorkplan/cancelExecution</h3>
+      <span class="src">UnitWorkplan/cancelExecution.http</span>
+    </div>
+    <div class="case">
+      <p class="case__t">Ejecución inexistente</p>
+      <dl>
+        <dt>Enviamos</dt><dd><code>{ &quot;workPlanExecutionId&quot;: 999999999 }</code></dd>
+        <dt>Responde</dt><dd><b class="bad">500</b> <code>No tiene acceso a la ejecución de plan indicada</code><span class="note">traza de 2257 caracteres · error SQL 50000</span></dd>
+        <dt>Debería</dt><dd><b class="good">400</b> rechazar la entrada con un mensaje de validación</dd>
+      </dl>
+    </div>
+  </article>
+  <article class="ep">
+    <div class="ep__head">
+      <span class="sev sev--crit">Crít</span>
+      <h3><span class="verb">POST</span> /UnitWorkplan/changeUnit</h3>
+      <span class="src">UnitWorkplan/changeUnit.http</span>
+    </div>
+    <div class="case">
+      <p class="case__t">Unidad inexistente</p>
+      <dl>
+        <dt>Enviamos</dt><dd><code>{ &quot;workPlanExecutionId&quot;: 1, &quot;unitPrivateCode&quot;: &quot;NO-EXISTE&quot; }</code></dd>
+        <dt>Responde</dt><dd><b class="bad">500</b> <code>No se encontró la unidad o la ejecución de plan de trabajo no existe</code><span class="note">traza de 2268 caracteres · error SQL 50000</span></dd>
+        <dt>Debería</dt><dd><b class="good">400</b> rechazar la entrada con un mensaje de validación</dd>
+      </dl>
+    </div>
+  </article>
+  <article class="ep">
+    <div class="ep__head">
+      <span class="sev sev--crit">Crít</span>
+      <h3><span class="verb">POST</span> /UnitWorkplan/deleteLocation</h3>
+      <span class="src">UnitWorkplan/deleteLocation.http</span>
+    </div>
+    <div class="case">
+      <p class="case__t">Ejecución inexistente</p>
+      <dl>
+        <dt>Enviamos</dt><dd><code>{ &quot;workPlanExecutionId&quot;: 999999999, &quot;locationId&quot;: 2 }</code></dd>
+        <dt>Responde</dt><dd><b class="bad">500</b> <code>Plan de Trabajo no existe o ya ha sido eliminado</code><span class="note">traza de 2256 caracteres · error SQL 50000</span></dd>
+        <dt>Debería</dt><dd><b class="good">400</b> rechazar la entrada con un mensaje de validación</dd>
+      </dl>
+    </div>
+  </article>
+  <article class="ep">
+    <div class="ep__head">
+      <span class="sev sev--crit">Crít</span>
+      <h3><span class="verb">POST</span> /WorkflowExecution/getById</h3>
+      <span class="src">WorkflowExecution/getById.http</span>
+    </div>
+    <div class="case">
+      <p class="case__t">externalWorkflowId inexistente</p>
+      <dl>
+        <dt>Enviamos</dt><dd><code>{ &quot;externalWorkflowId&quot;: &quot;wf-external-no-existe&quot; }</code></dd>
+        <dt>Responde</dt><dd><b class="bad">500</b> <code>No se encontró ningún registro que coincida con los criterios proporcionados.</code><span class="note">traza de 1340 caracteres · error SQL 50000</span></dd>
+        <dt>Debería</dt><dd><b class="good">404</b> indicar que el recurso no existe</dd>
+      </dl>
+    </div>
+  </article>
+  <h2>Alto · acepta datos inválidos o es inalcanzable <span class="h2n">4 endpoints · 5 casos</span></h2>
+  <article class="ep">
+    <div class="ep__head">
+      <span class="sev sev--high">Alto</span>
+      <h3><span class="verb">DELETE</span> /Customer/Delete</h3>
+      <span class="src">Customer/delete.http</span>
+    </div>
+    <div class="case">
+      <p class="case__t">Sin token</p>
+      <dl>
+        <dt>Enviamos</dt><dd><code>{ &quot;customerId&quot;: &quot;126&quot; }</code></dd>
+        <dt>Responde</dt><dd><b class="bad">405</b> <code>(página HTML de IIS)</code><span class="note">405 - HTTP verb used to access this page is not allowed</span></dd>
+        <dt>Debería</dt><dd><b class="good">401</b> rechazar por falta de credenciales válidas</dd>
+      </dl>
+    </div>
+  </article>
+  <article class="ep">
+    <div class="ep__head">
+      <span class="sev sev--high">Alto</span>
+      <h3><span class="verb">POST</span> /Route/getSchedulingConflict</h3>
+      <span class="src">Route/getSchedulingConflict.http</span>
+    </div>
+    <div class="case">
+      <p class="case__t">Sin unitId ni fecha/horario</p>
+      <dl>
+        <dt>Enviamos</dt><dd><code>{ &quot;minDiffTimeInMinutes&quot;: 30 }</code></dd>
+        <dt>Responde</dt><dd><b class="bad">200</b> <code>{&quot;hasConflict&quot;:false,&quot;conflictingRouteId&quot;:null,&quot;conflictingRouteName&quot;:null,&quot;conflictingStartDate&quot;:null,&quot;conflictingScheduleId&quot;:null,&quot;conflictingNextRunDate&quot;:null,&quot;conflictingCompletionTime&quot;:null}</code></dd>
+        <dt>Debería</dt><dd><b class="good">400</b> rechazar la entrada con un mensaje de validación</dd>
+      </dl>
+    </div>
+    <div class="case">
+      <p class="case__t">UnitId inexistente</p>
+      <dl>
+        <dt>Enviamos</dt><dd><code>{ &quot;unitId&quot;: 999999999, &quot;startDate&quot;: &quot;2026-01-15T08:00:00&quot; }</code></dd>
+        <dt>Responde</dt><dd><b class="bad">200</b> <code>{&quot;hasConflict&quot;:false,&quot;conflictingRouteId&quot;:null,&quot;conflictingRouteName&quot;:null,&quot;conflictingStartDate&quot;:null,&quot;conflictingScheduleId&quot;:null,&quot;conflictingNextRunDate&quot;:null,&quot;conflictingCompletionTime&quot;:null}</code></dd>
+        <dt>Debería</dt><dd><b class="good">400</b> rechazar la entrada con un mensaje de validación</dd>
+      </dl>
+    </div>
+  </article>
+  <article class="ep">
+    <div class="ep__head">
+      <span class="sev sev--high">Alto</span>
+      <h3><span class="verb">POST</span> /UnitWorkplan/addLocation</h3>
+      <span class="src">UnitWorkplan/addLocation.http</span>
+    </div>
+    <div class="case">
+      <p class="case__t">Ejecución inexistente</p>
+      <dl>
+        <dt>Enviamos</dt><dd><code>{ &quot;workPlanExecutionId&quot;: 999999999, &quot;locationId&quot;: 1 }</code></dd>
+        <dt>Responde</dt><dd><b class="bad">200</b> <code>{&quot;success&quot;:1}</code></dd>
+        <dt>Debería</dt><dd><b class="good">400</b> rechazar la entrada con un mensaje de validación</dd>
+      </dl>
+    </div>
+  </article>
+  <article class="ep">
+    <div class="ep__head">
+      <span class="sev sev--high">Alto</span>
+      <h3><span class="verb">POST</span> /UnitWorkplan/editLocation</h3>
+      <span class="src">UnitWorkplan/editLocation.http</span>
+    </div>
+    <div class="case">
+      <p class="case__t">Ejecución inexistente</p>
+      <dl>
+        <dt>Enviamos</dt><dd><code>{ &quot;workPlanExecutionId&quot;: 999999999, &quot;locationId&quot;: 1, &quot;minTime&quot;: 10 }</code></dd>
+        <dt>Responde</dt><dd><b class="bad">200</b> <code>{&quot;success&quot;:1}</code></dd>
+        <dt>Debería</dt><dd><b class="good">400</b> rechazar la entrada con un mensaje de validación</dd>
+      </dl>
+    </div>
+  </article>
+  <h2>Medio · error 500 sin diagnóstico <span class="h2n">4 endpoints · 7 casos</span></h2>
+  <article class="ep">
+    <div class="ep__head">
+      <span class="sev sev--med">Medio</span>
+      <h3><span class="verb">POST</span> /Maintenance/createWorkshopOrder</h3>
+      <span class="src">Maintenance/createWorkshopOrder.http</span>
+    </div>
+    <div class="case">
+      <p class="case__t">Unidad/taller inexistente (RAISERROR del SP)</p>
+      <dl>
+        <dt>Enviamos</dt><dd><code>{ &quot;unitPublicId&quot;: &quot;99999999-9999-9999-9999-999999999999&quot;, &quot;vehiclePublicId&quot;: &quot;99999999-9999-9999-9999-999999999999&quot;, &quot;workshopPublicId&quot;: &quot;99999999-9999-9999-9999-999999999999&quot;, &quot;orderDate&quot;: &quot;2026-08-20T09:00:00&quot;, &quot;currencyId&quot;: 1, &quot;odometer&quot; …</code></dd>
+        <dt>Responde</dt><dd><b class="bad">500</b> <code>{&quot;number&quot;:1011,&quot;message&quot;:&quot;Error interno del servidor. Contacte a soporte.&quot;}</code></dd>
+        <dt>Debería</dt><dd><b class="good">400</b> rechazar la entrada con un mensaje de validación</dd>
+      </dl>
+    </div>
+  </article>
+  <article class="ep">
+    <div class="ep__head">
+      <span class="sev sev--med">Medio</span>
+      <h3><span class="verb">POST</span> /account/social/link</h3>
+      <span class="src">Account/social-link.http</span>
+    </div>
+    <div class="case">
+      <p class="case__t">idToken inválido o expirado</p>
+      <dl>
+        <dt>Enviamos</dt><dd><code>{ &quot;provider&quot;: &quot;google&quot;, &quot;idToken&quot;: &quot;TOKEN_INVALIDO&quot; }</code></dd>
+        <dt>Responde</dt><dd><b class="bad">500</b> <code>(cuerpo vacío)</code></dd>
+        <dt>Debería</dt><dd><b class="good">401</b> rechazar por falta de credenciales válidas</dd>
+      </dl>
+    </div>
+    <div class="case">
+      <p class="case__t">Cuenta ya vinculada a otro usuario</p>
+      <dl>
+        <dt>Enviamos</dt><dd><code>{ &quot;provider&quot;: &quot;google&quot;, &quot;idToken&quot;: &quot;ID_TOKEN_DE_CUENTA_YA_VINCULADA&quot; }</code></dd>
+        <dt>Responde</dt><dd><b class="bad">500</b> <code>(cuerpo vacío)</code></dd>
+        <dt>Debería</dt><dd><b class="good">409</b> reportar el conflicto</dd>
+      </dl>
+    </div>
+  </article>
+  <article class="ep">
+    <div class="ep__head">
+      <span class="sev sev--med">Medio</span>
+      <h3><span class="verb">POST</span> /account/social/login</h3>
+      <span class="src">Account/social-login.http</span>
+    </div>
+    <div class="case">
+      <p class="case__t">idToken inválido o expirado</p>
+      <dl>
+        <dt>Enviamos</dt><dd><code>{ &quot;provider&quot;: &quot;google&quot;, &quot;idToken&quot;: &quot;TOKEN_INVALIDO&quot;, &quot;apiKey&quot;: &quot;5ff184c8-acc0-4616-ac5f-bb63b4966819&quot; }</code></dd>
+        <dt>Responde</dt><dd><b class="bad">500</b> <code>(cuerpo vacío)</code></dd>
+        <dt>Debería</dt><dd><b class="good">401</b> rechazar por falta de credenciales válidas</dd>
+      </dl>
+    </div>
+    <div class="case">
+      <p class="case__t">Cuenta externa NO vinculada a un usuario</p>
+      <dl>
+        <dt>Enviamos</dt><dd><code>{ &quot;provider&quot;: &quot;facebook&quot;, &quot;idToken&quot;: &quot;ID_TOKEN_DE_CUENTA_SIN_VINCULAR&quot;, &quot;apiKey&quot;: &quot;5ff184c8-acc0-4616-ac5f-bb63b4966819&quot; }</code></dd>
+        <dt>Responde</dt><dd><b class="bad">500</b> <code>(cuerpo vacío)</code></dd>
+        <dt>Debería</dt><dd><b class="good">409</b> reportar el conflicto</dd>
+      </dl>
+    </div>
+    <div class="case">
+      <p class="case__t">Proveedor no configurado/soportado</p>
+      <dl>
+        <dt>Enviamos</dt><dd><code>{ &quot;provider&quot;: &quot;twitter&quot;, &quot;idToken&quot;: &quot;CUALQUIER_TOKEN&quot;, &quot;apiKey&quot;: &quot;5ff184c8-acc0-4616-ac5f-bb63b4966819&quot; }</code></dd>
+        <dt>Responde</dt><dd><b class="bad">500</b> <code>(cuerpo vacío)</code></dd>
+        <dt>Debería</dt><dd><b class="good">503</b> indicar que el proveedor no está disponible</dd>
+      </dl>
+    </div>
+  </article>
+  <article class="ep">
+    <div class="ep__head">
+      <span class="sev sev--med">Medio</span>
+      <h3><span class="verb">POST</span> /conversation/saveConversationResultJson</h3>
+      <span class="src">Conversation/saveConversationResultJson.http</span>
+    </div>
+    <div class="case">
+      <p class="case__t">Sin token</p>
+      <dl>
+        <dt>Enviamos</dt><dd><code>{ &quot;phoneNumber&quot;: &quot;50255551234&quot;, &quot;flowType&quot;: &quot;conversation&quot;, &quot;transcriptText&quot;: &quot;Conversación registrada con el usuario del token.&quot; }</code></dd>
+        <dt>Responde</dt><dd><b class="bad">500</b> <code>{&quot;number&quot;:1011,&quot;message&quot;:&quot;Error logging request for billing, contact support&quot;}</code></dd>
+        <dt>Debería</dt><dd><b class="good">401</b> rechazar por falta de credenciales válidas</dd>
+      </dl>
+    </div>
+  </article>
+  <h2>Sin desplegar en este ambiente <span class="h2n">3 endpoints · 9 casos</span></h2>
+  <article class="ep">
+    <div class="ep__head">
+      <span class="sev sev--env">Amb</span>
+      <h3><span class="verb">POST</span> /order/createForzaGuide</h3>
+      <span class="src">Order/createForzaGuide.http</span>
+    </div>
+    <div class="case">
+      <p class="case__t">Errores: despacho cancelado en Odoo</p>
+      <dl>
+        <dt>Enviamos</dt><dd><code>{ &quot;order&quot;: { &quot;orderNumber&quot;: &quot;S01474&quot;, &quot;dispatchNumber&quot;: &quot;LSFE/OUT/01149&quot; }, &quot;guide&quot;: { &quot;serviceType&quot;: &quot;STD&quot;, &quot;recipient&quot;: { &quot;phone&quot;: &quot;23456789&quot; }, &quot;shipping&quot;: { &quot;townshipCode&quot;: &quot;0101&quot; } } }</code></dd>
+        <dt>Responde</dt><dd><b class="bad">404</b> <code>(cuerpo vacío)</code></dd>
+        <dt>Debería</dt><dd><b class="good">400</b> rechazar la entrada con un mensaje de validación</dd>
+      </dl>
+    </div>
+    <div class="case">
+      <p class="case__t">Errores: orden inexistente (Reactive y Odoo)</p>
+      <dl>
+        <dt>Enviamos</dt><dd><code>{ &quot;order&quot;: { &quot;orderNumber&quot;: &quot;S09999&quot; }, &quot;guide&quot;: { &quot;serviceType&quot;: &quot;STD&quot;, &quot;recipient&quot;: { &quot;phone&quot;: &quot;23456789&quot; }, &quot;shipping&quot;: { &quot;townshipCode&quot;: &quot;0101&quot; } } }</code></dd>
+        <dt>Responde</dt><dd><b class="bad">404</b> <code>(cuerpo vacío)</code></dd>
+        <dt>Debería</dt><dd><b class="good">400</b> rechazar la entrada con un mensaje de validación</dd>
+      </dl>
+    </div>
+    <div class="case">
+      <p class="case__t">Errores: el despacho no pertenece a la venta referida</p>
+      <dl>
+        <dt>Enviamos</dt><dd><code>{ &quot;order&quot;: { &quot;orderNumber&quot;: &quot;S01476&quot;, &quot;dispatchNumber&quot;: &quot;LSFE/OUT/01151&quot; }, &quot;guide&quot;: { &quot;serviceType&quot;: &quot;STD&quot;, &quot;recipient&quot;: { &quot;phone&quot;: &quot;23456789&quot; }, &quot;shipping&quot;: { &quot;townshipCode&quot;: &quot;0101&quot; } } }</code></dd>
+        <dt>Responde</dt><dd><b class="bad">404</b> <code>(cuerpo vacío)</code></dd>
+        <dt>Debería</dt><dd><b class="good">400</b> rechazar la entrada con un mensaje de validación</dd>
+      </dl>
+    </div>
+    <div class="case">
+      <p class="case__t">Errores: sin townshipCode</p>
+      <dl>
+        <dt>Enviamos</dt><dd><code>{ &quot;order&quot;: { &quot;orderNumber&quot;: &quot;S01476&quot; }, &quot;guide&quot;: { &quot;serviceType&quot;: &quot;STD&quot;, &quot;recipient&quot;: { &quot;phone&quot;: &quot;23456789&quot; }, &quot;shipping&quot;: { &quot;address1&quot;: &quot;x&quot; } } }</code></dd>
+        <dt>Responde</dt><dd><b class="bad">404</b> <code>(cuerpo vacío)</code></dd>
+        <dt>Debería</dt><dd><b class="good">400</b> rechazar la entrada con un mensaje de validación</dd>
+      </dl>
+    </div>
+    <div class="case">
+      <p class="case__t">Errores: venta en borrador en Odoo (sin despacho, el sync no la trae)</p>
+      <dl>
+        <dt>Enviamos</dt><dd><code>{ &quot;order&quot;: { &quot;orderNumber&quot;: &quot;S01310&quot; }, &quot;guide&quot;: { &quot;serviceType&quot;: &quot;STD&quot;, &quot;recipient&quot;: { &quot;phone&quot;: &quot;23456789&quot; }, &quot;shipping&quot;: { &quot;townshipCode&quot;: &quot;0101&quot; } } }</code></dd>
+        <dt>Responde</dt><dd><b class="bad">404</b> <code>(cuerpo vacío)</code></dd>
+        <dt>Debería</dt><dd><b class="good">400</b> rechazar la entrada con un mensaje de validación</dd>
+      </dl>
+    </div>
+    <div class="case">
+      <p class="case__t">Sin token</p>
+      <dl>
+        <dt>Enviamos</dt><dd><code>{ &quot;order&quot;: { &quot;orderNumber&quot;: &quot;S01476&quot; }, &quot;guide&quot;: { &quot;serviceType&quot;: &quot;STD&quot;, &quot;recipient&quot;: { &quot;phone&quot;: &quot;23456789&quot;, &quot;email&quot;: &quot;recepcion@prueba.test&quot; }, &quot;shipping&quot;: { &quot;townshipCode&quot;: &quot;0101&quot;, &quot;address1&quot;: &quot;12 calle 1-25 zona 10&quot; }, &quot;packages&quot;: { &quot;cou …</code></dd>
+        <dt>Responde</dt><dd><b class="bad">404</b> <code>(cuerpo vacío)</code></dd>
+        <dt>Debería</dt><dd><b class="good">401</b> rechazar por falta de credenciales válidas</dd>
+      </dl>
+    </div>
+  </article>
+  <article class="ep">
+    <div class="ep__head">
+      <span class="sev sev--env">Amb</span>
+      <h3><span class="verb">POST</span> /order/getForzaGuides</h3>
+      <span class="src">Order/getForzaGuides.http</span>
+    </div>
+    <div class="case">
+      <p class="case__t">Sin token</p>
+      <dl>
+        <dt>Enviamos</dt><dd><code>{ &quot;order&quot;: { &quot;orderNumber&quot;: &quot;S01476&quot; } }</code></dd>
+        <dt>Responde</dt><dd><b class="bad">404</b> <code>(cuerpo vacío)</code></dd>
+        <dt>Debería</dt><dd><b class="good">401</b> rechazar por falta de credenciales válidas</dd>
+      </dl>
+    </div>
+  </article>
+  <article class="ep">
+    <div class="ep__head">
+      <span class="sev sev--env">Amb</span>
+      <h3><span class="verb">POST</span> /order/getForzaTownships</h3>
+      <span class="src">Order/getForzaTownships.http</span>
+    </div>
+    <div class="case">
+      <p class="case__t">Departamento inexistente</p>
+      <dl>
+        <dt>Enviamos</dt><dd><code>{ &quot;department&quot;: &quot;Narnia&quot; }</code></dd>
+        <dt>Responde</dt><dd><b class="bad">404</b> <code>(cuerpo vacío)</code></dd>
+        <dt>Debería</dt><dd><b class="good">400</b> rechazar la entrada con un mensaje de validación</dd>
+      </dl>
+    </div>
+    <div class="case">
+      <p class="case__t">Sin token</p>
+      <dl>
+        <dt>Enviamos</dt><dd><code>{}</code></dd>
+        <dt>Responde</dt><dd><b class="bad">404</b> <code>(cuerpo vacío)</code></dd>
+        <dt>Debería</dt><dd><b class="good">401</b> rechazar por falta de credenciales válidas</dd>
+      </dl>
+    </div>
+  </article>
+  <h2>Falso positivo del ejecutor <span class="h2n">1 endpoint · 1 caso</span></h2>
+  <article class="ep">
+    <div class="ep__head">
+      <span class="sev sev--qa">QA</span>
+      <h3><span class="verb">POST</span> /conversation/saveConversationResult</h3>
+      <span class="src">Conversation/saveConversationResult.http</span>
+    </div>
+    <div class="case">
+      <p class="case__t">Sin token</p>
+      <dl>
+        <dt>Enviamos</dt><dd><code>--WebAppBoundary Content-Disposition: form-data; name=&quot;phoneNumber&quot; 50255551234 --WebAppBoundary Content-Disposition: form-data; name=&quot;flowType&quot; conversation --WebAppBoundary Content-Disposition: form-data; name=&quot;transcriptText&quot; Conversació …</code></dd>
+        <dt>Responde</dt><dd><b class="bad">400</b> <code>{&quot;number&quot;:1011,&quot;message&quot;:&quot;: Failed to read the request form. Line length limit 100 exceeded.&quot;}</code></dd>
+        <dt>Debería</dt><dd><b class="good">401</b> rechazar por falta de credenciales válidas</dd>
+      </dl>
+    </div>
+  </article>
+  <p class="foot">
+    Comparación entre la corrida del 22 de agosto y una reejecución posterior el mismo
+    día de los 27 archivos que habían fallado. Los 45 casos originales siguen existiendo,
+    ninguno desapareció, por lo que la diferencia refleja cambios en la API. Los dos de
+    mayor peso —autenticación de telemetría y verbo POST en los endpoints de borrado—
+    se confirmaron aparte con <code>curl</code>. Reproducir con
+    <code>node smoke.mjs --login --jobs=1 -v</code>. No se verificó producción.
+  </p>
+
+</div>

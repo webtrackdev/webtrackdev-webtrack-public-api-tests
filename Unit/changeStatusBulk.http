@@ -78,3 +78,14 @@ Content-Type: application/json
     { "unitId": 2, "unitStatus": 99 }
   ]
 }
+
+### Test 8: Sin token → 401
+POST {{baseUrl}}/Unit/changeStatusBulk
+Content-Type: application/json
+
+{
+  "units": [
+    { "unitId": 1, "unitStatus": 0 },
+    { "unitId": 2, "unitStatus": 0 }
+  ]
+}
