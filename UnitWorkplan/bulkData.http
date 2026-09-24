@@ -199,10 +199,9 @@ Authorization: Bearer {{token}}
     ]
 }
 
-### Caso 10: venta con varios despachos SIN desambiguador → 400 ambiguousOrders
-### La validación ocurre antes de abrir la transacción: NO se crea el plan.
-### Esperado: message con los despachos candidatos en formato orderId:dispatchNumber
-### Verificar en DB que no quedó Visita nueva para la unidad
+### Caso 10: venta con varios despachos SIN desambiguador → el plan SÍ se crea (WD-3859)
+### Esperado: workPlanExecutionId válido, ordersLinked = 0 y unresolvedOrders con
+### "<referencia>(ambiguous:<orderId>:<dispatchNumber>|...)" 
 POST {{baseUrl}}/UnitWorkplan/bulkData
 Content-Type: application/json
 Authorization: Bearer {{token}}
@@ -223,8 +222,8 @@ Authorization: Bearer {{token}}
     ]
 }
 
-### Caso 11: ambigüedad en la segunda ubicación → tampoco se crea la primera
-### Comprueba que el rechazo es transaccional para todo el payload
+### Caso 11: ambigüedad en la segunda ubicación → la primera se vincula igual (WD-3859)
+### Esperado: plan creado, los pedidos de la primera vinculados y el ambiguo en unresolvedOrders
 POST {{baseUrl}}/UnitWorkplan/bulkData
 Content-Type: application/json
 Authorization: Bearer {{token}}
