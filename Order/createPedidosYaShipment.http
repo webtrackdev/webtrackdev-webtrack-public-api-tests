@@ -1,0 +1,81 @@
+### WD-3988 — Order/createPedidosYaShipment
+# Crea en PedidosYa Envíos el envío de un despacho y lo liga a la orden. El despacho
+# se referencia con orderId, externalDispatchId o dispatchNumber (la venta sola no
+# basta). Cada integración de PedidosYa es una tienda con su hub: el envío sale de la
+# tienda cuyo hub es hubGeofenceId o, sin él, de la más cercana a la sucursal.
+# El modo prueba lo decide la tienda (isTest en su configuración, activo por
+# defecto): con él PedidosYa simula los estados y NO asigna repartidor. Correr estas
+# pruebas solo contra una integración en modo prueba.
+# Idempotente por despacho. Errores: 400 = 1011, 500 = 1004.
+
+### 1) Despacho por id, retiro en el hub más cercano, datos de entrega de la sucursal
+POST {{baseUrl}}/Order/createPedidosYaShipment
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "orderId": 7252,
+  "description": "Medicamentos",
+  "declaredValue": 150.00,
+  "weightKg": 1.5
+}
+
+### 2) Mismo despacho otra vez → envío reutilizado (shipment.reused = true)
+POST {{baseUrl}}/Order/createPedidosYaShipment
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "orderId": 7252
+}
+
+### 3) Hub explícito, destinatario y dirección propios, entrega programada (UTC)
+POST {{baseUrl}}/Order/createPedidosYaShipment
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "dispatchNumber": "LSFE/OUT/00639",
+  "hubGeofenceId": 5225,
+  "recipientName": "Farmacia X - Zona 10",
+  "recipientPhone": "+50223456789",
+  "notificationMail": "recepcion@prueba.test",
+  "address": "12 calle 1-25 zona 10",
+  "addressAdditional": "Edificio Plaza, local 3",
+  "city": "Guatemala",
+  "instructions": "Entregar en recepción",
+  "itemType": "FRAGILE",
+  "quantity": 2,
+  "deliveryTimeUtc": "2026-10-01T18:00:00Z",
+  "allowAdditionalShipment": true
+}
+
+### 4) Otra organización del usuario (multiorganización)
+POST {{baseUrl}}/Order/createPedidosYaShipment
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "organizationId": 4354,
+  "externalDispatchId": "8841"
+}
+
+### 5) 400: solo la venta, sin identificador de despacho
+POST {{baseUrl}}/Order/createPedidosYaShipment
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "orderNumber": "S01274"
+}
+
+### 6) 400: peso por unidad mayor a 20 kg
+POST {{baseUrl}}/Order/createPedidosYaShipment
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "orderId": 7252,
+  "weightKg": 25,
+  "allowAdditionalShipment": true
+}

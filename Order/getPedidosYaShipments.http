@@ -1,0 +1,28 @@
+### WD-3988 — Order/getPedidosYaShipments
+# Devuelve los despachos que coinciden con la referencia y sus envíos de PedidosYa,
+# vigentes primero. Referenciar la venta devuelve todos sus despachos. No crea nada.
+
+### 1) Por id del despacho
+POST {{baseUrl}}/Order/getPedidosYaShipments
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "orderId": 7252
+}
+
+### 2) Por número de venta (todos sus despachos)
+POST {{baseUrl}}/Order/getPedidosYaShipments
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "orderNumber": "S01274"
+}
+
+### 3) 400: sin identificador
+POST {{baseUrl}}/Order/getPedidosYaShipments
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{}

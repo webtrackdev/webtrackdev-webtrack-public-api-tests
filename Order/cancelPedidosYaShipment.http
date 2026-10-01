@@ -1,0 +1,32 @@
+### WD-3988 — Order/cancelPedidosYaShipment
+# PedidosYa solo cancela envíos sin repartidor asignado (CONFIRMED); uno en curso se
+# cancela desde su soporte. Refleja la cancelación en la orden con el mismo camino
+# del webhook. Idempotente: un envío ya no vigente devuelve alreadyCancelled = true.
+
+### 1) Cancelar por shippingId
+POST {{baseUrl}}/Order/cancelPedidosYaShipment
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "shippingId": "15562302281527156893283",
+  "reason": "Cancelado por el cliente"
+}
+
+### 2) Idempotencia: repetir la cancelación → alreadyCancelled = true sin llamar a PedidosYa
+POST {{baseUrl}}/Order/cancelPedidosYaShipment
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "shippingId": "15562302281527156893283"
+}
+
+### 3) 400: shippingId inexistente o de otra organización
+POST {{baseUrl}}/Order/cancelPedidosYaShipment
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "shippingId": "0"
+}
