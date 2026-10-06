@@ -1,0 +1,29 @@
+### Test 1: Save Model - New model
+POST {{baseUrl}}/Vehicle/saveModel
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "makerId": 45,
+  "modelName": "Aumark S"
+}
+
+### Test 2: Save Model - Existing model (idempotent)
+POST {{baseUrl}}/Vehicle/saveModel
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "makerId": 45,
+  "modelName": "aumark s"
+}
+
+### Test 3: Save Model - Invalid (maker does not exist)
+POST {{baseUrl}}/Vehicle/saveModel
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "makerId": 999999,
+  "modelName": "X"
+}

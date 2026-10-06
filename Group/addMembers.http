@@ -1,0 +1,57 @@
+### Test 1: Add Members - Units
+POST {{baseUrl}}/Group/addMembers
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "groupId": 15,
+  "entityType": "units",
+  "entityIds": [
+    5001,
+    5002
+  ]
+}
+
+### Test 2: Add Members - Users as administrators
+POST {{baseUrl}}/Group/addMembers
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "groupId": 15,
+  "entityType": "users",
+  "entityIds": [
+    2201
+  ],
+  "profileId": 2
+}
+
+### Test 3: Add Members - Geofences notifying admins
+POST {{baseUrl}}/Group/addMembers
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "groupId": 15,
+  "entityType": "geofences",
+  "entityIds": [
+    7781
+  ],
+  "notifyAdmin": true,
+  "notifyEmails": [
+    "trafico@empresa.com"
+  ]
+}
+
+### Test 4: Add Members - Invalid (unit not accessible)
+POST {{baseUrl}}/Group/addMembers
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "groupId": 15,
+  "entityType": "units",
+  "entityIds": [
+    999999
+  ]
+}

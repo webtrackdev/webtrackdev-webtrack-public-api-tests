@@ -1,0 +1,50 @@
+### Test 1: Save Permissions - Grant one
+POST {{baseUrl}}/User/savePermissions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "userId": 2201,
+  "grantPermissions": [
+    "UP016"
+  ]
+}
+
+### Test 2: Save Permissions - Revoke one
+POST {{baseUrl}}/User/savePermissions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "userId": 2201,
+  "revokePermissions": [
+    "UP016"
+  ]
+}
+
+### Test 3: Save Permissions - Change roles
+POST {{baseUrl}}/User/savePermissions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "userId": 2201,
+  "roleIds": [
+    1000
+  ]
+}
+
+### Test 4: Save Permissions - Invalid (full list and changes)
+POST {{baseUrl}}/User/savePermissions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "userId": 2201,
+  "permissions": [
+    "UP013"
+  ],
+  "grantPermissions": [
+    "UP016"
+  ]
+}

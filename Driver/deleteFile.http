@@ -1,0 +1,29 @@
+### Test 1: Delete File - Document
+POST {{baseUrl}}/Driver/deleteFile
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "driverId": 101,
+  "fileId": 55120
+}
+
+### Test 2: Delete File - Profile photo
+POST {{baseUrl}}/Driver/deleteFile
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "driverId": 101,
+  "profilePhoto": true
+}
+
+### Test 3: Delete File - Invalid (file of another driver)
+POST {{baseUrl}}/Driver/deleteFile
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "driverId": 101,
+  "fileId": 1
+}

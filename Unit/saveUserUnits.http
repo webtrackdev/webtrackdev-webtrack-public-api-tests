@@ -1,0 +1,15 @@
+### Test 1: Save User Units
+POST {{baseUrl}}/Unit/saveUserUnits
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "userId": 2201,
+  "addUnitIds": [
+    5001,
+    5002
+  ],
+  "removeUnitIds": [
+    4999
+  ]
+}

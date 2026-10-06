@@ -1,0 +1,8 @@
+### Test 1: Delete Comment
+POST {{baseUrl}}/Route/deleteComment
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "routeCommentId": 99120
+}

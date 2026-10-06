@@ -1,0 +1,8 @@
+### Test 1: Get Subdivisions - Of a division
+POST {{baseUrl}}/Organization/getSubdivisions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "divisionId": 210
+}

@@ -1,0 +1,126 @@
+### Test 1: Save - Create vehicle
+POST {{baseUrl}}/Vehicle/save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "licensePlate": "C123ABC",
+  "vehicleName": "Camión 12",
+  "color": "Blanco",
+  "makerId": 45,
+  "modelId": 812,
+  "year": 2022,
+  "vehicleTypeId": 7,
+  "fuelEconomy": 6.5,
+  "fuelEconomyMargin": 0.5
+}
+
+### Test 2: Save - Create vehicle with fuel tank and seal
+POST {{baseUrl}}/Vehicle/save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "licensePlate": "C456DEF",
+  "color": "Rojo",
+  "makerId": 45,
+  "modelId": 812,
+  "fuelEconomy": 6.5,
+  "fuelEconomyMargin": 0.5,
+  "fuelTanks": [
+    {
+      "fuelTankName": "Principal",
+      "capacity": 200,
+      "sensorId": 3312,
+      "loadThreshold": 15,
+      "unloadThreshold": 10
+    }
+  ],
+  "securitySeals": [
+    {
+      "code": "MAR-000981",
+      "description": "Tapa de tanque"
+    }
+  ]
+}
+
+### Test 3: Save - Partial update (only color)
+POST {{baseUrl}}/Vehicle/save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "vehicleId": 9812,
+  "color": "Azul"
+}
+
+### Test 4: Save - Remove all fuel tanks
+POST {{baseUrl}}/Vehicle/save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "vehicleId": 9812,
+  "fuelTanks": []
+}
+
+### Test 5: Save - Invalid (missing required fields on create)
+POST {{baseUrl}}/Vehicle/save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "vehicleName": "Sin placa"
+}
+
+### Test 6: Save - Invalid (duplicated license plate)
+POST {{baseUrl}}/Vehicle/save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "licensePlate": "C123ABC",
+  "color": "Negro",
+  "makerId": 45,
+  "modelId": 812
+}
+
+### Test 7: Save - Invalid (model of another maker)
+POST {{baseUrl}}/Vehicle/save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "licensePlate": "C789GHI",
+  "color": "Negro",
+  "makerId": 45,
+  "modelId": 1
+}
+
+### Test 8: Save - Invalid (fuel tanks without fuel economy)
+POST {{baseUrl}}/Vehicle/save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "licensePlate": "C789GHI",
+  "color": "Negro",
+  "makerId": 45,
+  "modelId": 812,
+  "fuelTanks": [
+    {
+      "fuelTankName": "Principal",
+      "capacity": 200
+    }
+  ]
+}
+
+### Test 9: Save - Vehicle not accessible
+POST {{baseUrl}}/Vehicle/save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "vehicleId": 999999,
+  "color": "Azul"
+}

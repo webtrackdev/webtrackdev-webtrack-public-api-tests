@@ -1,0 +1,26 @@
+### Test 1: Get Catalog - This month
+POST {{baseUrl}}/Order/getCatalog
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{}
+
+### Test 2: Get Catalog - By external dispatch id
+POST {{baseUrl}}/Order/getCatalog
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "externalDispatchId": "odoo-picking-77120"
+}
+
+### Test 3: Get Catalog - Date range and status
+POST {{baseUrl}}/Order/getCatalog
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "startDate": "2026-10-01T00:00:00",
+  "endDate": "2026-10-31T23:59:59",
+  "orderStatusId": 1
+}

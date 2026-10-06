@@ -1,0 +1,32 @@
+### Test 1: Unassign Units - Pair
+POST {{baseUrl}}/Geofence/unassignUnits
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "assignments": [
+    {
+      "unitId": 5001,
+      "geofenceId": 7781
+    }
+  ]
+}
+
+### Test 2: Unassign Units - All units of a geofence
+POST {{baseUrl}}/Geofence/unassignUnits
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "geofenceId": 7781
+}
+
+### Test 3: Unassign Units - Invalid (two options)
+POST {{baseUrl}}/Geofence/unassignUnits
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "geofenceId": 7781,
+  "unitId": 5001
+}

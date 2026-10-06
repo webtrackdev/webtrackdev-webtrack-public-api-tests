@@ -1,0 +1,8 @@
+### Test 1: Leave - Group
+POST {{baseUrl}}/Group/leave
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "groupId": 15
+}

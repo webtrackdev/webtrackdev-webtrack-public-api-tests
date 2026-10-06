@@ -1,0 +1,10 @@
+### Test 1: Delete
+POST {{baseUrl}}/SimCard/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "simCardIds": [
+    7001
+  ]
+}

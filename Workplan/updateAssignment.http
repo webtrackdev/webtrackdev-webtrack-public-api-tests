@@ -1,0 +1,10 @@
+### Test 1: Update Assignment
+POST {{baseUrl}}/Workplan/updateAssignment
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "assignmentId": 50012,
+  "scheduleId": 13,
+  "duration": 420
+}

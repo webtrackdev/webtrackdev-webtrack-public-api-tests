@@ -1,0 +1,8 @@
+### Test 1: Get Visit History
+POST {{baseUrl}}/Workplan/getVisitHistory
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "workplanExecutionId": 90011
+}

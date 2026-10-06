@@ -1,0 +1,15 @@
+### Test 1: Get Catalog - All
+POST {{baseUrl}}/Group/getCatalog
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{}
+
+### Test 2: Get Catalog - By name
+POST {{baseUrl}}/Group/getCatalog
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "groupName": "Ruta"
+}

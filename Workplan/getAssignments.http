@@ -1,0 +1,8 @@
+### Test 1: Get Assignments - By unit
+POST {{baseUrl}}/Workplan/getAssignments
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitId": 5001
+}

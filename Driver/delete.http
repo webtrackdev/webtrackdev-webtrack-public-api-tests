@@ -1,0 +1,17 @@
+### Test 1: Delete - Driver
+POST {{baseUrl}}/Driver/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "driverId": 101
+}
+
+### Test 2: Delete - Driver not accessible
+POST {{baseUrl}}/Driver/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "driverId": 999999
+}

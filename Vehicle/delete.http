@@ -1,0 +1,24 @@
+### Test 1: Delete - Vehicle
+POST {{baseUrl}}/Vehicle/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "vehicleId": 9812
+}
+
+### Test 2: Delete - Invalid (vehicleId missing)
+POST {{baseUrl}}/Vehicle/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{}
+
+### Test 3: Delete - Vehicle not accessible
+POST {{baseUrl}}/Vehicle/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "vehicleId": 999999
+}

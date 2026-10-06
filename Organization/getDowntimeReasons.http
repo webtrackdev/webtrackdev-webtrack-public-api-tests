@@ -1,0 +1,8 @@
+### Test 1: Get Downtime Reasons
+POST {{baseUrl}}/Organization/getDowntimeReasons
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "organizationId": 4354
+}

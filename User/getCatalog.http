@@ -1,0 +1,24 @@
+### Test 1: Get Catalog - Active users
+POST {{baseUrl}}/User/getCatalog
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{}
+
+### Test 2: Get Catalog - Search
+POST {{baseUrl}}/User/getCatalog
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "search": "pérez"
+}
+
+### Test 3: Get Catalog - Suspended users
+POST {{baseUrl}}/User/getCatalog
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "userStatus": 2
+}

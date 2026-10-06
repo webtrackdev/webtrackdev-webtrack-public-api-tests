@@ -1,0 +1,44 @@
+### Test 1: Assign Units - Assign and remove
+POST {{baseUrl}}/Driver/assignUnits
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "assignments": [
+    {
+      "unitId": 5001,
+      "driverId": 101
+    },
+    {
+      "unitId": 5002,
+      "driverId": null
+    }
+  ]
+}
+
+### Test 2: Assign Units - Invalid (duplicated unit)
+POST {{baseUrl}}/Driver/assignUnits
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "assignments": [
+    {
+      "unitId": 5001,
+      "driverId": 101
+    },
+    {
+      "unitId": 5001,
+      "driverId": 102
+    }
+  ]
+}
+
+### Test 3: Assign Units - Invalid (empty)
+POST {{baseUrl}}/Driver/assignUnits
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "assignments": []
+}

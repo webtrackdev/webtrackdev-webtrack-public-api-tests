@@ -1,0 +1,20 @@
+### Test 1: Get Mileage Activity
+POST {{baseUrl}}/Unit/getMileageActivity
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "startDate": "2026-10-01T00:00:00",
+  "endDate": "2026-10-07T23:59:59"
+}
+
+### Test 2: Get Mileage Activity - With geofence
+POST {{baseUrl}}/Unit/getMileageActivity
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "startDate": "2026-10-01T00:00:00",
+  "endDate": "2026-10-07T23:59:59",
+  "geofenceId": 7700
+}

@@ -1,0 +1,9 @@
+### Test 1: Get Next Executions
+POST {{baseUrl}}/Workplan/getNextExecutions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "workplanId": 930,
+  "count": 5
+}

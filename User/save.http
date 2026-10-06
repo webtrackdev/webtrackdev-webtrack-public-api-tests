@@ -1,0 +1,41 @@
+### Test 1: Save - Update name and role
+POST {{baseUrl}}/User/save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "userId": 2201,
+  "completeName": "Juan Pérez",
+  "roleId": 1000
+}
+
+### Test 2: Save - Move to another subdivision
+POST {{baseUrl}}/User/save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "userId": 2201,
+  "divisionId": 210,
+  "subdivisionId": 88
+}
+
+### Test 3: Save - Unlink driver
+POST {{baseUrl}}/User/save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "userId": 2201,
+  "driverId": 0
+}
+
+### Test 4: Save - Not manageable
+POST {{baseUrl}}/User/save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "completeName": "X"
+}

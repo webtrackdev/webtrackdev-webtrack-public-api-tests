@@ -1,0 +1,10 @@
+### Test 1: Reactivate
+POST {{baseUrl}}/Device/reactivate
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "deviceIds": [
+    9001
+  ]
+}

@@ -1,0 +1,26 @@
+### Test 1: Get Catalog - Free devices
+POST {{baseUrl}}/Device/getCatalog
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "assignedToUnit": false
+}
+
+### Test 2: Get Catalog - Deactivated
+POST {{baseUrl}}/Device/getCatalog
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "deviceStatus": 0
+}
+
+### Test 3: Get Catalog - Invalid (status)
+POST {{baseUrl}}/Device/getCatalog
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "deviceStatus": 9
+}

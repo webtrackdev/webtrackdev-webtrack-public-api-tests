@@ -1,0 +1,25 @@
+### Test 1: Share Executions - Link only
+POST {{baseUrl}}/Route/shareExecutions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "routeAssignmentIds": [
+    880112
+  ]
+}
+
+### Test 2: Share Executions - By email
+POST {{baseUrl}}/Route/shareExecutions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "routeAssignmentIds": [
+    880112,
+    880113
+  ],
+  "emails": [
+    "cliente@empresa.com"
+  ]
+}

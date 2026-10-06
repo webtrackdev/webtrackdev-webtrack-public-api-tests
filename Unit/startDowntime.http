@@ -1,0 +1,19 @@
+### Test 1: Start Downtime
+POST {{baseUrl}}/Unit/startDowntime
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitId": 5001,
+  "reasonId": 2
+}
+
+### Test 2: Start Downtime - Invalid reason
+POST {{baseUrl}}/Unit/startDowntime
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitId": 5001,
+  "reasonId": 99
+}

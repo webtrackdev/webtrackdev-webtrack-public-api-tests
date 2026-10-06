@@ -1,0 +1,19 @@
+### Test 1: Get Report
+POST {{baseUrl}}/Workplan/getReport
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "startDate": "2026-10-01T00:00:00",
+  "endDate": "2026-10-07T23:59:59"
+}
+
+### Test 2: Get Report - Invalid (range)
+POST {{baseUrl}}/Workplan/getReport
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "startDate": "2026-01-01T00:00:00",
+  "endDate": "2026-10-07T23:59:59"
+}

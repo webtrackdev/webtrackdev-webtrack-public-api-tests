@@ -1,0 +1,8 @@
+### Test 1: Delete Division
+POST {{baseUrl}}/Organization/deleteDivision
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "id": 210
+}

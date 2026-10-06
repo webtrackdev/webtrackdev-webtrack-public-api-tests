@@ -1,0 +1,8 @@
+### Test 1: Convert To Master
+POST {{baseUrl}}/Route/convertToMaster
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "routeId": 1201
+}

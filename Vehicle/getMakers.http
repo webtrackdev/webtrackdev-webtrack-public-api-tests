@@ -1,0 +1,16 @@
+### Test 1: Get Makers - All
+POST {{baseUrl}}/Vehicle/getMakers
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{}
+
+### Test 2: Get Makers - By name with models
+POST {{baseUrl}}/Vehicle/getMakers
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "makerName": "isu",
+  "includeModels": true
+}

@@ -1,0 +1,8 @@
+### Test 1: Unlink Child Route
+POST {{baseUrl}}/Route/unlinkChildRoute
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "routeId": 1210
+}

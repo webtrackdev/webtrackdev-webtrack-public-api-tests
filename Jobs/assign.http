@@ -1,0 +1,29 @@
+### Test 1: Assign - Users and forms
+POST {{baseUrl}}/Jobs/assign
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "jobIds": [
+    7001,
+    7002
+  ],
+  "userNames": [
+    "jperez"
+  ],
+  "formIds": [
+    4
+  ]
+}
+
+### Test 2: Assign - Remove all users
+POST {{baseUrl}}/Jobs/assign
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "jobIds": [
+    7001
+  ],
+  "userNames": []
+}

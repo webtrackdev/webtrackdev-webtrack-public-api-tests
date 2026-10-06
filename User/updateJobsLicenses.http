@@ -1,0 +1,23 @@
+### Test 1: Update Jobs Licenses
+POST {{baseUrl}}/User/updateJobsLicenses
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "userId": 2201,
+  "jobsLicenses": 2,
+  "jobsAppEnabled": true
+}
+
+### Test 2: Update Jobs Licenses - Reduce and sign out a device
+POST {{baseUrl}}/User/updateJobsLicenses
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "userId": 2201,
+  "jobsLicenses": 1,
+  "devicesToDeactivate": [
+    9001
+  ]
+}

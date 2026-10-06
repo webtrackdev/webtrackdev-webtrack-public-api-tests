@@ -1,0 +1,9 @@
+### Test 1: Add Log Comment
+POST {{baseUrl}}/Device/addLogComment
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "deviceId": 9001,
+  "comment": "Equipo enviado a revisión"
+}

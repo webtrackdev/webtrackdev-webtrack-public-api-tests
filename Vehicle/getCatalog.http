@@ -1,0 +1,35 @@
+### Test 1: Get Catalog - All vehicles
+POST {{baseUrl}}/Vehicle/getCatalog
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{}
+
+### Test 2: Get Catalog - By license plate with components
+POST {{baseUrl}}/Vehicle/getCatalog
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "licensePlate": "C123ABC",
+  "includeComponents": true
+}
+
+### Test 3: Get Catalog - Unassigned vehicles of a division
+POST {{baseUrl}}/Vehicle/getCatalog
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "divisionId": 210,
+  "assignedToUnit": false
+}
+
+### Test 4: Get Catalog - Invalid (organization not accessible)
+POST {{baseUrl}}/Vehicle/getCatalog
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "organizationId": 999999
+}

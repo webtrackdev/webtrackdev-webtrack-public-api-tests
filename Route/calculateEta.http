@@ -1,0 +1,35 @@
+### Test 1: Calculate Eta
+POST {{baseUrl}}/Route/calculateEta
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "points": [
+    {
+      "latitude": 14.6349,
+      "longitude": -90.5069
+    },
+    {
+      "latitude": 14.2817,
+      "longitude": -90.7852
+    },
+    {
+      "latitude": 13.9278,
+      "longitude": -90.7853
+    }
+  ]
+}
+
+### Test 2: Calculate Eta - Invalid (one point)
+POST {{baseUrl}}/Route/calculateEta
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "points": [
+    {
+      "latitude": 14.6349,
+      "longitude": -90.5069
+    }
+  ]
+}

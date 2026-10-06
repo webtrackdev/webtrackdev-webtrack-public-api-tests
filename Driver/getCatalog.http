@@ -1,0 +1,25 @@
+### Test 1: Get Catalog - All drivers
+POST {{baseUrl}}/Driver/getCatalog
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{}
+
+### Test 2: Get Catalog - By name with details
+POST {{baseUrl}}/Driver/getCatalog
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "driverName": "Pérez",
+  "includeDetails": true
+}
+
+### Test 3: Get Catalog - By private code
+POST {{baseUrl}}/Driver/getCatalog
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "privateCode": "DRV-GT-2023"
+}

@@ -1,0 +1,9 @@
+### Test 1: Change Sub State
+POST {{baseUrl}}/Unit/changeSubState
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitId": 5001,
+  "subStateId": 2
+}

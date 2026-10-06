@@ -1,0 +1,19 @@
+### Test 1: Copy
+POST {{baseUrl}}/Route/copy
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "routeId": 1201,
+  "newRouteName": "Guatemala - Escuintla (nocturna)"
+}
+
+### Test 2: Copy - Invalid (no name)
+POST {{baseUrl}}/Route/copy
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "routeId": 1201,
+  "newRouteName": ""
+}

@@ -1,0 +1,8 @@
+### Test 1: Get Child Routes
+POST {{baseUrl}}/Route/getChildRoutes
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "routeId": 1201
+}

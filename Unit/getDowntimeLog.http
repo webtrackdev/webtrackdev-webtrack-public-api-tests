@@ -1,0 +1,10 @@
+### Test 1: Get Downtime Log
+POST {{baseUrl}}/Unit/getDowntimeLog
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitId": 5001,
+  "startDate": "2026-10-01T00:00:00",
+  "endDate": "2026-10-31T23:59:59"
+}

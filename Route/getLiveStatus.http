@@ -1,0 +1,11 @@
+### Test 1: Get Live Status
+POST {{baseUrl}}/Route/getLiveStatus
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "routeAssignmentIds": [
+    880112,
+    880113
+  ]
+}

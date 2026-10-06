@@ -1,0 +1,9 @@
+### Test 1: Change Driver
+POST {{baseUrl}}/Workplan/changeDriver
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "workplanExecutionId": 90011,
+  "driverId": 102
+}

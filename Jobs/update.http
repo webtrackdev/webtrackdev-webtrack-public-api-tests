@@ -1,0 +1,40 @@
+### Test 1: Update - Due date and priority
+POST {{baseUrl}}/Jobs/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "jobIds": [
+    7001,
+    7002
+  ],
+  "dueDate": "2026-10-08T12:00:00",
+  "jobPriority": 1
+}
+
+### Test 2: Update - Reschedule
+POST {{baseUrl}}/Jobs/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "jobIds": [
+    7001
+  ],
+  "reschedule": true,
+  "startDate": "2026-10-09T08:00:00",
+  "dueDate": "2026-10-09T12:00:00"
+}
+
+### Test 3: Update - Invalid (start after due)
+POST {{baseUrl}}/Jobs/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "jobIds": [
+    7001
+  ],
+  "startDate": "2026-10-09T13:00:00",
+  "dueDate": "2026-10-09T12:00:00"
+}

@@ -1,0 +1,23 @@
+### Test 1: Update Schedule - Driver
+POST {{baseUrl}}/Route/updateSchedule
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "routeId": 1201,
+  "unitId": 5001,
+  "scheduleId": 12,
+  "driverId": 102
+}
+
+### Test 2: Update Schedule - Move to another unit
+POST {{baseUrl}}/Route/updateSchedule
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "routeId": 1201,
+  "unitId": 5001,
+  "scheduleId": 12,
+  "newUnitId": 5002
+}

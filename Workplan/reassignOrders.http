@@ -1,0 +1,15 @@
+### Test 1: Reassign Orders
+POST {{baseUrl}}/Workplan/reassignOrders
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "destinationWorkplanExecutionId": 90020,
+  "orders": [
+    {
+      "orderId": 33120,
+      "workplanExecutionId": 90011,
+      "locationId": 88123
+    }
+  ]
+}

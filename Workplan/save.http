@@ -1,0 +1,60 @@
+### Test 1: Save - Create with schedule
+POST {{baseUrl}}/Workplan/save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "workplanName": "Ruta Occidente - Lunes",
+  "validateOnIgnitionOff": true,
+  "stopNotAuthorized": 10,
+  "locations": [
+    {
+      "locationId": 88123
+    },
+    {
+      "locationId": 88124,
+      "startTime": "10:00",
+      "endTime": "12:00"
+    }
+  ],
+  "unitId": 5001,
+  "scheduleId": 12,
+  "duration": 480
+}
+
+### Test 2: Save - Rename only
+POST {{baseUrl}}/Workplan/save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "workplanId": 930,
+  "workplanName": "Ruta Occidente - Lunes (nueva)"
+}
+
+### Test 3: Save - Remove destination geofence
+POST {{baseUrl}}/Workplan/save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "workplanId": 930,
+  "destinationGeofenceId": 0
+}
+
+### Test 4: Save - Invalid (duplicated location)
+POST {{baseUrl}}/Workplan/save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "workplanName": "X",
+  "locations": [
+    {
+      "locationId": 88123
+    },
+    {
+      "locationId": 88123
+    }
+  ]
+}

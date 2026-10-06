@@ -1,0 +1,10 @@
+### Test 1: Delete - Units
+POST {{baseUrl}}/Unit/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitIds": [
+    5001
+  ]
+}

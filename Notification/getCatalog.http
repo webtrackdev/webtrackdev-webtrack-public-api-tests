@@ -1,0 +1,26 @@
+### Test 1: Get Catalog - Email
+POST {{baseUrl}}/Notification/getCatalog
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "notificationTypeId": "M"
+}
+
+### Test 2: Get Catalog - Webservices
+POST {{baseUrl}}/Notification/getCatalog
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "notificationTypeId": "W"
+}
+
+### Test 3: Get Catalog - Invalid (type)
+POST {{baseUrl}}/Notification/getCatalog
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "notificationTypeId": "X"
+}

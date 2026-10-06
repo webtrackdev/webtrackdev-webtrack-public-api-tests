@@ -1,0 +1,20 @@
+### Test 1: Save Subdivision - Create
+POST {{baseUrl}}/Organization/saveSubdivision
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "divisionId": 210,
+  "subdivisionName": "Quetzaltenango",
+  "privateCode": "SUB-XELA"
+}
+
+### Test 2: Save Subdivision - Update contact
+POST {{baseUrl}}/Organization/saveSubdivision
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "subdivisionId": 88,
+  "contactPhone": "+50277778888"
+}

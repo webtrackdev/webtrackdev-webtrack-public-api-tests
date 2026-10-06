@@ -1,0 +1,37 @@
+### Test 1: Get Catalog - All
+POST {{baseUrl}}/Geofence/getCatalog
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{}
+
+### Test 2: Get Catalog - By name with geometry
+POST {{baseUrl}}/Geofence/getCatalog
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "geofenceName": "Planta",
+  "includeGeometry": true
+}
+
+### Test 3: Get Catalog - Bounding box
+POST {{baseUrl}}/Geofence/getCatalog
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "minLatitude": 14.55,
+  "maxLatitude": 14.7,
+  "minLongitude": -90.6,
+  "maxLongitude": -90.45
+}
+
+### Test 4: Get Catalog - Invalid (incomplete bounding box)
+POST {{baseUrl}}/Geofence/getCatalog
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "minLatitude": 14.55
+}

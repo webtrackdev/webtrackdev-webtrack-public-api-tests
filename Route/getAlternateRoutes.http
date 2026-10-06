@@ -1,0 +1,8 @@
+### Test 1: Get Alternate Routes
+POST {{baseUrl}}/Route/getAlternateRoutes
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "routeId": 1201
+}

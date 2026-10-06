@@ -1,0 +1,17 @@
+### Test 1: Get Catalog - Free SIM cards
+POST {{baseUrl}}/SimCard/getCatalog
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "assignedToUnit": false
+}
+
+### Test 2: Get Catalog - Deactivated
+POST {{baseUrl}}/SimCard/getCatalog
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "simCardStatus": 0
+}

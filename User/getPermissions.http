@@ -1,0 +1,8 @@
+### Test 1: Get Permissions
+POST {{baseUrl}}/User/getPermissions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "userId": 2201
+}

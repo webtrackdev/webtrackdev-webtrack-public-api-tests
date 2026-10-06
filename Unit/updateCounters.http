@@ -1,0 +1,18 @@
+### Test 1: Update Counters - Odometer
+POST {{baseUrl}}/Unit/updateCounters
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitId": 5001,
+  "odometer": 154230.5
+}
+
+### Test 2: Update Counters - Invalid (none)
+POST {{baseUrl}}/Unit/updateCounters
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitId": 5001
+}

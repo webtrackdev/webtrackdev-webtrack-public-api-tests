@@ -1,0 +1,19 @@
+### Test 1: Save Comment - New
+POST {{baseUrl}}/Order/saveComment
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "orderId": 33120,
+  "comment": "Cliente pidió entregar después de las 10:00"
+}
+
+### Test 2: Save Comment - Edit own
+POST {{baseUrl}}/Order/saveComment
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "orderCommentId": 5512,
+  "comment": "Entregar después de las 11:00"
+}

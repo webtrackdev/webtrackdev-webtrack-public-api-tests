@@ -1,0 +1,15 @@
+### Test 1: Get Sensors - All
+POST {{baseUrl}}/Telemetry/getSensors
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{}
+
+### Test 2: Get Sensors - Temperature
+POST {{baseUrl}}/Telemetry/getSensors
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "measureTypeId": 1
+}

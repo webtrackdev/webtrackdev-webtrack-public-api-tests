@@ -1,0 +1,54 @@
+### Test 1: Save - Create (idempotent by externalDispatchId)
+POST {{baseUrl}}/Order/save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "externalDispatchId": "odoo-picking-77120",
+  "orderNumber": "SO-45812",
+  "locationId": 88123,
+  "capacity": 12,
+  "expectedDate": "2026-10-07T00:00:00",
+  "timeWindowStart": "2026-10-07T08:00:00",
+  "timeWindowEnd": "2026-10-07T12:00:00"
+}
+
+### Test 2: Save - Same dispatch again updates it
+POST {{baseUrl}}/Order/save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "externalDispatchId": "odoo-picking-77120",
+  "capacity": 15
+}
+
+### Test 3: Save - Partial update by id
+POST {{baseUrl}}/Order/save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "orderId": 33120,
+  "description": "Entregar en bodega trasera"
+}
+
+### Test 4: Save - Invalid (no location)
+POST {{baseUrl}}/Order/save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "orderNumber": "SO-1"
+}
+
+### Test 5: Save - Invalid (window)
+POST {{baseUrl}}/Order/save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "locationId": 88123,
+  "timeWindowStart": "2026-10-07T12:00:00",
+  "timeWindowEnd": "2026-10-07T08:00:00"
+}

@@ -1,0 +1,55 @@
+### Test 1: Upload File - Document
+POST {{baseUrl}}/Driver/uploadFile
+Authorization: Bearer {{token}}
+Content-Type: multipart/form-data; boundary=WebtrackBoundary
+
+--WebtrackBoundary
+Content-Disposition: form-data; name="driverId"
+
+101
+--WebtrackBoundary
+Content-Disposition: form-data; name="fileTitle"
+
+Licencia frente
+--WebtrackBoundary
+Content-Disposition: form-data; name="file"; filename="licencia.pdf"
+Content-Type: application/pdf
+
+< ./files/licencia.pdf
+--WebtrackBoundary--
+
+### Test 2: Upload File - Profile photo
+POST {{baseUrl}}/Driver/uploadFile
+Authorization: Bearer {{token}}
+Content-Type: multipart/form-data; boundary=WebtrackBoundary
+
+--WebtrackBoundary
+Content-Disposition: form-data; name="driverId"
+
+101
+--WebtrackBoundary
+Content-Disposition: form-data; name="isProfilePhoto"
+
+true
+--WebtrackBoundary
+Content-Disposition: form-data; name="file"; filename="foto.jpg"
+Content-Type: image/jpeg
+
+< ./files/foto.jpg
+--WebtrackBoundary--
+
+### Test 3: Upload File - Invalid (file type not allowed)
+POST {{baseUrl}}/Driver/uploadFile
+Authorization: Bearer {{token}}
+Content-Type: multipart/form-data; boundary=WebtrackBoundary
+
+--WebtrackBoundary
+Content-Disposition: form-data; name="driverId"
+
+101
+--WebtrackBoundary
+Content-Disposition: form-data; name="file"; filename="script.exe"
+Content-Type: application/octet-stream
+
+< ./files/script.exe
+--WebtrackBoundary--

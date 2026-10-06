@@ -1,0 +1,20 @@
+### Test 1: Save Downtime Reason - Create
+POST {{baseUrl}}/Organization/saveDowntimeReason
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "organizationId": 4354,
+  "description": "Llantas"
+}
+
+### Test 2: Save Downtime Reason - Rename
+POST {{baseUrl}}/Organization/saveDowntimeReason
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "organizationId": 4354,
+  "reasonId": 2,
+  "description": "Llantas y frenos"
+}

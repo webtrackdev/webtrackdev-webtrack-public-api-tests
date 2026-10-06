@@ -1,0 +1,10 @@
+### Test 1: Delete
+POST {{baseUrl}}/Jobs/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "jobIds": [
+    7001
+  ]
+}

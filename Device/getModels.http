@@ -1,0 +1,15 @@
+### Test 1: Get Models - All
+POST {{baseUrl}}/Device/getModels
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{}
+
+### Test 2: Get Models - By brand
+POST {{baseUrl}}/Device/getModels
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "brandId": 3
+}

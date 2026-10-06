@@ -1,0 +1,8 @@
+### Test 1: End Downtime
+POST {{baseUrl}}/Unit/endDowntime
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitId": 5001
+}

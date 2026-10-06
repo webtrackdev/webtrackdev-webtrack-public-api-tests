@@ -1,0 +1,33 @@
+### Test 1: Get Event History - One unit
+POST {{baseUrl}}/Unit/getEventHistory
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "eventId": 12,
+  "unitId": 5001,
+  "startDate": "2026-10-01T00:00:00",
+  "endDate": "2026-10-07T23:59:59"
+}
+
+### Test 2: Get Event History - All units
+POST {{baseUrl}}/Unit/getEventHistory
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "eventId": 12,
+  "startDate": "2026-10-06T00:00:00",
+  "endDate": "2026-10-07T23:59:59"
+}
+
+### Test 3: Get Event History - Invalid (range)
+POST {{baseUrl}}/Unit/getEventHistory
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "eventId": 12,
+  "startDate": "2026-08-01T00:00:00",
+  "endDate": "2026-10-07T23:59:59"
+}

@@ -1,0 +1,17 @@
+### Test 1: Delete - Organization
+POST {{baseUrl}}/Organization/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "id": 4354
+}
+
+### Test 2: Delete - Not accessible
+POST {{baseUrl}}/Organization/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "id": 999999
+}

@@ -1,0 +1,11 @@
+### Test 1: Delete
+POST {{baseUrl}}/Device/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "deviceIds": [
+    9001,
+    9002
+  ]
+}

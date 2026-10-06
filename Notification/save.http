@@ -1,0 +1,67 @@
+### Test 1: Save - Email
+POST {{baseUrl}}/Notification/save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "notificationTypeId": "M",
+  "unitIds": [
+    5001,
+    5002
+  ],
+  "eventIds": [
+    12,
+    30
+  ],
+  "emails": [
+    "trafico@empresa.com"
+  ]
+}
+
+### Test 2: Save - Webhook
+POST {{baseUrl}}/Notification/save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "notificationTypeId": "A",
+  "unitIds": [
+    5001
+  ],
+  "eventIds": [
+    -1
+  ],
+  "webhookUrl": "https://erp.empresa.com/webtrack/events"
+}
+
+### Test 3: Save - Console
+POST {{baseUrl}}/Notification/save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "notificationTypeId": "C",
+  "unitIds": [
+    5001
+  ],
+  "eventIds": [
+    12
+  ],
+  "consoleId": 3
+}
+
+### Test 4: Save - Invalid (http webhook)
+POST {{baseUrl}}/Notification/save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "notificationTypeId": "A",
+  "unitIds": [
+    5001
+  ],
+  "eventIds": [
+    12
+  ],
+  "webhookUrl": "http://erp.empresa.com"
+}

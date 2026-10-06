@@ -1,0 +1,8 @@
+### Test 1: Acknowledge Event
+POST {{baseUrl}}/Unit/acknowledgeEvent
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitId": 5001
+}

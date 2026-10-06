@@ -1,0 +1,8 @@
+### Test 1: Get User Units
+POST {{baseUrl}}/Unit/getUserUnits
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "userId": 2201
+}

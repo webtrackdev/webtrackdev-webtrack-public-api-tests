@@ -1,0 +1,22 @@
+### Test 1: Delete - Orders
+POST {{baseUrl}}/Order/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "orderIds": [
+    33120,
+    33121
+  ]
+}
+
+### Test 2: Delete - Invalid (not accessible)
+POST {{baseUrl}}/Order/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "orderIds": [
+    999999
+  ]
+}

@@ -1,0 +1,101 @@
+### Test 1: Save - Create polygon
+POST {{baseUrl}}/Geofence/save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "geofenceName": "Planta Central",
+  "shape": "P",
+  "vertices": [
+    {
+      "latitude": 14.6349,
+      "longitude": -90.5069
+    },
+    {
+      "latitude": 14.6349,
+      "longitude": -90.4987
+    },
+    {
+      "latitude": 14.6402,
+      "longitude": -90.4987
+    }
+  ]
+}
+
+### Test 2: Save - Create circle
+POST {{baseUrl}}/Geofence/save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "geofenceName": "Cliente 45",
+  "shape": "C",
+  "latitude": 14.6349,
+  "longitude": -90.5069,
+  "radius": 150
+}
+
+### Test 3: Save - Create rectangle
+POST {{baseUrl}}/Geofence/save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "geofenceName": "Patio",
+  "shape": "R",
+  "latitude": 14.6402,
+  "longitude": -90.4987,
+  "latitude2": 14.6349,
+  "longitude2": -90.5069
+}
+
+### Test 4: Save - Rename only (keeps geometry)
+POST {{baseUrl}}/Geofence/save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "geofenceId": 7781,
+  "geofenceName": "Planta Central Norte"
+}
+
+### Test 5: Save - Invalid (polygon with 2 vertices)
+POST {{baseUrl}}/Geofence/save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "geofenceName": "X",
+  "shape": "P",
+  "vertices": [
+    {
+      "latitude": 14.6,
+      "longitude": -90.5
+    },
+    {
+      "latitude": 14.7,
+      "longitude": -90.5
+    }
+  ]
+}
+
+### Test 6: Save - Invalid (circle without radius)
+POST {{baseUrl}}/Geofence/save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "geofenceName": "X",
+  "shape": "C",
+  "latitude": 14.6,
+  "longitude": -90.5
+}
+
+### Test 7: Save - Invalid (create without geometry)
+POST {{baseUrl}}/Geofence/save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "geofenceName": "X"
+}

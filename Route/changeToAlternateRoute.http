@@ -1,0 +1,21 @@
+### Test 1: Change To Alternate Route
+POST {{baseUrl}}/Route/changeToAlternateRoute
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "routeAssignmentId": 880112,
+  "routeId": 1202,
+  "reason": "Bloqueo en carretera"
+}
+
+### Test 2: Change To Alternate Route - Invalid (not an alternate)
+POST {{baseUrl}}/Route/changeToAlternateRoute
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "routeAssignmentId": 880112,
+  "routeId": 999999,
+  "reason": "X"
+}

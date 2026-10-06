@@ -1,0 +1,17 @@
+### Test 1: Get Jobs Licenses - Organization
+POST {{baseUrl}}/User/getJobsLicenses
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "organizationId": 4354
+}
+
+### Test 2: Get Jobs Licenses - User with devices
+POST {{baseUrl}}/User/getJobsLicenses
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "userId": 2201
+}

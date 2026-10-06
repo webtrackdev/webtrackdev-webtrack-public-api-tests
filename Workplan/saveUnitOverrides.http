@@ -1,0 +1,25 @@
+### Test 1: Save Unit Overrides
+POST {{baseUrl}}/Workplan/saveUnitOverrides
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "workplanId": 930,
+  "overrides": [
+    {
+      "runDate": "2026-10-09",
+      "unitId": 5002,
+      "driverId": 102
+    }
+  ]
+}
+
+### Test 2: Save Unit Overrides - Remove all
+POST {{baseUrl}}/Workplan/saveUnitOverrides
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "workplanId": 930,
+  "overrides": []
+}

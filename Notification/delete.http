@@ -1,0 +1,14 @@
+### Test 1: Delete
+POST {{baseUrl}}/Notification/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "items": [
+    {
+      "unitId": 5001,
+      "eventId": 12,
+      "orderId": 1
+    }
+  ]
+}

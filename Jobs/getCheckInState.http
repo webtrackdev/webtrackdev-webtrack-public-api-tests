@@ -1,0 +1,6 @@
+### Test 1: Get Check In State
+POST {{baseUrl}}/Jobs/getCheckInState
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{}

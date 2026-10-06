@@ -1,0 +1,9 @@
+### Test 1: Manual Transit
+POST {{baseUrl}}/Workplan/manualTransit
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "workplanExecutionId": 90011,
+  "reason": "Salió desde otro predio"
+}

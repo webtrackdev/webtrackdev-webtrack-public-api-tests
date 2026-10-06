@@ -1,0 +1,64 @@
+### Test 1: Assign Units - Entrance alert with email
+POST {{baseUrl}}/Geofence/assignUnits
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "assignments": [
+    {
+      "unitId": 5001,
+      "geofenceId": 7781,
+      "trigger": 1,
+      "emails": [
+        "trafico@empresa.com"
+      ]
+    }
+  ]
+}
+
+### Test 2: Assign Units - Change trigger keeping notifications
+POST {{baseUrl}}/Geofence/assignUnits
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "assignments": [
+    {
+      "unitId": 5001,
+      "geofenceId": 7781,
+      "trigger": 3
+    }
+  ]
+}
+
+### Test 3: Assign Units - Invalid (trigger)
+POST {{baseUrl}}/Geofence/assignUnits
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "assignments": [
+    {
+      "unitId": 5001,
+      "geofenceId": 7781,
+      "trigger": 9
+    }
+  ]
+}
+
+### Test 4: Assign Units - Invalid (email)
+POST {{baseUrl}}/Geofence/assignUnits
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "assignments": [
+    {
+      "unitId": 5001,
+      "geofenceId": 7781,
+      "emails": [
+        "no-es-correo"
+      ]
+    }
+  ]
+}

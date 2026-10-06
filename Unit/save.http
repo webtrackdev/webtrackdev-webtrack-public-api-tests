@@ -1,0 +1,31 @@
+### Test 1: Save - Thresholds and vehicle
+POST {{baseUrl}}/Unit/save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitId": 5001,
+  "vehicleId": 9812,
+  "offlineTime": 60,
+  "serviceClassId": 4
+}
+
+### Test 2: Save - Remove SIM
+POST {{baseUrl}}/Unit/save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitId": 5001,
+  "simCardId": 0
+}
+
+### Test 3: Save - Not accessible
+POST {{baseUrl}}/Unit/save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitId": 999999,
+  "unitName": "X"
+}

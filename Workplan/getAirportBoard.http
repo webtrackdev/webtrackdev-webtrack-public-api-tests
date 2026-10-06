@@ -1,0 +1,16 @@
+### Test 1: Get Airport Board - Today
+POST {{baseUrl}}/Workplan/getAirportBoard
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{}
+
+### Test 2: Get Airport Board - Plan and day
+POST {{baseUrl}}/Workplan/getAirportBoard
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "workplanId": 930,
+  "planDate": "2026-10-08"
+}

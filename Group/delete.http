@@ -1,0 +1,17 @@
+### Test 1: Delete - Group
+POST {{baseUrl}}/Group/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "groupId": 15
+}
+
+### Test 2: Delete - Not accessible
+POST {{baseUrl}}/Group/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "groupId": 999999
+}

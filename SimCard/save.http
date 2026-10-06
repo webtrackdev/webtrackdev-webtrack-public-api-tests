@@ -1,0 +1,32 @@
+### Test 1: Save - Create
+POST {{baseUrl}}/SimCard/save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "iccid": "89502011234567890123",
+  "cellularNumber": "+50255551234",
+  "countryId": 1,
+  "mobileOperatorId": 2
+}
+
+### Test 2: Save - Cancel line
+POST {{baseUrl}}/SimCard/save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "simCardId": 7001,
+  "simCardStatus": 3
+}
+
+### Test 3: Save - Invalid (operator of another country)
+POST {{baseUrl}}/SimCard/save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "simCardId": 7001,
+  "countryId": 1,
+  "mobileOperatorId": 999
+}

@@ -1,0 +1,43 @@
+### Test 1: Save - Create
+POST {{baseUrl}}/Device/save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "identifier": "862193020051234",
+  "imei": "356938035643809",
+  "brandId": 3,
+  "deviceModelId": 41,
+  "deviceConfigurationId": 7
+}
+
+### Test 2: Save - Mark as damaged
+POST {{baseUrl}}/Device/save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "deviceId": 9001,
+  "deviceStatus": 2
+}
+
+### Test 3: Save - Warranty of a client subdivision
+POST {{baseUrl}}/Device/save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "deviceId": 9001,
+  "warrantyProviderTypeId": 2,
+  "warrantyProviderId": 88
+}
+
+### Test 4: Save - Invalid (installed manually)
+POST {{baseUrl}}/Device/save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "deviceId": 9001,
+  "locationStatus": 4
+}

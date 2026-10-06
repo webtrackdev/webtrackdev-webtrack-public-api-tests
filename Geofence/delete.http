@@ -1,0 +1,17 @@
+### Test 1: Delete - Geofence
+POST {{baseUrl}}/Geofence/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "geofenceId": 7781
+}
+
+### Test 2: Delete - Not accessible
+POST {{baseUrl}}/Geofence/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "geofenceId": 999999
+}

@@ -1,0 +1,12 @@
+### Test 1: Update Location Coordinate
+POST {{baseUrl}}/Workplan/updateLocationCoordinate
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "workplanExecutionId": 90011,
+  "locationId": 88123,
+  "latitude": 14.6351,
+  "longitude": -90.5071,
+  "radius": 60
+}

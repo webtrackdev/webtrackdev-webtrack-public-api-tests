@@ -1,0 +1,24 @@
+### Test 1: Get Assignments - By unit
+POST {{baseUrl}}/Geofence/getAssignments
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitId": 5001
+}
+
+### Test 2: Get Assignments - By geofence
+POST {{baseUrl}}/Geofence/getAssignments
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "geofenceId": 7781
+}
+
+### Test 3: Get Assignments - Invalid (no filter)
+POST {{baseUrl}}/Geofence/getAssignments
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{}

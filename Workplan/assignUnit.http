@@ -1,0 +1,37 @@
+### Test 1: Assign Unit - By date
+POST {{baseUrl}}/Workplan/assignUnit
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "workplanId": 930,
+  "unitId": 5001,
+  "type": 0,
+  "startDate": "2026-10-08T07:00:00",
+  "endDate": "2026-10-08T17:00:00",
+  "driverId": 101
+}
+
+### Test 2: Assign Unit - Recurring
+POST {{baseUrl}}/Workplan/assignUnit
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "workplanId": 930,
+  "unitId": 5001,
+  "type": 1,
+  "scheduleId": 12,
+  "duration": 480
+}
+
+### Test 3: Assign Unit - Invalid (no schedule)
+POST {{baseUrl}}/Workplan/assignUnit
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "workplanId": 930,
+  "unitId": 5001,
+  "type": 1
+}

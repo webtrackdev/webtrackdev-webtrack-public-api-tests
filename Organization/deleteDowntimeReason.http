@@ -1,0 +1,9 @@
+### Test 1: Delete Downtime Reason
+POST {{baseUrl}}/Organization/deleteDowntimeReason
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "organizationId": 4354,
+  "reasonId": 2
+}

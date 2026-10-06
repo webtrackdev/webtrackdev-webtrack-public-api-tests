@@ -1,0 +1,11 @@
+### Test 1: Change Visit Status
+POST {{baseUrl}}/Workplan/changeVisitStatus
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "workplanExecutionId": 90011,
+  "locationId": 88123,
+  "visitStatus": "M",
+  "reason": "Cliente cerrado"
+}

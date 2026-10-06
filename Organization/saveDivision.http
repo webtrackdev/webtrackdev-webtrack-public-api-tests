@@ -1,0 +1,30 @@
+### Test 1: Save Division - Create
+POST {{baseUrl}}/Organization/saveDivision
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "organizationId": 4354,
+  "divisionName": "Occidente",
+  "privateCode": "DIV-OCC"
+}
+
+### Test 2: Save Division - Rename
+POST {{baseUrl}}/Organization/saveDivision
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "divisionId": 210,
+  "divisionName": "Occidente Norte"
+}
+
+### Test 3: Save Division - Invalid (move to another organization)
+POST {{baseUrl}}/Organization/saveDivision
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "divisionId": 210,
+  "organizationId": 1
+}

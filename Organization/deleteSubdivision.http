@@ -1,0 +1,8 @@
+### Test 1: Delete Subdivision
+POST {{baseUrl}}/Organization/deleteSubdivision
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "id": 88
+}

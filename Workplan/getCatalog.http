@@ -1,0 +1,16 @@
+### Test 1: Get Catalog
+POST {{baseUrl}}/Workplan/getCatalog
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{}
+
+### Test 2: Get Catalog - With locations
+POST {{baseUrl}}/Workplan/getCatalog
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "workplanName": "Occidente",
+  "includeLocations": true
+}

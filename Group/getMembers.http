@@ -1,0 +1,30 @@
+### Test 1: Get Members - Units
+POST {{baseUrl}}/Group/getMembers
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "groupId": 15,
+  "entityType": "units"
+}
+
+### Test 2: Get Members - Available units
+POST {{baseUrl}}/Group/getMembers
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "groupId": 15,
+  "entityType": "units",
+  "available": true
+}
+
+### Test 3: Get Members - Invalid (entity type)
+POST {{baseUrl}}/Group/getMembers
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "groupId": 15,
+  "entityType": "trucks"
+}

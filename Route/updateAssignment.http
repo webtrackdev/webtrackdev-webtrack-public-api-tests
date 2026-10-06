@@ -1,0 +1,37 @@
+### Test 1: Update Assignment - Driver
+POST {{baseUrl}}/Route/updateAssignment
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "routeAssignmentIds": [
+    880112
+  ],
+  "driverId": 102
+}
+
+### Test 2: Update Assignment - Bulk notifications
+POST {{baseUrl}}/Route/updateAssignment
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "routeAssignmentIds": [
+    880112,
+    880113
+  ],
+  "notificationEmails": "trafico@empresa.com",
+  "completionType": 2
+}
+
+### Test 3: Update Assignment - Remove driver
+POST {{baseUrl}}/Route/updateAssignment
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "routeAssignmentIds": [
+    880112
+  ],
+  "driverId": 0
+}

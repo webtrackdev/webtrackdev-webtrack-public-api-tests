@@ -1,0 +1,8 @@
+### Test 1: Delete Assignment
+POST {{baseUrl}}/Workplan/deleteAssignment
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "assignmentId": 50012
+}

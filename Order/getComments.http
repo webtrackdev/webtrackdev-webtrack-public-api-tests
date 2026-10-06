@@ -1,0 +1,8 @@
+### Test 1: Get Comments
+POST {{baseUrl}}/Order/getComments
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "orderId": 33120
+}

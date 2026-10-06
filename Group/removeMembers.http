@@ -1,0 +1,25 @@
+### Test 1: Remove Members - Units
+POST {{baseUrl}}/Group/removeMembers
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "groupId": 15,
+  "entityType": "units",
+  "entityIds": [
+    5002
+  ]
+}
+
+### Test 2: Remove Members - Users
+POST {{baseUrl}}/Group/removeMembers
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "groupId": 15,
+  "entityType": "users",
+  "entityIds": [
+    2201
+  ]
+}

@@ -1,0 +1,8 @@
+### Test 1: Get Log
+POST {{baseUrl}}/Device/getLog
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "deviceId": 9001
+}

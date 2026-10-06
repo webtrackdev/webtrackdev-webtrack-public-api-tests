@@ -1,0 +1,10 @@
+### Test 1: Get Check In Log
+POST {{baseUrl}}/Jobs/getCheckInLog
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "userId": 2201,
+  "startDate": "2026-10-01T00:00:00",
+  "endDate": "2026-10-07T23:59:59"
+}

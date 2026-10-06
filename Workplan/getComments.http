@@ -1,0 +1,9 @@
+### Test 1: Get Comments
+POST {{baseUrl}}/Workplan/getComments
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "workplanExecutionId": 90011,
+  "locationId": 88123
+}

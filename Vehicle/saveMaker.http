@@ -1,0 +1,26 @@
+### Test 1: Save Maker - New maker
+POST {{baseUrl}}/Vehicle/saveMaker
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "makerName": "Foton"
+}
+
+### Test 2: Save Maker - Existing maker (idempotent, created = false)
+POST {{baseUrl}}/Vehicle/saveMaker
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "makerName": "FOTON"
+}
+
+### Test 3: Save Maker - Invalid (empty name)
+POST {{baseUrl}}/Vehicle/saveMaker
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "makerName": ""
+}

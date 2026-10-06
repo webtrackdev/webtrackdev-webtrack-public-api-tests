@@ -1,0 +1,9 @@
+### Test 1: Add Log Comment
+POST {{baseUrl}}/SimCard/addLogComment
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "simCardId": 7001,
+  "comment": "Línea suspendida por el operador"
+}

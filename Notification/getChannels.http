@@ -1,0 +1,6 @@
+### Test 1: Get Channels
+POST {{baseUrl}}/Notification/getChannels
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{}

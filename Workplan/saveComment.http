@@ -1,0 +1,10 @@
+### Test 1: Save Comment
+POST {{baseUrl}}/Workplan/saveComment
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "workplanExecutionId": 90011,
+  "locationId": 88123,
+  "comment": "Se entregó a recepción"
+}

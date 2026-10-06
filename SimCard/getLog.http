@@ -1,0 +1,8 @@
+### Test 1: Get Log
+POST {{baseUrl}}/SimCard/getLog
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "simCardId": 7001
+}

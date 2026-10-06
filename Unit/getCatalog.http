@@ -1,0 +1,25 @@
+### Test 1: Get Catalog - Active units
+POST {{baseUrl}}/Unit/getCatalog
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{}
+
+### Test 2: Get Catalog - By IMEI with details
+POST {{baseUrl}}/Unit/getCatalog
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "deviceIdentifier": "867530012345678",
+  "includeDetails": true
+}
+
+### Test 3: Get Catalog - Disabled units
+POST {{baseUrl}}/Unit/getCatalog
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitStatus": 0
+}

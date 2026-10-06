@@ -1,0 +1,47 @@
+### Test 1: Save - Create (operator user)
+POST {{baseUrl}}/Organization/save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "operatorId": 307,
+  "organizationName": "Transportes Andinos S.A.",
+  "contactEmail": "operaciones@andinos.com"
+}
+
+### Test 2: Save - Update phone and add legal representative
+POST {{baseUrl}}/Organization/save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "organizationId": 4354,
+  "contactPhone": "+50222223333",
+  "contacts": [
+    {
+      "contactName": "Luis Méndez",
+      "email": "luis.mendez@andinos.com",
+      "isLegalRepresentative": true
+    }
+  ]
+}
+
+### Test 3: Save - Invalid (create without operator)
+POST {{baseUrl}}/Organization/save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "organizationName": "X",
+  "contactEmail": "x@x.com"
+}
+
+### Test 4: Save - Not accessible
+POST {{baseUrl}}/Organization/save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "organizationId": 999999,
+  "organizationName": "X"
+}

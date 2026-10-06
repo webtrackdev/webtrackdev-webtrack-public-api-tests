@@ -1,0 +1,28 @@
+### Test 1: Get List - Backlog
+POST {{baseUrl}}/Jobs/getList
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "view": "backlog"
+}
+
+### Test 2: Get List - Board
+POST {{baseUrl}}/Jobs/getList
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "view": "board",
+  "startDate": "2026-10-07T00:00:00",
+  "endDate": "2026-10-07T23:59:59"
+}
+
+### Test 3: Get List - Invalid (board without dates)
+POST {{baseUrl}}/Jobs/getList
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "view": "board"
+}

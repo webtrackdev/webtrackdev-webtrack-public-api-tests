@@ -1,0 +1,75 @@
+### Test 1: Save - Create driver
+POST {{baseUrl}}/Driver/save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "driverName": "Juan Pérez López",
+  "privateCode": "DRV-GT-2023",
+  "licenseNumber": "2456789010101",
+  "licenseExpireDate": "2027-08-31",
+  "phoneNumbers": [
+    "+50255551234"
+  ]
+}
+
+### Test 2: Save - Partial update (license expiration)
+POST {{baseUrl}}/Driver/save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "driverId": 101,
+  "licenseExpireDate": "2028-08-31"
+}
+
+### Test 3: Save - Remove all phone numbers
+POST {{baseUrl}}/Driver/save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "driverId": 101,
+  "phoneNumbers": []
+}
+
+### Test 4: Save - Invalid (phone not E.164)
+POST {{baseUrl}}/Driver/save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "driverId": 101,
+  "phoneNumbers": [
+    "55551234"
+  ]
+}
+
+### Test 5: Save - Invalid (missing name on create)
+POST {{baseUrl}}/Driver/save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "privateCode": "X"
+}
+
+### Test 6: Save - Invalid (duplicated private code)
+POST {{baseUrl}}/Driver/save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "driverName": "Otro",
+  "privateCode": "DRV-GT-2023"
+}
+
+### Test 7: Save - Driver not accessible
+POST {{baseUrl}}/Driver/save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "driverId": 999999,
+  "driverName": "X"
+}

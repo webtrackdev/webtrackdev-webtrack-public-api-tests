@@ -1,0 +1,38 @@
+### Test 1: Save - Create group
+POST {{baseUrl}}/Group/save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "groupName": "Ruta Occidente",
+  "notifyAdminMemberAdded": true
+}
+
+### Test 2: Save - Rename and SafeDriver settings
+POST {{baseUrl}}/Group/save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "groupId": 15,
+  "groupName": "Ruta Occidente Norte",
+  "safeDriverSpeedLimit": 80,
+  "notifyAdminSpeedEvent": true
+}
+
+### Test 3: Save - Invalid (create without name)
+POST {{baseUrl}}/Group/save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{}
+
+### Test 4: Save - Group not accessible
+POST {{baseUrl}}/Group/save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "groupId": 999999,
+  "groupName": "X"
+}

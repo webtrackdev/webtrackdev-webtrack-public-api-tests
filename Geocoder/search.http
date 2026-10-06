@@ -1,0 +1,17 @@
+### Test 1: Search
+POST {{baseUrl}}/Geocoder/search
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "address": "Km 32.5 carretera a Escuintla, Palín"
+}
+
+### Test 2: Search - Invalid (empty)
+POST {{baseUrl}}/Geocoder/search
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "address": ""
+}

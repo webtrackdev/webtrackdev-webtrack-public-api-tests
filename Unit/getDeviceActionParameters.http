@@ -1,0 +1,9 @@
+### Test 1: Get Device Action Parameters
+POST {{baseUrl}}/Unit/getDeviceActionParameters
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitId": 5001,
+  "deviceActionId": 14
+}

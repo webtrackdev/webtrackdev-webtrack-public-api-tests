@@ -1,0 +1,10 @@
+### Test 1: Delete Schedule
+POST {{baseUrl}}/Route/deleteSchedule
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "routeId": 1201,
+  "unitId": 5001,
+  "scheduleId": 12
+}
