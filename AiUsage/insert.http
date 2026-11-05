@@ -1,0 +1,114 @@
+### WD-4423 / WD-4357: registrar un consumo de IA. Responde 200 con el registro y los créditos
+# descontados a la organización (costo x multiplicador de margen x 100).
+# Usa un modelo con tarifa en AiModelPricing; sin tarifa se registra pero no descuenta.
+
+### Consumo por tokens (debe retornar 200 y descontar créditos)
+POST {{baseUrl}}/AiUsage/insert
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "provider": "openai",
+  "model": "gpt-4o-mini",
+  "feature": "webi-chat",
+  "promptTokens": 1200,
+  "completionTokens": 300,
+  "cachedTokens": 0,
+  "requestId": "external-tests-tokens-001",
+  "success": true,
+  "latencyMs": 850
+}
+
+### Reintento del mismo consumo (debe retornar 200 con el MISMO registro y no descontar otra vez)
+# Mismo requestId, modelo, funcionalidad y cantidades que la petición anterior.
+POST {{baseUrl}}/AiUsage/insert
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "provider": "openai",
+  "model": "gpt-4o-mini",
+  "feature": "webi-chat",
+  "promptTokens": 1200,
+  "completionTokens": 300,
+  "cachedTokens": 0,
+  "requestId": "external-tests-tokens-001",
+  "success": true,
+  "latencyMs": 850
+}
+
+### Mismo requestId con otro modelo (debe retornar 200 y crear un registro nuevo)
+# Una sesión de voz comparte el identificador entre varios modelos.
+POST {{baseUrl}}/AiUsage/insert
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "provider": "openai",
+  "model": "gpt-4o",
+  "feature": "webi-chat",
+  "promptTokens": 1200,
+  "completionTokens": 300,
+  "requestId": "external-tests-tokens-001",
+  "success": true
+}
+
+### Consumo por segundos (voz) (debe retornar 200)
+POST {{baseUrl}}/AiUsage/insert
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "provider": "soniox",
+  "model": "stt-rt-v4",
+  "feature": "whatsapp-call-transcription",
+  "usageUnit": "seconds",
+  "usageQuantity": 90,
+  "requestId": "external-tests-seconds-001",
+  "success": true
+}
+
+### Tokens negativos (debe retornar 400)
+POST {{baseUrl}}/AiUsage/insert
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "provider": "openai",
+  "model": "gpt-4o-mini",
+  "feature": "webi-chat",
+  "promptTokens": -10,
+  "completionTokens": 5
+}
+
+### Cantidad negativa en segundos (debe retornar 400)
+POST {{baseUrl}}/AiUsage/insert
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "provider": "soniox",
+  "model": "stt-rt-v4",
+  "feature": "whatsapp-call-transcription",
+  "usageUnit": "seconds",
+  "usageQuantity": -5
+}
+
+### Sin campos requeridos (debe retornar 400)
+POST {{baseUrl}}/AiUsage/insert
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "promptTokens": 10
+}
+
+### Sin token (debe retornar 401)
+POST {{baseUrl}}/AiUsage/insert
+Content-Type: application/json
+
+{
+  "provider": "openai",
+  "model": "gpt-4o-mini",
+  "feature": "webi-chat"
+}

@@ -1,0 +1,38 @@
+### WD-4357: consultar los créditos de IA antes de un consumo (spAPI_AiCredits_Check)
+# Sin unitId revisa la organización del usuario del token. Responde 200 con el estado
+# (si puede usar IA, saldo y motivo cuando está bloqueada).
+
+### Organización del usuario (debe retornar 200)
+POST {{baseUrl}}/AiUsage/check
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{}
+
+### Organización de una unidad del alcance del usuario (debe retornar 200)
+POST {{baseUrl}}/AiUsage/check
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitId": 2157
+}
+
+### Unidad fuera del alcance o inexistente (debe retornar 400)
+POST {{baseUrl}}/AiUsage/check
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitId": 999999999
+}
+
+### Sin token (debe retornar 401)
+POST {{baseUrl}}/AiUsage/check
+Content-Type: application/json
+
+{}
+
+### Organización sin créditos o bloqueada (debe retornar 200 con la IA no permitida)
+# Manual: en Reactive > Créditos IA, dejar la organización del usuario en 0 o bloquearla
+# y repetir la primera petición.

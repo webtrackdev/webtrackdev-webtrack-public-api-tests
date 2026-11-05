@@ -1,0 +1,63 @@
+### WD-4358 / WD-2917: estado, vigencia y límites de la API key
+# El estado se cambia en Reactive > API Keys > Ajustes de la key ({{apiKey}}).
+# Una key bloqueada (suspendida, vencida, desactivada o que llegó a su límite):
+#   * no puede iniciar sesión: el login responde error;
+#   * corta las sesiones ya abiertas en <= 10 s: ApiKeyStatusMiddleware responde
+#     403 { "code": "API_KEY_BLOCKED", "reason": "API_KEY_SUSPENDED" | "API_KEY_EXPIRED" |
+#     "API_KEY_INACTIVE" | "API_KEY_LIMIT_REACHED" }.
+# Al terminar, dejar la key en Producción, sin vencimiento y sin límites.
+
+### 1. Producción: login (debe retornar 200 y un token)
+POST {{baseUrl}}/account/login
+Content-Type: application/json
+
+{
+  "apiKey": "{{apiKey}}",
+  "username": "{{username}}",
+  "password": "{{password}}"
+}
+
+### 2. Sesión abierta: cualquier endpoint con el token (debe retornar 200)
+POST {{baseUrl}}/AiUsage/check
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{}
+
+### 3. Demo: cambiar la key a Demo y repetir 1 y 2 (deben retornar 200; el consumo no se cobra)
+
+### 4. Suspendida: cambiar la key a Suspendida, esperar 10 s y repetir 2
+# (debe retornar 403 con reason API_KEY_SUSPENDED)
+POST {{baseUrl}}/AiUsage/check
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{}
+
+### 5. Suspendida: login (debe rechazarse)
+POST {{baseUrl}}/account/login
+Content-Type: application/json
+
+{
+  "apiKey": "{{apiKey}}",
+  "username": "{{username}}",
+  "password": "{{password}}"
+}
+
+### 6. Vencida: volver a Producción, poner vigencia personalizada de hoy y esperar a que
+# pase la medianoche, o fijar ExpiresAt en el pasado en la base. Repetir 2 y 5
+# (deben rechazarse con reason API_KEY_EXPIRED)
+
+### 7. Límite de requests: volver a Producción y poner "Límite de requests al mes" = requests
+# del mes + 2 (ver la columna del catálogo). Ejecutar esta petición hasta superarlo
+# (las primeras 200; tras llegar al 100 %, en <= 10 s, 403 con reason API_KEY_LIMIT_REACHED)
+# y revisar que llegue el correo de aviso a los correos de la key.
+POST {{baseUrl}}/AiUsage/check
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{}
+
+### 8. Key movida de organización: con el límite del paso 7, mover la key a otra organización
+# (Reactive > API Keys > Editar) y seguir usando este usuario. El consumo debe seguir
+# contando para el límite y el catálogo debe mostrar los requests del mes completos.
