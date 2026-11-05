@@ -102,6 +102,10 @@ webtrack-public-api-tests/
 │   ├── getCatalog.http        # Get location catalog
 │   ├── new.http               # Create new location
 │   └── update.http            # Update location
+├── Optimization/
+│   ├── optimizeOrders.http    # Routes and 3D load plan from orders
+│   ├── optimizeRoutes.http    # Routes over locations (not saved)
+│   └── saveRoutes.http        # Routes over locations saved as a plan
 ├── Route/
 │   ├── getCatalog.http                    # Get route catalog
 │   ├── newRouteAssignment.http            # New route assignment

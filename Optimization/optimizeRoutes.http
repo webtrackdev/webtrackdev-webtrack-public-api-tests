@@ -1,0 +1,174 @@
+### WD-5136 — Optimization/optimizeRoutes
+# Calcula las rutas que visitan referencias del catálogo con las unidades indicadas, con el
+# mismo motor de Optimizaciones de Reactive (calles, ventanas, descansos y zonas de
+# restricción de pesados del operador). No guarda nada: para guardar, saveRoutes.
+# Ids de Desarrollo, organización 229: Bodega Central 4202, Adriatika 4074,
+# Walmart Arkadia 4133, TacoBell Z15 4135, Paseo Cayalá 4152; unidades 2361, 2362, 2363.
+# Las horas van en hora local "HH:mm". Errores: 400 = 1011, 500 = 1004.
+
+### 1) Básico: menos unidades (consolidar, por defecto), ventana en Adriatika
+POST {{baseUrl}}/Optimization/optimizeRoutes
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "originLocationId": 4202,
+  "unitIds": [2361, 2362, 2363],
+  "stops": [
+    { "locationId": 4074, "timeWindowStart": "09:00", "timeWindowEnd": "11:00" },
+    { "locationId": 4133 },
+    { "locationId": 4135 }
+  ]
+}
+
+### 2) Menor distancia total
+POST {{baseUrl}}/Optimization/optimizeRoutes
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "originLocationId": 4202,
+  "unitIds": [2361, 2362, 2363],
+  "objective": "distancia",
+  "stops": [{ "locationId": 4074 }, { "locationId": 4133 }, { "locationId": 4135 }]
+}
+
+### 3) Jornadas parejas: reparte entre unidades, una ruta por unidad
+POST {{baseUrl}}/Optimization/optimizeRoutes
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "originLocationId": 4202,
+  "unitIds": [2361, 2362, 2363],
+  "objective": "balancear",
+  "stops": [{ "locationId": 4074 }, { "locationId": 4133 }, { "locationId": 4135 }]
+}
+
+### 4) Jornada, visita por defecto y descanso del conductor (30 min tras 1 h)
+POST {{baseUrl}}/Optimization/optimizeRoutes
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "originLocationId": 4202,
+  "unitIds": [2361],
+  "workdayStart": "07:30",
+  "workdayHours": 9,
+  "defaultVisitMinutes": 45,
+  "restAfterHours": 1,
+  "restDurationMinutes": 30,
+  "stops": [{ "locationId": 4074 }, { "locationId": 4133 }, { "locationId": 4135 }]
+}
+
+### 5) Destino propio: todas las rutas terminan en Paseo Cayalá
+POST {{baseUrl}}/Optimization/optimizeRoutes
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "originLocationId": 4202,
+  "destinationLocationId": 4152,
+  "unitIds": [2361, 2362, 2363],
+  "stops": [{ "locationId": 4074 }, { "locationId": 4133 }, { "locationId": 4135 }]
+}
+
+### 6) Parada opcional que no cabe en la jornada → queda en unassignedLocationIds
+POST {{baseUrl}}/Optimization/optimizeRoutes
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "originLocationId": 4202,
+  "unitIds": [2361],
+  "workdayHours": 3,
+  "stops": [
+    { "locationId": 4074 },
+    { "locationId": 4133 },
+    { "locationId": 4135, "priority": "optional", "visitDurationMinutes": 600 }
+  ]
+}
+
+### 7) Ventanas que no se pueden cumplir juntas → softTimeWindows = true
+POST {{baseUrl}}/Optimization/optimizeRoutes
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "originLocationId": 4202,
+  "unitIds": [2361],
+  "stops": [
+    { "locationId": 4074, "timeWindowStart": "08:30", "timeWindowEnd": "09:00", "visitDurationMinutes": 30 },
+    { "locationId": 4135, "timeWindowStart": "08:30", "timeWindowEnd": "09:05", "visitDurationMinutes": 30 }
+  ]
+}
+
+### 8) Otra organización del usuario (multiorganización)
+POST {{baseUrl}}/Optimization/optimizeRoutes
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "organizationId": 229,
+  "originLocationId": 4202,
+  "unitIds": [2361],
+  "stops": [{ "locationId": 4074 }]
+}
+
+### 9) 400: el origen también está en stops
+POST {{baseUrl}}/Optimization/optimizeRoutes
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "originLocationId": 4202,
+  "unitIds": [2361],
+  "stops": [{ "locationId": 4074 }, { "locationId": 4202 }]
+}
+
+### 10) 400: unidad de otra organización
+POST {{baseUrl}}/Optimization/optimizeRoutes
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "originLocationId": 4202,
+  "unitIds": [1],
+  "stops": [{ "locationId": 4074 }]
+}
+
+### 11) 400: organización sin acceso
+POST {{baseUrl}}/Optimization/optimizeRoutes
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "organizationId": 999999,
+  "originLocationId": 4202,
+  "unitIds": [2361],
+  "stops": [{ "locationId": 4074 }]
+}
+
+### 12) 400: referencia sin ruta por calle (coordenadas fuera de la red vial)
+POST {{baseUrl}}/Optimization/optimizeRoutes
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "originLocationId": 4202,
+  "destinationLocationId": 4447,
+  "unitIds": [2361],
+  "stops": [{ "locationId": 4074 }]
+}
+
+### 13) 400 (validación): hora mal formada y objetivo inválido
+POST {{baseUrl}}/Optimization/optimizeRoutes
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "originLocationId": 4202,
+  "unitIds": [2361],
+  "objective": "nada",
+  "stops": [{ "locationId": 4074, "timeWindowStart": "9am" }]
+}
