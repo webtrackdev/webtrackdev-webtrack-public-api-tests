@@ -1,0 +1,19 @@
+### WD-1911 — Order/getStatuses
+# Catálogo de estados de orden de la organización con su categoría
+# (Pending, InProgress, Completed, Cancelled). El orderStatusId se usa en updateStatus.
+
+### 1) Organización del usuario del token
+POST {{baseUrl}}/Order/getStatuses
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{}
+
+### 2) Otra organización (usuario multiorganización)
+POST {{baseUrl}}/Order/getStatuses
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "organizationId": 4354
+}
