@@ -1,0 +1,80 @@
+### WD-5136 — Optimization/saveRoutes
+# Igual que optimizeRoutes y además guarda la corrida en un plan de optimización NUEVO, como
+# si se hubiera creado en Optimizaciones de Reactive. La corrida se calcula aquí: no se
+# puede mandar una solución. El plan se asigna por horario (scheduleId) o por fechas
+# (startDate y endDate). Requiere el permiso de crear optimizaciones (OO002).
+# OJO: los casos 1 y 2 crean un plan en la organización; borrarlo desde Reactive al terminar.
+# Errores: 400 = 1011, 500 = 1004.
+
+### 1) Por fechas, con prioridad alta en Adriatika
+POST {{baseUrl}}/Optimization/saveRoutes
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "planName": "PRUEBA WD-5136 saveRoutes",
+  "optimizationName": "Corrida por fechas",
+  "originLocationId": 4202,
+  "unitIds": [2361, 2362],
+  "startDate": "2026-11-10T08:00:00",
+  "endDate": "2026-11-10T16:00:00",
+  "stops": [
+    { "locationId": 4074, "priority": "high", "timeWindowStart": "09:00", "timeWindowEnd": "11:00" },
+    { "locationId": 4133 },
+    { "locationId": 4135 }
+  ]
+}
+
+### 2) Por horario (reemplazar scheduleId por uno de la organización)
+POST {{baseUrl}}/Optimization/saveRoutes
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "planName": "PRUEBA WD-5136 saveRoutes horario",
+  "originLocationId": 4202,
+  "destinationLocationId": 4152,
+  "unitIds": [2361, 2362],
+  "scheduleId": 18,
+  "stops": [{ "locationId": 4074 }, { "locationId": 4133 }, { "locationId": 4135 }]
+}
+
+### 3) 400: sin horario ni fechas
+POST {{baseUrl}}/Optimization/saveRoutes
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "planName": "x",
+  "originLocationId": 4202,
+  "unitIds": [2361],
+  "stops": [{ "locationId": 4074 }]
+}
+
+### 4) 400: horario y fechas a la vez
+POST {{baseUrl}}/Optimization/saveRoutes
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "planName": "x",
+  "originLocationId": 4202,
+  "unitIds": [2361],
+  "scheduleId": 18,
+  "startDate": "2026-11-10T08:00:00",
+  "endDate": "2026-11-10T16:00:00",
+  "stops": [{ "locationId": 4074 }]
+}
+
+### 5) 400: horario inexistente o no visible
+POST {{baseUrl}}/Optimization/saveRoutes
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "planName": "x",
+  "originLocationId": 4202,
+  "unitIds": [2361],
+  "scheduleId": 999999999,
+  "stops": [{ "locationId": 4074 }]
+}

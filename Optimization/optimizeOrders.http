@@ -1,0 +1,135 @@
+### WD-5136 — Optimization/optimizeOrders
+# Rutas de entrega de órdenes y acomodo 3D de la carga en cada unidad (cada entrega se
+# descarga por la puerta sin mover las siguientes; se respetan apilable, frágil, este lado
+# arriba y solo piso). Las órdenes necesitan bultos y las unidades caja de carga en su
+# vehículo. No guarda ni despacha: para despachar, una llamada a UnitWorkplan/bulkData por
+# ruta (ver el último caso).
+# Ids de Desarrollo, organización 229: órdenes con bultos 20875-20880 (en San Salvador,
+# ~225 km de la bodega); unidades con caja 2361 y 2362, sin caja 2363; Bodega Central 4202.
+# Errores: 400 = 1011, 500 = 1004.
+
+### 1) Terminan en la última entrega (sin regreso)
+POST {{baseUrl}}/Optimization/optimizeOrders
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "orderIds": [20875, 20876, 20877, 20878, 20879, 20880],
+  "unitIds": [2361, 2362],
+  "originLocationId": 4202,
+  "destinationMode": "lastStop",
+  "departureTime": "06:00",
+  "shiftHours": 12
+}
+
+### 2) Terminan en otra referencia (destinationMode = location)
+POST {{baseUrl}}/Optimization/optimizeOrders
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "orderIds": [20875, 20876, 20877, 20878, 20879, 20880],
+  "unitIds": [2361, 2362],
+  "originLocationId": 4202,
+  "destinationMode": "location",
+  "destinationLocationId": 4202,
+  "departureTime": "00:00",
+  "shiftHours": 24
+}
+
+### 3) Menos espacio usable (30 %): lo que no cabe vuelve en unassigned con tooBig
+POST {{baseUrl}}/Optimization/optimizeOrders
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "orderIds": [20875, 20876, 20877, 20878, 20879, 20880],
+  "unitIds": [2361, 2362],
+  "originLocationId": 4202,
+  "destinationMode": "lastStop",
+  "departureTime": "06:00",
+  "shiftHours": 12,
+  "usableRatio": 0.3
+}
+
+### 4) Objetivo, descanso y regreso al origen (jornada larga: San Salvador queda lejos)
+POST {{baseUrl}}/Optimization/optimizeOrders
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "orderIds": [20875, 20876, 20877, 20878, 20879, 20880],
+  "unitIds": [2361, 2362],
+  "originLocationId": 4202,
+  "departureTime": "00:00",
+  "shiftHours": 24,
+  "objective": "balancear",
+  "restAfterHours": 4,
+  "restDurationMinutes": 30
+}
+
+### 5) 400: regreso al origen en 10 h, ida y vuelta no cabe en la jornada
+POST {{baseUrl}}/Optimization/optimizeOrders
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "orderIds": [20875, 20876, 20877, 20878, 20879, 20880],
+  "unitIds": [2361, 2362],
+  "originLocationId": 4202,
+  "departureTime": "07:00",
+  "shiftHours": 10
+}
+
+### 6) 400: unidad sin caja de carga
+POST {{baseUrl}}/Optimization/optimizeOrders
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "orderIds": [20875],
+  "unitIds": [2363],
+  "originLocationId": 4202
+}
+
+### 7) 400: orden sin bultos o fuera de la organización
+POST {{baseUrl}}/Optimization/optimizeOrders
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "orderIds": [1],
+  "unitIds": [2361],
+  "originLocationId": 4202
+}
+
+### 8) 400: destinationMode = location sin destinationLocationId
+POST {{baseUrl}}/Optimization/optimizeOrders
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "orderIds": [20875],
+  "unitIds": [2361],
+  "originLocationId": 4202,
+  "destinationMode": "location"
+}
+
+### 9) Despachar una ruta del caso 1: un UnitWorkplan/bulkData por ruta, con sus paradas
+# en orden (locationId de cada parada y sus orderIds como orders). Reemplazar los valores
+# con los de la respuesta; estimatedTotalDistance = distanceKm * 1000.
+POST {{baseUrl}}/UnitWorkplan/bulkData
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "unitId": 2361,
+  "workplanName": "WD-5136 despacho de optimizeOrders",
+  "startDate": "2026-11-06T06:00:00",
+  "endDate": "2026-11-06T18:00:00",
+  "estimatedTotalDistance": 236140,
+  "locations": [
+    { "locationId": 13701, "orders": [{ "orderId": 20875 }] },
+    { "locationId": 13717, "orders": [{ "orderId": 20876 }] }
+  ]
+}
