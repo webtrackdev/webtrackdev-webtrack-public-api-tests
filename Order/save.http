@@ -1,0 +1,40 @@
+### WD-1911 — Order/save
+# Crea o actualiza una orden. Sin orderId se busca por externalDispatchId y luego por
+# externalId: reenviar la misma orden la actualiza. En una actualización, lo que no se
+# envía conserva su valor. Fechas en UTC.
+
+### 1) Crear
+POST {{baseUrl}}/Order/save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "externalId": "CRM-1029",
+  "orderNumber": "S01274",
+  "locationCode": "SUC-010",
+  "capacity": 10,
+  "expectedDate": "2026-10-23T18:00:00Z",
+  "timeWindowStart": "2026-10-23T17:00:00Z",
+  "timeWindowEnd": "2026-10-23T18:00:00Z",
+  "description": "Entregar en bodega"
+}
+
+### 2) Reenviar el mismo externalId: actualiza (solo la capacidad)
+POST {{baseUrl}}/Order/save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "externalId": "CRM-1029",
+  "capacity": 12
+}
+
+### 3) 400: crear sin sucursal
+POST {{baseUrl}}/Order/save
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "externalId": "CRM-1030",
+  "expectedDate": "2026-10-23T18:00:00Z"
+}

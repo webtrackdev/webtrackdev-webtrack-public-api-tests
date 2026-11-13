@@ -1,0 +1,35 @@
+### WD-1911 — Order/getList
+# Órdenes por rango de fecha esperada (UTC, máximo 31 días) con promesa, cantidades,
+# intento vigente y evaluación de servicio (isOnTime / isInFull).
+
+### 1) Un día
+POST {{baseUrl}}/Order/getList
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "startDate": "2026-10-23T06:00:00Z",
+  "endDate": "2026-10-24T06:00:00Z"
+}
+
+### 2) Filtrado por estado y sucursal
+POST {{baseUrl}}/Order/getList
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "startDate": "2026-10-01T06:00:00Z",
+  "endDate": "2026-10-31T06:00:00Z",
+  "orderStatusId": 3,
+  "locationId": 9367
+}
+
+### 3) 400: rango de más de 31 días
+POST {{baseUrl}}/Order/getList
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "startDate": "2026-09-01T00:00:00Z",
+  "endDate": "2026-10-31T00:00:00Z"
+}

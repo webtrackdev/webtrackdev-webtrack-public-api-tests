@@ -1,0 +1,23 @@
+### WD-1911 — Order/updateStatus
+# Cambia el estado (catálogo de getStatuses). Un estado Completed sella la entrega y
+# evalúa isOnTime / isInFull; queda en la bitácora con origen PublicApi.
+
+### 1) Marcar entregada
+POST {{baseUrl}}/Order/updateStatus
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "externalId": "CRM-1029",
+  "orderStatusId": 3
+}
+
+### 2) 400: estado que no es de la organización
+POST {{baseUrl}}/Order/updateStatus
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "orderId": 7252,
+  "orderStatusId": 999999
+}
