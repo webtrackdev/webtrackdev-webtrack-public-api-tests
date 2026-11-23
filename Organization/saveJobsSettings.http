@@ -1,0 +1,41 @@
+### Desactivar solicitudes de reprogramación — el resto de ajustes no cambia (200)
+POST {{baseUrl}}/Organization/saveJobsSettings
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "allowRescheduleRequest": false
+}
+
+### Activar el cambio automático de estado: solicitudes de reprogramación (5) → Cancelado (7)
+POST {{baseUrl}}/Organization/saveJobsSettings
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "autoCancelStuckJobsEnabled": true,
+  "autoCancelStuckJobsWindowId": 3,
+  "autoCancelStuckJobsSourceStatuses": [5],
+  "autoCancelStuckJobsTargetStatus": 7
+}
+
+### Activar sin ventana → 400 "Debe seleccionar una ventana de tiempo..."
+POST {{baseUrl}}/Organization/saveJobsSettings
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "autoCancelStuckJobsEnabled": true
+}
+
+### Destino dentro de los estados de origen → 400
+POST {{baseUrl}}/Organization/saveJobsSettings
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "autoCancelStuckJobsEnabled": true,
+  "autoCancelStuckJobsWindowId": 3,
+  "autoCancelStuckJobsSourceStatuses": [5, 7],
+  "autoCancelStuckJobsTargetStatus": 7
+}
