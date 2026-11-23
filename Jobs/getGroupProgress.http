@@ -1,0 +1,27 @@
+### Avance por grupo de la semana (con JB020) — resultado esperado (200)
+# Rango en UTC. Un job con responsables de varios grupos cuenta en cada uno.
+POST {{baseUrl}}/Jobs/getGroupProgress
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "startDate": "2026-11-16T06:00:00",
+  "endDate": "2026-11-24T05:59:59"
+}
+
+### Faltan fechas → 400
+POST {{baseUrl}}/Jobs/getGroupProgress
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{}
+
+### Agente sin JB020 → 400 "No tiene permiso para ver el monitor de jobs"
+POST {{baseUrl}}/Jobs/getGroupProgress
+Authorization: Bearer {{tokenAgent}}
+Content-Type: application/json
+
+{
+  "startDate": "2026-11-16T06:00:00",
+  "endDate": "2026-11-24T05:59:59"
+}
