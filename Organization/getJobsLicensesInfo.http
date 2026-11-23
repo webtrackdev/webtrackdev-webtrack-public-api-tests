@@ -1,0 +1,7 @@
+### Licencias de Jobs de la organización (con JB021) — resultado esperado (200)
+# reservedByInvitations = licencias apartadas por invitaciones pendientes (ya cuentan en usedLicenses).
+POST {{baseUrl}}/Organization/getJobsLicensesInfo
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{}

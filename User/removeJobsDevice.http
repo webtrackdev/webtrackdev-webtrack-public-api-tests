@@ -1,0 +1,19 @@
+### Quitar un teléfono (aunque sea el único) — cierra su sesión y libera la licencia (200, teléfonos que quedan)
+POST {{baseUrl}}/User/removeJobsDevice
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "targetUserId": 3096,
+  "unitId": 12345
+}
+
+### Teléfono que no es de la persona o sin sesión → 400
+POST {{baseUrl}}/User/removeJobsDevice
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "targetUserId": 3096,
+  "unitId": 1
+}

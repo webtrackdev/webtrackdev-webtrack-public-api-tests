@@ -1,0 +1,17 @@
+### Reenviar el correo de una invitación pendiente (con US002) — resultado esperado (200, url nueva)
+POST {{baseUrl}}/User/resendInvitation
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "targetUserId": 3262
+}
+
+### Usuario que ya aceptó (no está Invitado) → 400 "La invitación no existe o no tiene acceso a ella"
+POST {{baseUrl}}/User/resendInvitation
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "targetUserId": 3096
+}
