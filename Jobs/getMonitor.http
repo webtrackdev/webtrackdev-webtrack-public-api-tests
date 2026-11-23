@@ -1,0 +1,53 @@
+### Monitor del día del equipo visible (con JB020) — resultado esperado (200)
+# Rango en UTC. Los totales de summary deben coincidir con el Monitor de Jobs de la web.
+POST {{baseUrl}}/Jobs/getMonitor
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "startDate": "2026-11-23T06:00:00",
+  "endDate": "2026-11-24T05:59:59",
+  "limit": 200
+}
+
+### Monitor de un grupo visible — resultado esperado (200)
+POST {{baseUrl}}/Jobs/getMonitor
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "startDate": "2026-11-16T06:00:00",
+  "endDate": "2026-11-24T05:59:59",
+  "groupId": 2324
+}
+
+### Grupo no visible → 400 "No tiene acceso al grupo"
+POST {{baseUrl}}/Jobs/getMonitor
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "startDate": "2026-11-23T06:00:00",
+  "endDate": "2026-11-24T05:59:59",
+  "groupId": 1
+}
+
+### Rango mayor a 92 días → 400
+POST {{baseUrl}}/Jobs/getMonitor
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "startDate": "2026-01-01T06:00:00",
+  "endDate": "2026-06-01T05:59:59"
+}
+
+### Agente sin JB020 → 400 "No tiene permiso para ver el monitor de jobs"
+POST {{baseUrl}}/Jobs/getMonitor
+Authorization: Bearer {{tokenAgent}}
+Content-Type: application/json
+
+{
+  "startDate": "2026-11-23T06:00:00",
+  "endDate": "2026-11-24T05:59:59"
+}
