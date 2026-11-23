@@ -83,3 +83,29 @@ Authorization: Bearer {{token}}
 ### La API los convierte internamente a formato separado por ^
 ### ===========================================
 
+
+### WD-5684: editar un job de otra persona sin acceso → 400 "No tiene acceso al job indicado"
+POST {{baseUrl}}/Jobs/save
+Authorization: Bearer {{tokenAgent}}
+Content-Type: application/json
+
+{
+  "jobId": 51021,
+  "jobTitle": "Intento de edición",
+  "jobStatus": 6,
+  "jobTypeId": 1,
+  "jobPriority": 3
+}
+
+### WD-5684: asignar a otra persona sin JB018 → 400 "No tiene permiso para asignar jobs a otros usuarios"
+POST {{baseUrl}}/Jobs/save
+Authorization: Bearer {{tokenAgent}}
+Content-Type: application/json
+
+{
+  "jobTitle": "Job para un compañero",
+  "jobStatus": 6,
+  "jobTypeId": 1,
+  "jobPriority": 3,
+  "userNames": ["otro.usuario"]
+}
