@@ -95,3 +95,24 @@ Authorization: Bearer {{token}}
   "roleId": 1001,
   "utcZoneId": 178
 }
+
+### WD-5687: invitar a Jobs apartando su licencia (reserveJobsLicense) — la licencia queda ocupada desde la invitación
+POST {{baseUrl}}/account/quickCreate
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "email": "invitado.jobs@example.com",
+  "completeName": "Invitado Jobs",
+  "passwordMode": "invite",
+  "reserveJobsLicense": true,
+  "operatorId": 307,
+  "organizationId": 229,
+  "divisionId": 192,
+  "subdivisionId": 336,
+  "accessLevelId": 20,
+  "roleId": 1001,
+  "utcZoneId": 178
+}
+
+### WD-5687: sin licencias de Jobs disponibles → 400 "No hay licencias de Jobs disponibles" (no se crea el usuario)
