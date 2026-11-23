@@ -1,0 +1,23 @@
+### Geocercas para el check-in (con JB021, GF001 o GF005) — resultado esperado (200)
+# Solo circulares y activas, visibles para quien consulta (incluye las compartidas por grupo).
+POST {{baseUrl}}/Location/getGeofences
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{}
+
+### Con búsqueda por nombre o dirección
+POST {{baseUrl}}/Location/getGeofences
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "search": "Cayala"
+}
+
+### Usuario sin permisos de geocercas ni de preferencias → 400 "No tiene permiso para ver geocercas"
+POST {{baseUrl}}/Location/getGeofences
+Authorization: Bearer {{tokenAgent}}
+Content-Type: application/json
+
+{}
