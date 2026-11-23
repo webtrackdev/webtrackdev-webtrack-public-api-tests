@@ -1,0 +1,44 @@
+### Aprobar una solicitud (con JB016 y JB018) — resultado esperado (200, jobStatus 6)
+# Las fechas las elige quien aprueba (la solicitud no guarda una fecha pedida).
+POST {{baseUrl}}/Jobs/resolveRescheduleRequest
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "jobId": 89326,
+  "approve": true,
+  "startDate": "2026-11-24T08:00:00",
+  "dueDate": "2026-11-24T10:00:00",
+  "comment": "Se atiende mañana a primera hora"
+}
+
+### Rechazar una solicitud — resultado esperado (200, jobStatus anterior o 6)
+POST {{baseUrl}}/Jobs/resolveRescheduleRequest
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "jobId": 89325,
+  "approve": false,
+  "comment": "Debe atenderse hoy"
+}
+
+### Aprobar sin fechas → 400
+POST {{baseUrl}}/Jobs/resolveRescheduleRequest
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "jobId": 89326,
+  "approve": true
+}
+
+### Job sin solicitud pendiente → 400 "El job no tiene una solicitud de reprogramación pendiente"
+POST {{baseUrl}}/Jobs/resolveRescheduleRequest
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "jobId": 51021,
+  "approve": false
+}
