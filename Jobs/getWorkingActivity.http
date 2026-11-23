@@ -1,0 +1,53 @@
+### Check-ins y check-outs de una persona del equipo en un día (con JB014) — resultado esperado (200)
+# Fechas en la hora local de quien consulta. targetUserId debe estar en su alcance.
+POST {{baseUrl}}/Jobs/getWorkingActivity
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "targetUserId": 3026,
+  "startDate": "2026-11-23T00:00:00",
+  "endDate": "2026-11-23T23:59:59"
+}
+
+### Persona fuera del alcance → 400 "No tiene acceso al usuario"
+POST {{baseUrl}}/Jobs/getWorkingActivity
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "targetUserId": 5,
+  "startDate": "2026-11-23T00:00:00",
+  "endDate": "2026-11-23T23:59:59"
+}
+
+### Rango mayor a 31 días → 400
+POST {{baseUrl}}/Jobs/getWorkingActivity
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "targetUserId": 3026,
+  "startDate": "2026-01-01T00:00:00",
+  "endDate": "2026-03-01T00:00:00"
+}
+
+### Faltan campos → 400
+POST {{baseUrl}}/Jobs/getWorkingActivity
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "targetUserId": 3026
+}
+
+### Agente sin JB014 → 400 "No tiene permiso para ver la actividad del equipo"
+POST {{baseUrl}}/Jobs/getWorkingActivity
+Authorization: Bearer {{tokenAgent}}
+Content-Type: application/json
+
+{
+  "targetUserId": 3026,
+  "startDate": "2026-11-23T00:00:00",
+  "endDate": "2026-11-23T23:59:59"
+}
