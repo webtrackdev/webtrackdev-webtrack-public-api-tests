@@ -1,0 +1,19 @@
+### Última posición de cada persona del equipo (con JB018) — resultado esperado (200)
+POST {{baseUrl}}/User/getLastPositions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{}
+
+### Agente sin JB018 → 400 "No tiene permiso para ver al equipo"
+POST {{baseUrl}}/User/getLastPositions
+Authorization: Bearer {{tokenAgent}}
+Content-Type: application/json
+
+{}
+
+### Sin token → 401
+POST {{baseUrl}}/User/getLastPositions
+Content-Type: application/json
+
+{}
