@@ -1,0 +1,39 @@
+### Ajuste temporal: el martes entra a las 10 y el miércoles descansa (200, calendario del rango)
+# La persona recibe el setting 41 con la vigencia del ajuste.
+POST {{baseUrl}}/User/saveShiftOverrides
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "targetUserId": 3096,
+  "startDate": "2026-11-23",
+  "endDate": "2026-11-29",
+  "overrides": [
+    { "date": "2026-11-24", "startTime": "10:00", "endTime": "18:00" },
+    { "date": "2026-11-25", "isDayOff": true }
+  ]
+}
+
+### Volver a la jornada base en el rango (reset) — resultado esperado (200)
+POST {{baseUrl}}/User/saveShiftOverrides
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "targetUserId": 3096,
+  "startDate": "2026-11-23",
+  "endDate": "2026-11-29",
+  "reset": true
+}
+
+### Franja sin hora de fin → 400
+POST {{baseUrl}}/User/saveShiftOverrides
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "targetUserId": 3096,
+  "startDate": "2026-11-23",
+  "endDate": "2026-11-29",
+  "overrides": [ { "date": "2026-11-24", "startTime": "10:00" } ]
+}

@@ -1,0 +1,14 @@
+### Jornadas visibles (con SC001) — resultado esperado (200, lista con shifts por día)
+# Weekday: 1 domingo .. 7 sábado. assignedUsers = personas activas con la jornada.
+POST {{baseUrl}}/Organization/getSchedules
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{}
+
+### Usuario sin SC001 → 400 "No tiene permiso para ver horarios"
+POST {{baseUrl}}/Organization/getSchedules
+Authorization: Bearer {{tokenAgent}}
+Content-Type: application/json
+
+{}

@@ -1,0 +1,51 @@
+### Crear una jornada (con SC002) — resultado esperado (200, la jornada con sus franjas)
+POST {{baseUrl}}/Organization/saveSchedule
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "scheduleName": "Lunes a viernes",
+  "shifts": [
+    { "weekday": 2, "startTime": "08:00", "endTime": "17:00" },
+    { "weekday": 3, "startTime": "08:00", "endTime": "17:00" },
+    { "weekday": 4, "startTime": "08:00", "endTime": "17:00" },
+    { "weekday": 5, "startTime": "08:00", "endTime": "17:00" },
+    { "weekday": 6, "startTime": "08:00", "endTime": "12:00" },
+    { "weekday": 6, "startTime": "13:00", "endTime": "17:00" }
+  ]
+}
+
+### Editar una jornada visible (con SC003) — las personas que la tienen reciben el setting 18 nuevo
+POST {{baseUrl}}/Organization/saveSchedule
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "scheduleId": 930,
+  "scheduleName": "Lunes a sábado",
+  "shifts": [
+    { "weekday": 2, "startTime": "07:00", "endTime": "18:00" },
+    { "weekday": 7, "startTime": "08:00", "endTime": "12:00" }
+  ]
+}
+
+### Hora con formato inválido → 400 (validación del modelo)
+POST {{baseUrl}}/Organization/saveSchedule
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "scheduleName": "Mala",
+  "shifts": [ { "weekday": 2, "startTime": "8:00", "endTime": "25:00" } ]
+}
+
+### Jornada de otra organización → 400 "No tiene acceso a la jornada"
+POST {{baseUrl}}/Organization/saveSchedule
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "scheduleId": 1,
+  "scheduleName": "Ajena",
+  "shifts": [ { "weekday": 2, "startTime": "08:00", "endTime": "17:00" } ]
+}

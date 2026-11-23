@@ -1,0 +1,18 @@
+### Preferencias de Jobs de personas del equipo (con JB021) — resultado esperado (200)
+# Una fila por persona y setting de Jobs; isDefault = sin valor guardado (aplica el de la app).
+POST {{baseUrl}}/User/getUserSettings
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "targetUserIds": [3096, 3097]
+}
+
+### Persona fuera del alcance → 400 "No tiene acceso a uno o más usuarios"
+POST {{baseUrl}}/User/getUserSettings
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "targetUserIds": [1]
+}
