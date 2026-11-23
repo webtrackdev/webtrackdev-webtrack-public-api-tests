@@ -17,3 +17,16 @@ Content-Type: application/json
   "targetUserId": 3096,
   "unitId": 1
 }
+
+### Quitar un teléfono adicional y liberar su licencia (releaseLicense): la persona pasa de 2 a 1 licencia
+POST {{baseUrl}}/User/removeJobsDevice
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "targetUserId": 3096,
+  "unitId": 12346,
+  "releaseLicense": true
+}
+
+### releaseLicense con una sola licencia → 400 "Es su única licencia..."
