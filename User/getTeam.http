@@ -1,3 +1,4 @@
+# WD-5727: cada persona trae scheduleId y scheduleName (jornada activa, tipo turno).
 ### Equipo con su estado del día (Propietario o Supervisor, con JB018) — resultado esperado (200)
 # El Supervisor recibe su división y a la gente de los grupos donde es Propietario o Administrador.
 POST {{baseUrl}}/User/getTeam
