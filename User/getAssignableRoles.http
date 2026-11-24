@@ -1,0 +1,24 @@
+### Catálogo de roles para una persona nueva (200; Jobs primero, nunca Super Administrador)
+POST {{baseUrl}}/User/getAssignableRoles
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{}
+
+### Roles para una persona visible: isActive marca su rol actual (200)
+POST {{baseUrl}}/User/getAssignableRoles
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "targetUserId": 3096
+}
+
+### Persona no visible → 400
+POST {{baseUrl}}/User/getAssignableRoles
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "targetUserId": 1
+}

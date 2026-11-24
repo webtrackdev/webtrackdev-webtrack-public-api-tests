@@ -1,0 +1,89 @@
+### Grupos e integrantes visibles (200; Supervisor y Colaborador ven solo sus grupos)
+POST {{baseUrl}}/User/getGroups
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{}
+
+### Crear un grupo con integrantes; entran con el perfil de su rol de Jobs (200)
+POST {{baseUrl}}/User/createGroup
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "groupName": "Cuadrilla norte",
+  "userIds": [3096, 3098]
+}
+
+### Nombre repetido → 400 GROUP_NAME_EXISTS
+POST {{baseUrl}}/User/createGroup
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "groupName": "Cuadrilla norte"
+}
+
+### Agregar personas con el perfil de su rol (200)
+POST {{baseUrl}}/User/addUsersToGroup
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "groupId": 120,
+  "userIds": [3099]
+}
+
+### Colaborador como Supervisor del grupo → 400 PROFILE_NOT_ALLOWED_FOR_ROLE
+POST {{baseUrl}}/User/addUsersToGroup
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "groupId": 120,
+  "userIds": [3099],
+  "profileId": 2
+}
+
+### Persona no visible → 400
+POST {{baseUrl}}/User/addUsersToGroup
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "groupId": 120,
+  "userIds": [1]
+}
+
+### Propietario del grupo hace Supervisor a un Supervisor de Jobs (200)
+POST {{baseUrl}}/User/setGroupUserProfile
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "groupId": 120,
+  "targetUserId": 3098,
+  "profileId": 2
+}
+
+### Quitarle el perfil Propietario al único Propietario del grupo → 400 GROUP_LAST_OWNER
+POST {{baseUrl}}/User/setGroupUserProfile
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "groupId": 120,
+  "targetUserId": {{myUserId}},
+  "profileId": 2
+}
+
+### Supervisor del grupo intenta cambiar perfiles → 400
+POST {{baseUrl}}/User/setGroupUserProfile
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "groupId": 120,
+  "targetUserId": 3099,
+  "profileId": 3
+}
