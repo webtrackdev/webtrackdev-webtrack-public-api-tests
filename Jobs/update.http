@@ -1,0 +1,75 @@
+### Editar un job del equipo (con JB016) — resultado esperado (200, jobId, jobStatus y fechas)
+# Solo cambian los campos enviados; ubicación, formularios, correos de aviso, solicitante y
+# membresía se conservan. Fechas en la hora local de quien consulta.
+POST {{baseUrl}}/Jobs/update
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "jobId": 51021,
+  "jobTitle": "Mantenimiento de aire acondicionado",
+  "jobPriority": 2,
+  "startDate": "2026-11-24T08:00:00",
+  "dueDate": "2026-11-24T10:00:00",
+  "userNames": ["ana@empresa.com"]
+}
+
+### Cambiar solo el título (lo demás se conserva) — resultado esperado (200)
+POST {{baseUrl}}/Jobs/update
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "jobId": 51021,
+  "jobTitle": "Mantenimiento preventivo"
+}
+
+### Dejar el job sin responsables (lista vacía) — resultado esperado (200)
+POST {{baseUrl}}/Jobs/update
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "jobId": 51021,
+  "userNames": []
+}
+
+### Fecha límite antes del inicio → 400 "La fecha límite debe ser posterior al inicio"
+POST {{baseUrl}}/Jobs/update
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "jobId": 51021,
+  "startDate": "2026-11-24T10:00:00",
+  "dueDate": "2026-11-24T08:00:00"
+}
+
+### Job finalizado → 400 "No se pueden editar jobs eliminados, finalizados o cancelados"
+POST {{baseUrl}}/Jobs/update
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "jobId": 51000,
+  "jobTitle": "Otro título"
+}
+
+### Job no visible → 400 "No tiene acceso al job indicado"
+POST {{baseUrl}}/Jobs/update
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "jobId": 1,
+  "jobTitle": "Otro título"
+}
+
+### Sin jobId → 400
+POST {{baseUrl}}/Jobs/update
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "jobTitle": "Otro título"
+}
