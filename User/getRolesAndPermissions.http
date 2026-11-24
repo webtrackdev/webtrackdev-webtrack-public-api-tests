@@ -1,0 +1,26 @@
+### Rol, roles asignables y permisos de Jobs de una persona (200)
+POST {{baseUrl}}/User/getRolesAndPermissions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "targetUserId": 3096
+}
+
+### Uno mismo: canEdit = false y ningún permiso con canChange (200)
+POST {{baseUrl}}/User/getRolesAndPermissions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "targetUserId": {{myUserId}}
+}
+
+### Persona de nivel Sistema, Asesor u Operador → 400
+POST {{baseUrl}}/User/getRolesAndPermissions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "targetUserId": 2
+}

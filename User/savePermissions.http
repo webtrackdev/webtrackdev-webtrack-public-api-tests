@@ -1,0 +1,78 @@
+### Propietario cambia a un Colaborador a Supervisor: aplica los permisos del rol y nivel Cliente (200)
+POST {{baseUrl}}/User/savePermissions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "targetUserId": 3096,
+  "roleId": 1031
+}
+
+### Quitar JB018 manteniendo el resto de permisos de Jobs (200)
+POST {{baseUrl}}/User/savePermissions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "targetUserId": 3096,
+  "permissions": ["AP001", "AP008", "AP009", "AP010", "AP011", "AP012", "AP013", "AP015", "AP029", "JB001", "JB008", "JB010", "JB011", "JB012", "JB019"]
+}
+
+### Supervisor intenta dar un permiso que no tiene (p. ej. JB021) → 400 PERMISSION_NOT_GRANTABLE
+POST {{baseUrl}}/User/savePermissions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "targetUserId": 3096,
+  "permissions": ["AP001", "AP008", "JB001", "JB021"]
+}
+
+### Supervisor intenta editar a un Propietario → 400 USER_NOT_MANAGEABLE
+POST {{baseUrl}}/User/savePermissions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "targetUserId": 3097,
+  "roleId": 1032
+}
+
+### Supervisor intenta asignar el rol Supervisor (no tiene RS031) → 400 ROLE_NOT_GRANTABLE
+POST {{baseUrl}}/User/savePermissions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "targetUserId": 3096,
+  "roleId": 1031
+}
+
+### Bajar de rol al último Propietario activo → 400 LAST_JOBS_OWNER
+POST {{baseUrl}}/User/savePermissions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "targetUserId": 3097,
+  "roleId": 1031
+}
+
+### Cambiar los propios permisos → 400
+POST {{baseUrl}}/User/savePermissions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "targetUserId": {{myUserId}},
+  "roleId": 1032
+}
+
+### Sin rol ni permisos → 400
+POST {{baseUrl}}/User/savePermissions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "targetUserId": 3096
+}
