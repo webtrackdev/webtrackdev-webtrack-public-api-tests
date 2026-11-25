@@ -1,0 +1,57 @@
+### Propietario invita a un Colaborador al grupo global (200; aparta licencia y envía el correo)
+POST {{baseUrl}}/Account/inviteJobsMember
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "email": "nuevo.colaborador@empresa.com",
+  "completeName": "Nuevo Colaborador",
+  "roleId": 1032,
+  "groupId": 120
+}
+
+### Propietario invita a un Supervisor sin grupo (200)
+POST {{baseUrl}}/Account/inviteJobsMember
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "email": "nuevo.supervisor@empresa.com",
+  "completeName": "Nuevo Supervisor",
+  "roleId": 1031
+}
+
+### Supervisor invita a un Supervisor → 400 ROLE_NOT_GRANTABLE (no tiene RS031)
+POST {{baseUrl}}/Account/inviteJobsMember
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "email": "otro.supervisor@empresa.com",
+  "completeName": "Otro Supervisor",
+  "roleId": 1031,
+  "groupId": 120
+}
+
+### Grupo donde quien invita no es Propietario ni Supervisor → 400 (no se crea la invitación)
+POST {{baseUrl}}/Account/inviteJobsMember
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "email": "fuera.de.grupo@empresa.com",
+  "completeName": "Fuera de grupo",
+  "roleId": 1032,
+  "groupId": 1
+}
+
+### Rol que no es de Jobs → 400
+POST {{baseUrl}}/Account/inviteJobsMember
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "email": "rol.invalido@empresa.com",
+  "completeName": "Rol inválido",
+  "roleId": 1020
+}
