@@ -3,15 +3,17 @@
 ### Anónimo con la API key de la app. Crea la organización, el
 ### Propietario (rol 1030), el grupo con el nombre de la empresa,
 ### la jornada base, los tipos de tarea y la prueba de 30 días.
+### Siempre exige el signupToken de verify-code (también con Google).
 ### Devuelve la organización y la sesión (como el login).
 ### =====================================================
 
-### Con correo y contraseña, después de verify-code (200)
+### Con correo y contraseña, con el token de verify-code (200)
 POST {{baseUrl}}/Account/signup
 Content-Type: application/json
 
 {
   "apiKey": "{{apiKey}}",
+  "signupToken": "{{signupToken}}",
   "companyName": "Servicios Técnicos López",
   "country": "GT",
   "industry": "Mantenimiento",
@@ -26,12 +28,13 @@ Content-Type: application/json
   "jobTypeIds": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 }
 
-### Con Google: el correo debe ser el del token; no pide código (200)
+### Con Google: sin contraseña; el correo debe ser el del token y también pide el código (200)
 POST {{baseUrl}}/Account/signup
 Content-Type: application/json
 
 {
   "apiKey": "{{apiKey}}",
+  "signupToken": "{{signupToken}}",
   "companyName": "Distribuidora Pérez",
   "country": "MX",
   "ownerName": "Luis Pérez",
@@ -45,12 +48,13 @@ Content-Type: application/json
   "jobTypeIds": [1, 2, 8]
 }
 
-### Sin verificar el código → 400 EMAIL_NOT_VERIFIED
+### Token que no es de verify-code (o ya usado) → 400 EMAIL_NOT_VERIFIED
 POST {{baseUrl}}/Account/signup
 Content-Type: application/json
 
 {
   "apiKey": "{{apiKey}}",
+  "signupToken": "{{signupToken}}",
   "companyName": "Empresa sin verificar",
   "ownerName": "Sin Código",
   "email": "sin.verificar@example.com",
@@ -68,6 +72,7 @@ Content-Type: application/json
 
 {
   "apiKey": "{{apiKey}}",
+  "signupToken": "{{signupToken}}",
   "companyName": "Repetida",
   "ownerName": "Ya Existe",
   "email": "{{username}}",
@@ -85,6 +90,7 @@ Content-Type: application/json
 
 {
   "apiKey": "{{apiKey}}",
+  "signupToken": "{{signupToken}}",
   "companyName": "Horario raro",
   "ownerName": "Ana López",
   "email": "horario@example.com",

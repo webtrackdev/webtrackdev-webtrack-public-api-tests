@@ -3,7 +3,7 @@
 ### Anónimo con la API key de la app. Hasta 5 intentos por código.
 ### =====================================================
 
-### Código correcto (200; data = true). Reemplazar por el que llegó al correo
+### Código correcto (200; data.signupToken = token de un solo uso para signup). Reemplazar por el que llegó al correo
 POST {{baseUrl}}/Account/signup/verify-code
 Content-Type: application/json
 

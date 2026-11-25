@@ -1,7 +1,8 @@
 ### =====================================================
 ### WD-5669: Signup send-code - POST /Account/signup/send-code
-### Anónimo con la API key de la app. Manda un código de 6 dígitos
-### al correo (vence en 10 min). 5 por correo y 20 por IP por hora.
+### Anónimo; solo API keys de SelfSignup:ApiKeys. Manda un código de
+### 6 dígitos al correo (vence en 10 min). 5 por correo por hora, 10 por
+### correo en 24 h y 20 por IP por hora.
 ### =====================================================
 
 ### Correo nuevo (200; devuelve expiresInSeconds = 600 y llega el correo)
@@ -13,7 +14,7 @@ Content-Type: application/json
   "apiKey": "{{apiKey}}"
 }
 
-### Correo que ya tiene cuenta → 409 EMAIL_ALREADY_REGISTERED
+### Correo que ya tiene cuenta → 200 igual (no envía nada; no revela que existe)
 POST {{baseUrl}}/Account/signup/send-code
 Content-Type: application/json
 
@@ -22,7 +23,7 @@ Content-Type: application/json
   "apiKey": "{{apiKey}}"
 }
 
-### API key inválida → 401 API_KEY_INVALID
+### API key que no está en SelfSignup:ApiKeys → 401 API_KEY_INVALID
 POST {{baseUrl}}/Account/signup/send-code
 Content-Type: application/json
 
