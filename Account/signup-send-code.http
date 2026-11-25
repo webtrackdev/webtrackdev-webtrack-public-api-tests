@@ -1,0 +1,41 @@
+### =====================================================
+### WD-5669: Signup send-code - POST /Account/signup/send-code
+### Anónimo con la API key de la app. Manda un código de 6 dígitos
+### al correo (vence en 10 min). 5 por correo y 20 por IP por hora.
+### =====================================================
+
+### Correo nuevo (200; devuelve expiresInSeconds = 600 y llega el correo)
+POST {{baseUrl}}/Account/signup/send-code
+Content-Type: application/json
+
+{
+  "email": "nueva.empresa@example.com",
+  "apiKey": "{{apiKey}}"
+}
+
+### Correo que ya tiene cuenta → 409 EMAIL_ALREADY_REGISTERED
+POST {{baseUrl}}/Account/signup/send-code
+Content-Type: application/json
+
+{
+  "email": "{{username}}",
+  "apiKey": "{{apiKey}}"
+}
+
+### API key inválida → 401 API_KEY_INVALID
+POST {{baseUrl}}/Account/signup/send-code
+Content-Type: application/json
+
+{
+  "email": "nueva.empresa@example.com",
+  "apiKey": "no-existe"
+}
+
+### Sexto código del mismo correo en una hora → 429 TOO_MANY_CODES
+POST {{baseUrl}}/Account/signup/send-code
+Content-Type: application/json
+
+{
+  "email": "nueva.empresa@example.com",
+  "apiKey": "{{apiKey}}"
+}

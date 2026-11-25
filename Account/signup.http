@@ -1,0 +1,97 @@
+### =====================================================
+### WD-5669: Signup - POST /Account/signup
+### Anónimo con la API key de la app. Crea la organización, el
+### Propietario (rol 1030), el grupo con el nombre de la empresa,
+### la jornada base, los tipos de tarea y la prueba de 30 días.
+### Devuelve la organización y la sesión (como el login).
+### =====================================================
+
+### Con correo y contraseña, después de verify-code (200)
+POST {{baseUrl}}/Account/signup
+Content-Type: application/json
+
+{
+  "apiKey": "{{apiKey}}",
+  "companyName": "Servicios Técnicos López",
+  "country": "GT",
+  "industry": "Mantenimiento",
+  "teamSize": "2 a 10",
+  "ownerName": "Ana López",
+  "email": "nueva.empresa@example.com",
+  "phone": "+50255551234",
+  "password": "Prueba#2026",
+  "shiftDays": [1, 2, 3, 4, 5],
+  "shiftStart": "08:00",
+  "shiftEnd": "17:00",
+  "jobTypeIds": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+}
+
+### Con Google: el correo debe ser el del token; no pide código (200)
+POST {{baseUrl}}/Account/signup
+Content-Type: application/json
+
+{
+  "apiKey": "{{apiKey}}",
+  "companyName": "Distribuidora Pérez",
+  "country": "MX",
+  "ownerName": "Luis Pérez",
+  "email": "luis.perez@gmail.com",
+  "phone": "+525512345678",
+  "provider": "Google",
+  "idToken": "{{googleIdToken}}",
+  "shiftDays": [1, 2, 3, 4, 5, 6],
+  "shiftStart": "07:00",
+  "shiftEnd": "16:00",
+  "jobTypeIds": [1, 2, 8]
+}
+
+### Sin verificar el código → 400 EMAIL_NOT_VERIFIED
+POST {{baseUrl}}/Account/signup
+Content-Type: application/json
+
+{
+  "apiKey": "{{apiKey}}",
+  "companyName": "Empresa sin verificar",
+  "ownerName": "Sin Código",
+  "email": "sin.verificar@example.com",
+  "phone": "+50255550000",
+  "password": "Prueba#2026",
+  "shiftDays": [1, 2, 3, 4, 5],
+  "shiftStart": "08:00",
+  "shiftEnd": "17:00",
+  "jobTypeIds": [1]
+}
+
+### Correo ya registrado → 409 EMAIL_ALREADY_REGISTERED
+POST {{baseUrl}}/Account/signup
+Content-Type: application/json
+
+{
+  "apiKey": "{{apiKey}}",
+  "companyName": "Repetida",
+  "ownerName": "Ya Existe",
+  "email": "{{username}}",
+  "phone": "+50255550001",
+  "password": "Prueba#2026",
+  "shiftDays": [1],
+  "shiftStart": "08:00",
+  "shiftEnd": "17:00",
+  "jobTypeIds": [1]
+}
+
+### Jornada inválida (salida antes que entrada) → 400 SHIFT_INVALID
+POST {{baseUrl}}/Account/signup
+Content-Type: application/json
+
+{
+  "apiKey": "{{apiKey}}",
+  "companyName": "Horario raro",
+  "ownerName": "Ana López",
+  "email": "horario@example.com",
+  "phone": "+50255550002",
+  "password": "Prueba#2026",
+  "shiftDays": [1, 2],
+  "shiftStart": "18:00",
+  "shiftEnd": "08:00",
+  "jobTypeIds": [1]
+}
