@@ -1,0 +1,21 @@
+### =====================================================
+### WD-5673: Signup availability - POST /Account/signup/availability
+### Anónimo con la llave de la app. Siempre 200 con available true/false:
+### true solo con SelfSignup:ApiKeys y SelfSignup:DefaultOperatorId configurados.
+### =====================================================
+
+### Llave de la app con el registro configurado → available: true
+POST {{baseUrl}}/Account/signup/availability
+Content-Type: application/json
+
+{
+  "apiKey": "{{apiKey}}"
+}
+
+### Llave que no está en SelfSignup:ApiKeys → 200 con available: false (no revela el motivo)
+POST {{baseUrl}}/Account/signup/availability
+Content-Type: application/json
+
+{
+  "apiKey": "no-existe"
+}
