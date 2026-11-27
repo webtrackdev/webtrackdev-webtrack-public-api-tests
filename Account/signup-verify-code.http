@@ -1,0 +1,44 @@
+### =====================================================
+### WD-5669: Signup verify-code - POST /Account/signup/verify-code
+### Anónimo con la API key de la app. Hasta 5 intentos por código.
+### =====================================================
+
+### Código correcto (200; data.signupToken = token de un solo uso para signup). Reemplazar por el que llegó al correo
+POST {{baseUrl}}/Account/signup/verify-code
+Content-Type: application/json
+
+{
+  "email": "nueva.empresa@example.com",
+  "code": "123456",
+  "apiKey": "{{apiKey}}"
+}
+
+### Código incorrecto → 400 CODE_INVALID (suma un intento)
+POST {{baseUrl}}/Account/signup/verify-code
+Content-Type: application/json
+
+{
+  "email": "nueva.empresa@example.com",
+  "code": "000000",
+  "apiKey": "{{apiKey}}"
+}
+
+### Sin código vigente (vencido o nunca pedido) → 400 CODE_EXPIRED
+POST {{baseUrl}}/Account/signup/verify-code
+Content-Type: application/json
+
+{
+  "email": "sin.codigo@example.com",
+  "code": "123456",
+  "apiKey": "{{apiKey}}"
+}
+
+### Sexto intento con el mismo código → 429 TOO_MANY_ATTEMPTS
+POST {{baseUrl}}/Account/signup/verify-code
+Content-Type: application/json
+
+{
+  "email": "nueva.empresa@example.com",
+  "code": "000001",
+  "apiKey": "{{apiKey}}"
+}

@@ -1,0 +1,9 @@
+### Enlace de una invitación para compartir por WhatsApp o como QR, sin correo (200)
+# El enlace sirve una vez (al definir la contraseña deja de funcionar) y vence con los tokens de Identity.
+POST {{baseUrl}}/User/getInvitationLink
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "targetUserId": 3262
+}

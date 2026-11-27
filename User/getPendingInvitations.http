@@ -1,0 +1,7 @@
+### Invitaciones pendientes del equipo (con JB018) — resultado esperado (200)
+# hasJobsLicense = la invitación ya aparta su licencia; canManage = se puede reenviar o cancelar.
+POST {{baseUrl}}/User/getPendingInvitations
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{}

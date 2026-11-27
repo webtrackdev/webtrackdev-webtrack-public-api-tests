@@ -1,0 +1,8 @@
+### Teléfonos con sesión de Jobs de una persona (con JB021) — resultado esperado (200)
+POST {{baseUrl}}/User/getJobsDevices
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "targetUserId": 3096
+}

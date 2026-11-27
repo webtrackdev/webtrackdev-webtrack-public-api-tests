@@ -1,0 +1,17 @@
+### Cancelar una invitación (con US002 o US004) — libera su licencia de Jobs (200, availableLicenses)
+POST {{baseUrl}}/User/cancelInvitation
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "targetUserId": 3262
+}
+
+### Invitación ya cancelada → 400
+POST {{baseUrl}}/User/cancelInvitation
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "targetUserId": 3262
+}
