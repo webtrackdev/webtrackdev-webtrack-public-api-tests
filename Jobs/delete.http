@@ -1,0 +1,26 @@
+### Eliminar jobs visibles (con JB017) — resultado esperado (200, affectedJobs)
+POST {{baseUrl}}/Jobs/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "jobIds": [51021]
+}
+
+### Un job no visible → 400 "No tiene acceso a uno o más jobs" (no se elimina ninguno)
+POST {{baseUrl}}/Jobs/delete
+Authorization: Bearer {{tokenAgent}}
+Content-Type: application/json
+
+{
+  "jobIds": [51021]
+}
+
+### Sin jobs → 400
+POST {{baseUrl}}/Jobs/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "jobIds": []
+}

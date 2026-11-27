@@ -1,0 +1,50 @@
+### Jobs del equipo de hoy (con JB018) — resultado esperado (200)
+POST {{baseUrl}}/Jobs/getTeamJobs
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "startDate": "2026-11-23T06:00:00",
+  "endDate": "2026-11-24T05:59:59"
+}
+
+### Jobs de una persona del equipo — resultado esperado (200)
+POST {{baseUrl}}/Jobs/getTeamJobs
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "startDate": "2026-11-16T06:00:00",
+  "endDate": "2026-11-24T05:59:59",
+  "targetUserId": 3026
+}
+
+### Solicitudes de reprogramación pendientes (sin rango) — resultado esperado (200)
+POST {{baseUrl}}/Jobs/getTeamJobs
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "jobStatus": 5
+}
+
+### Persona fuera del alcance → 400 "No tiene acceso al usuario"
+POST {{baseUrl}}/Jobs/getTeamJobs
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "startDate": "2026-11-23T06:00:00",
+  "endDate": "2026-11-24T05:59:59",
+  "targetUserId": 5
+}
+
+### Agente sin JB018 → 400 "No tiene permiso para ver los jobs del equipo"
+POST {{baseUrl}}/Jobs/getTeamJobs
+Authorization: Bearer {{tokenAgent}}
+Content-Type: application/json
+
+{
+  "startDate": "2026-11-23T06:00:00",
+  "endDate": "2026-11-24T05:59:59"
+}

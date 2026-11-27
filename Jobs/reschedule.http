@@ -1,0 +1,33 @@
+### Reprogramar jobs visibles (con JB016) — resultado esperado (200, affectedJobs)
+# Fechas en la hora local de quien consulta; los jobs quedan Programados.
+POST {{baseUrl}}/Jobs/reschedule
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "jobIds": [51021],
+  "startDate": "2026-11-24T08:00:00",
+  "dueDate": "2026-11-24T10:00:00"
+}
+
+### Fecha límite antes del inicio → 400
+POST {{baseUrl}}/Jobs/reschedule
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "jobIds": [51021],
+  "startDate": "2026-11-24T10:00:00",
+  "dueDate": "2026-11-24T08:00:00"
+}
+
+### Agente con un job de otra persona → 400 "No tiene acceso a uno o más jobs"
+POST {{baseUrl}}/Jobs/reschedule
+Authorization: Bearer {{tokenAgent}}
+Content-Type: application/json
+
+{
+  "jobIds": [51021],
+  "startDate": "2026-11-24T08:00:00",
+  "dueDate": "2026-11-24T10:00:00"
+}
