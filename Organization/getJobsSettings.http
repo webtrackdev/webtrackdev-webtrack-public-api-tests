@@ -1,0 +1,14 @@
+### Ajustes de Jobs de la organización (con MB007) — resultado esperado (200)
+# allowRescheduleRequest y el cambio automático de estado de jobs atascados.
+POST {{baseUrl}}/Organization/getJobsSettings
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{}
+
+### Usuario sin MB007 → 400 "No tiene permiso para ver los ajustes de la organización"
+POST {{baseUrl}}/Organization/getJobsSettings
+Authorization: Bearer {{tokenAgent}}
+Content-Type: application/json
+
+{}

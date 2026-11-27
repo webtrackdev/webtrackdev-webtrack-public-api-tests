@@ -1,0 +1,22 @@
+### Calendario de turno de una persona (con SC001) — resultado esperado (200)
+# Una fila por franja; isDayOff = descanso marcado como ajuste temporal.
+POST {{baseUrl}}/User/getShiftCalendar
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "targetUserId": 3096,
+  "startDate": "2026-11-23",
+  "endDate": "2026-11-29"
+}
+
+### Rango mayor a 92 días → 400
+POST {{baseUrl}}/User/getShiftCalendar
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "targetUserId": 3096,
+  "startDate": "2026-01-01",
+  "endDate": "2026-12-31"
+}

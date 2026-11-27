@@ -1,0 +1,29 @@
+### Asignar una jornada a una persona del equipo (con SC001) — resultado esperado (200, la jornada)
+# La persona recibe el setting 18 (Horario de Trabajo) en su dispositivo.
+POST {{baseUrl}}/User/assignSchedule
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "targetUserId": 3096,
+  "scheduleId": 930
+}
+
+### Quitar la jornada (scheduleId vacío) — resultado esperado (200, data null)
+POST {{baseUrl}}/User/assignSchedule
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "targetUserId": 3096
+}
+
+### Persona fuera del alcance → 400 "No tiene acceso al usuario"
+POST {{baseUrl}}/User/assignSchedule
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "targetUserId": 1,
+  "scheduleId": 930
+}

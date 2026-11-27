@@ -1,0 +1,30 @@
+### Activar check-in automático y validación facial en check-in (con JB021) — resultado esperado (200)
+# Se guarda igual que en el panel de Reactive; devuelve las preferencias de las personas tocadas.
+POST {{baseUrl}}/User/updateUserSettings
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "settings": [
+    { "userId": 3096, "settingId": 20, "settingValue": "1" },
+    { "userId": 3096, "settingId": 45, "settingValue": "1" }
+  ]
+}
+
+### Setting 18 (se cambia con assignSchedule) → 400 "Una o más preferencias no se pueden cambiar desde la app"
+POST {{baseUrl}}/User/updateUserSettings
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "settings": [ { "userId": 3096, "settingId": 18, "settingValue": "0" } ]
+}
+
+### Persona fuera del alcance → 400 "No tiene acceso a uno o más usuarios"
+POST {{baseUrl}}/User/updateUserSettings
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "settings": [ { "userId": 1, "settingId": 20, "settingValue": "1" } ]
+}
