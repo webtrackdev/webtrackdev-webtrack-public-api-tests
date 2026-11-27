@@ -1,0 +1,20 @@
+### Equipo con su estado del día (Propietario o Supervisor, con JB018) — resultado esperado (200)
+# El Supervisor recibe su división y a la gente de los grupos donde es Propietario o Administrador.
+POST {{baseUrl}}/User/getTeam
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{}
+
+### Agente sin JB018 → 400 "No tiene permiso para ver al equipo"
+POST {{baseUrl}}/User/getTeam
+Authorization: Bearer {{tokenAgent}}
+Content-Type: application/json
+
+{}
+
+### Sin token → 401
+POST {{baseUrl}}/User/getTeam
+Content-Type: application/json
+
+{}
